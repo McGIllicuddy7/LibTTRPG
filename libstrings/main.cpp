@@ -1,9 +1,17 @@
 #include <stdio.h>
 #include "arena.h"
 #include <cstring>
+#include <string_view>
+#include <iostream>
+#include "libstrings.h"
+using std::vector;
+using std::string;
+using std::string_view;
+using namespace std::literals::string_view_literals;
 int main(){
-	Arena arena;
-	for(int i =0; i<12; i++){
-		Deletable *a = arena.alloc<Deletable>(i);
-	}	
+	string file =read_file_to_string("main.cpp");
+	vector<vector<string_view>> strings = tokenize(file,default_delims);
+	for(auto &k : strings){
+		std::cout << format(k)<<"\n";
+	}
 }
