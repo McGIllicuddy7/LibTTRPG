@@ -19,18 +19,6 @@ template <typename T> struct Slice{
 		m_start =ptr;
 		m_len = len;
 	}
-	inline Slice<char>(std::string& string){
-		m_start = string.c_str();
-		m_len = string.size();
-	} 
-	inline Slice<char>(char * chars){
-		m_start = chars;
-		m_len = strlen(chars);
-	}
-	inline Slice<T>(std::vector<T>& vec){
-		m_start = vec.begin();
-		m_len = vec.size();
-	}
 	T * begin()const {
 		return m_start;
 	}
