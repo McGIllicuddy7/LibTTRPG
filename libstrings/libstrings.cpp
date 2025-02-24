@@ -122,7 +122,6 @@ std::vector<std::string_view> split_string_by_delims(std::string_view base, std:
 			}
 			vector<string_view> tmp = split_string_by_delim(j, i);
 			for(auto k: tmp){
-				//std::cout << "<" << k <<"> ";
 				tmps.push_back(k);
 			}
 		}	
@@ -130,7 +129,6 @@ std::vector<std::string_view> split_string_by_delims(std::string_view base, std:
 		std::swap(tmps, strings);
 		tmps.clear();
 	}
-	std::cout <<strings.size() <<"\n";
 	return strings;
 }
 
