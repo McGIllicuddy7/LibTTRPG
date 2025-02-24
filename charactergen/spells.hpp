@@ -4,7 +4,7 @@
 //
 //  Created by Isaac Hartin Pasco on 7/7/23.
 //
-
+#pragma once
 #ifndef Arcane_h
 #define Arcane_h
 #pragma once

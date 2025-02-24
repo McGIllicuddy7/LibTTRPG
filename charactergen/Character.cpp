@@ -150,12 +150,6 @@ vector<Weapon> weapon_calculation(MartialTypes mt, ENPC_Type npc_type, int level
   return out;
 }
 
-typedef enum{
-  Arcana, Athletics,Acrobatics,Crafting, Deception, Diplomacy, Intimidation, Lore, Medicine, Nature, Occultism, Performance, Religion, Society, Survival,Stealth, Thievery,
-}Skills;
-typedef enum{
-  Strength, Constitution, Dexterity, Intelligence, Wisdom, Charisma,
-} AbilityScores;
 
 int calculate_skill_mod(int index, StatSet stats,AbilityScores Score, vector<int> TrainedSkills, vector<int> ExpertSkills, vector<int> MasteredSkills,vector<int> LegendarySkills){
   int base = 0;

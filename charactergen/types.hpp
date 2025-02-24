@@ -1,3 +1,4 @@
+#pragma once
 #include "Ancestries.hpp"
 #include "Spellcasting.hpp"
 #include "Abilities.hpp"
@@ -32,6 +33,10 @@ typedef enum{
 
 enum Skills{ Acrobatics,Arcana,Athletics,Crafting,Deception,Diplomacy,Intimidation,Lore,Medicine,Nature,Occultism,Performance,Religion,
 Society,Stealth,Survival,Thievery};
+enum AbilityScores{
+    Strength, Constitution, Dexterity, Intelligence, Wisdom, Charisma,
+};
+  
 struct StatSet{
     int level;
     int strength;
