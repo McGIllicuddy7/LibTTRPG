@@ -7,7 +7,7 @@
 
 #include "Ancestries.hpp"
 #include "Utils.hpp"
-EAncestries RandomAncestry(void){
+EAncestries random_ancestry(void){
   int DwarfMin = DwarfPopulationPercent;
   int ElfMin = DwarfMin+ElfPopulationPercent;
   int GnomeMin = ElfMin+GnomePopulationPercent;
@@ -43,6 +43,6 @@ EAncestries RandomAncestry(void){
   }
   return Human;
 };
-void RandomizeAncestries(void){
+void randomize_ancestries(void){
   
 };

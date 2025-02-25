@@ -42,20 +42,20 @@ int calculate_ac_and_per_bonus(int level){
   return 2*((numexpert>0)+(nummastered>0)+(numLegendary>0)+1)+level;
 }
 
-Weapon Club = {"Club","Thrown 10 ft.",false,false,0,"1d4",0};
-Weapon Dagger = {"Dagger","Agile, finesse, thrown 10 ft., versatile S.",true,false,0,"1d4",0};
-Weapon LongSpear = {"Long Spear","Reach",false,false,0,"1d6",0};
-Weapon Staff = {"Staff","Two-hand d8",false,false,0,"1d4",0};
-Weapon BastardSword = {"Bastard sword","Two-hand d12",false,false,0,"1d8",0};
-Weapon BattleAxe = {"Battle axe","Sweep",false,false,0,"1d8",0};
-Weapon Greatsword = {"Greatsword","Versatile P",false,false,0,"1d12",0};
-Weapon Longsword = {"Longsword", "Versatile P",false,false,0,"1d8",0};
-Weapon Rapier = {"Rapier","Deadly d8, disarm, finesse",true,false, 0,"1d6",0};
-Weapon Shortsword = {"Shortsword","Agile, finesse, versatile S",true,false,0,"1d6",0};
-Weapon Crossbow = {"Crossbow","Range 120",false,true,0,"1d8",0};
-Weapon HeavyCrossbow = {"Heavy Crossbow","Range 120",false,true,0,"1d10",0};
-Weapon Longbow = {"Longbow","Range 100",false,true,0,"1d8",0};
-Weapon Shortbow = {"Shortbow","Range 60",false,true,0,"1d6",0};
+const Weapon Club = {"Club","Thrown 10 ft.",false,false,0,"1d4",0};
+const Weapon Dagger = {"Dagger","Agile, finesse, thrown 10 ft., versatile S.",true,false,0,"1d4",0};
+const Weapon LongSpear = {"Long Spear","Reach",false,false,0,"1d6",0};
+const Weapon Staff = {"Staff","Two-hand d8",false,false,0,"1d4",0};
+const Weapon BastardSword = {"Bastard sword","Two-hand d12",false,false,0,"1d8",0};
+const Weapon BattleAxe = {"Battle axe","Sweep",false,false,0,"1d8",0};
+const Weapon Greatsword = {"Greatsword","Versatile P",false,false,0,"1d12",0};
+const Weapon Longsword = {"Longsword", "Versatile P",false,false,0,"1d8",0};
+const Weapon Rapier = {"Rapier","Deadly d8, disarm, finesse",true,false, 0,"1d6",0};
+const Weapon Shortsword = {"Shortsword","Agile, finesse, versatile S",true,false,0,"1d6",0};
+const Weapon Crossbow = {"Crossbow","Range 120",false,true,0,"1d8",0};
+const Weapon HeavyCrossbow = {"Heavy Crossbow","Range 120",false,true,0,"1d10",0};
+const Weapon Longbow = {"Longbow","Range 100",false,true,0,"1d8",0};
+const Weapon Shortbow = {"Shortbow","Range 60",false,true,0,"1d6",0};
 vector<Weapon> weapon_calculation(MartialTypes mt, ENPC_Type npc_type, int level, int strength,int dexterity){
   vector<Weapon> out;
   if(mt == MartialNONE){
@@ -205,6 +205,17 @@ StatSet calculate_skills(StatSet stats, vector<int> TrainedSkills, vector<int> E
   SetUpSkills(stats, Stealth, stealth,Dexterity);
   SetUpSkills(stats, Thievery,thievery, Dexterity);
   stats.perception= 0+calculate_modifier(stats.wisdom);
+  if(LegendarySkills.size()>0){
+    stats.perception +=8;
+  } else if (MasteredSkills.size()>0){
+    stats.perception +=6;
+  }
+  else if (ExpertSkills.size()>0){
+    stats.perception +=4;
+  }
+  else if (TrainedSkills.size()>0){
+    stats.perception +=2;
+  }
   return stats;
 }
 StatSet select_skills(StatSet stats,vector<int> Skills, int numskills,int numexpert,int nummastered, int numlegendary){
@@ -214,19 +225,20 @@ StatSet select_skills(StatSet stats,vector<int> Skills, int numskills,int numexp
   vector<int> LegendarySkills = array_choose(MasteredSkills, numlegendary);
   stats = calculate_skills(stats, TrainedSkills, ExpertSkills, MasteredSkills,LegendarySkills);
   return stats;
-  //IntArrayFree(&TrainedSkills);
-  //IntArrayFree(&ExpertSkills);
-  //IntArrayFree(&MasteredSkills);
-  //IntArrayFree(&LegendarySkills);
 }
 #define CasterAbilityScores(Highest)\
-if(MagicType == Arcane){Out->Intelligence = Highest; Out->Wisdom = MediumAbilityScore(); Out->Charisma = MediumAbilityScore();}\
-if(MagicType == Divine || MagicType == Primal){Out->Intelligence =MediumAbilityScore(); Out->Wisdom = Highest;Out->Charisma = MediumAbilityScore();}\
-if(MagicType == Occult){Out->Intelligence =MediumAbilityScore();  Out->Wisdom = MediumAbilityScore(); Out->Charisma = Highest;}
+if(MagicType == Arcane){Out->Intelligence = Highest; Out->Wisdom = medium_ability_score(); Out->Charisma = medium_ability_score();}\
+if(MagicType == Divine || MagicType == Primal){Out->Intelligence =medium_ability_score(); Out->Wisdom = Highest;Out->Charisma = medium_ability_score();}\
+if(MagicType == Occult){Out->Intelligence =medium_ability_score();  Out->Wisdom = medium_ability_score(); Out->Charisma = Highest;}
 
-vector<int> SkillsList = { Acrobatics,Arcana,Athletics,Crafting,Deception,Diplomacy,Intimidation,Lore,Medicine,Nature,Occultism,Performance,Religion,
+const vector<int> SkillsList = { Acrobatics,Arcana,Athletics,Crafting,Deception,Diplomacy,Intimidation,Lore,Medicine,Nature,Occultism,Performance,Religion,
   Society,Stealth,Survival,Thievery};
-vector<int> DefaultSkillsList = SkillsList;
-//laborers high hit points, high strength, high damage, low attack, low ac
-//base mid ac, mid hit points, mid damage, high attack
-//mid ac, low hit points, high damage, high attack, stealth.
+const vector<int> DefaultSkillsList = SkillsList;
+
+/*
+    Laborer, Merchant, Noble, Fighter, Magic_User, Gish, Magic_using_Thief, Priest, Thief
+*/
+
+StatSet generate_laborer_stats(){
+  
+}

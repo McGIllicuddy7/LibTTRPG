@@ -2,6 +2,7 @@
 #include "Ancestries.hpp"
 #include "Spellcasting.hpp"
 #include "Abilities.hpp"
+
 #include <string>
 #include <vector>
 #include <string_view>
@@ -12,9 +13,9 @@ using std::string_view;
 typedef enum{
     Male, Female, Nonbinary
   }EGender;
-  typedef enum{
+  enum ENPC_Type{
     Laborer, Merchant, Noble, Fighter, Magic_User, Gish, Magic_using_Thief, Priest, Thief
-  } ENPC_Type;
+  };
   typedef enum{
     Elite, Normal, Weak
   } NPC_Strength_t;
@@ -68,4 +69,5 @@ struct StatSet{
     int stealth;
     int survival;
     int thievery;
+    std::vector<string_view> abilities;
 };

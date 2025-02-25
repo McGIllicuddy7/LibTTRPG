@@ -14,3 +14,4 @@ struct Grimoire{
     vector<string_view> tenth_level_spells;
     vector<string_view> spellbook;
 };
+Grimoire generate_spells(int level, bool innate_caster, MagicTypes magic_type,ENPC_Type npc_type);

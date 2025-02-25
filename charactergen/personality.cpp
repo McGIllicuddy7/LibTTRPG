@@ -2,21 +2,21 @@
 #include "Names.hpp"
 #include "Utils.hpp"
 #include "types.hpp"
-static string RandFirstName(vector<string> BaseArray, EGender Gender){
+static string rand_first_name(vector<string> BaseArray, EGender Gender){
     int s = random_int()%100;
     if(s<25){ return (Gender == Female ? random_element(HumanFemmeFirstNames) :random_element(HumanMascFirstNames));}
     if(s<50){return (Gender == Female ? random_element(GiffFemmeFirstnames) :random_element(GiffMascFirstNames));}
     if(s<75){return (Gender == Female ? random_element(TieflingFemmeFirstNames) :random_element(TieflingMascFirstNames));}
     return random_element(BaseArray);
   }
-  static string RandLastName(vector<string> BaseArray){
+  static string rand_last_name(vector<string> BaseArray){
     int s = random_int()%100;
     if(s<25){ return random_element(humanLastNames);}
     if(s<50){return random_element(GiffLastnames);}
     if(s<75){random_element(TieflingLastNames);}
     return random_element(BaseArray);
   }
-  static EGender GenerateGender(void){
+  static EGender generate_gender(void){
     int s = random_int()%100;
     if(s<45){
       return Female;
@@ -26,7 +26,7 @@ static string RandFirstName(vector<string> BaseArray, EGender Gender){
     }
     return Nonbinary;
   };
-  string GenerateName(EAncestries Ancestry, EGender Gender){
+  string generate_name(EAncestries Ancestry, EGender Gender){
     EAncestries a = Ancestry;
     EGender g = Gender;
     if(Gender == Nonbinary){
@@ -37,7 +37,7 @@ static string RandFirstName(vector<string> BaseArray, EGender Gender){
         g = Male;
       }
     }
-    if(random_int()%100<90){a = RandomAncestry();}
+    if(random_int()%100<90){a = random_ancestry();}
     vector<string> FnameArray = TieflingFemmeFirstNames;
     if(a == Catfolk){FnameArray = ( g == Female ? HalflingFemmeFirstNames : HalflingMascFirstNames);}
     if(a == Dwarf){FnameArray = ( g == Female ? DwarfFemmeFirstNames : DwarfMascFirstNames);}
@@ -47,10 +47,10 @@ static string RandFirstName(vector<string> BaseArray, EGender Gender){
     if(a == Halfling){FnameArray = ( g == Female ? HalflingFemmeFirstNames : HalflingMascFirstNames);}
     if(a == Human){FnameArray = ( g == Female ? HumanFemmeFirstNames : HumanMascFirstNames);}
     if(a == Orc){FnameArray = ( g == Female ? OrcFemmeFirstNames : OrcMascFirstNames);}
-    string FirstName = RandFirstName(FnameArray, g);
+    string FirstName = rand_first_name(FnameArray, g);
     EAncestries b = Ancestry;
     vector<string> LnameArray = TieflingLastNames;
-    if(random_int()%100<80){b = RandomAncestry();}
+    if(random_int()%100<80){b = random_ancestry();}
     if(b == Catfolk){LnameArray = HalflingLastNames;}
     if(b == Dwarf){LnameArray = DwarfLastNames;}
     if(b == Elf){LnameArray = ElfLastNames;}
@@ -59,7 +59,7 @@ static string RandFirstName(vector<string> BaseArray, EGender Gender){
     if(b == Halfling){LnameArray = HalflingLastNames;}
     if(b == Human){LnameArray = humanLastNames;}
     if(b == Orc){LnameArray = OrcLastNames;}
-    string LastName = RandLastName(LnameArray);
+    string LastName = rand_last_name(LnameArray);
     return FirstName+" "+LastName;
   }
   static vector<string> Sanity = {"Sanity: Very Stable", "Sanity: Normal","Sanity: Normal", "Sanity: Normal","Sanity: Normal", "Sanity :Normal", "Sanity: Neurotic", "Sanity: Unstable", "Sanity: Insane", "Sanity: Maniacal"};

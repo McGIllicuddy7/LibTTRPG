@@ -11,3 +11,8 @@
  int DamageBonus;
 } Weapon_T;
 */
+string rand_first_name(vector<string> BaseArray, EGender Gender);
+string rand_last_name(vector<string> BaseArray);
+EGender generate_gender(void);
+string generate_name(EAncestries Ancestry, EGender Gender);
+vector<string> generate_personality(void);

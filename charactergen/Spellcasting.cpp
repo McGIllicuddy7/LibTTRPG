@@ -133,10 +133,10 @@ const static SpellSlots SpellbookNumbers[20] = {
   //level 20
   {10,7,5,5,4,4,4,4,4,2,2},
 };
-SpellSlots innate_spell_slots_by_level(int level){
+SpellSlots innate_spellslots_by_level(int level){
   return Innate[level-1];
 }
-SpellSlots prepared_spell_slotsby_level(int level){
+SpellSlots prepared_spellslots_by_level(int level){
   return Prepared[level-1];
 }
 SpellSlots prepared_spellbook_by_level(int level){

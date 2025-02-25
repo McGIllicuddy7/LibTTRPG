@@ -9,9 +9,9 @@ using std::string;
 using std::string_view;
 using namespace std::literals::string_view_literals;
 int main(){
-	string file =read_file_to_string("main.cpp");
-	vector<vector<string_view>> strings = tokenize(file,default_delims);
+	string file =utils::read_file_to_string("main.cpp");
+	vector<vector<string_view>> strings = utils::tokenize(file,utils::default_delims);
 	for(auto &k : strings){
-		std::cout << format(k)<<"\n";
+		std::cout << k<<"\n";
 	}
 }

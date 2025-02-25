@@ -29,6 +29,6 @@ static int HalflingPopulationPercent = 15;
 static int HumanPopulationPercent = 25;
 static int CatfolkPopulationPercent =5;
 static int OrcPopulationPercent = 10;
-EAncestries RandomAncestry(void);
-void RandomizeAncestries(void);
+EAncestries random_ancestry(void);
+void randomize_ancestries(void);
 #endif /* Ancestries_h */
