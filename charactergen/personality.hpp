@@ -1,5 +1,5 @@
 #pragma once
-
+#include "types.hpp"
 
   /*typedef struct{
  char * Name;
@@ -11,6 +11,10 @@
  int DamageBonus;
 } Weapon_T;
 */
+#include <string>
+#include <vector>
+using std::string;
+using std::vector;
 string rand_first_name(vector<string> BaseArray, EGender Gender);
 string rand_last_name(vector<string> BaseArray);
 EGender generate_gender(void);

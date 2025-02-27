@@ -9,9 +9,16 @@
 #define Ancestries_h
 
 #include <stdio.h>
+#include <string_view>
 typedef enum{
     Dwarf,Elf,Gnome,Goblin, Halfling, Human, Catfolk, Orc,
 } EAncestries;
+inline std::ostream& operator<<(std::ostream& os, const EAncestries& obj)
+{
+    std::string_view table[] = {"Dwarf", "Elf", "Gnome", "Goblin", "Halfing", "Human", "Catfolk", "Orc"};
+    os << table[obj];
+    return os;
+}
 const static int GlobalDwarfPopulationPercent = 12;
 const static int GlobalElfPopulationPercent = 8;
 const static int GlobalGnomePopulationPercent = 10;

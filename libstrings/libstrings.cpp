@@ -2,12 +2,12 @@
 #include <fstream>
 #include <iostream>
 #include <unordered_set>
-using std::string_view;
-using std::string;
-using std::vector;
-using std::unordered_set;
-using namespace std::literals::string_view_literals;
 namespace utils{
+	using std::string_view;
+	using std::string;
+	using std::vector;
+	using std::unordered_set;
+	using namespace std::literals::string_view_literals;
 	const vector<string_view> default_delims = {"+"sv, "-"sv, "/"sv, "*"sv, "^"sv, "->"sv, "="sv, "!="sv, "-="sv, "+="sv,
 		"/="sv,"*="sv, "^="sv,"=="sv, ";"sv, "{"sv, "}"sv, "(",")"sv, "["sv, "]","&"sv, "&&"sv, "!"sv, "%"sv, "%="sv, "|"sv, "||"sv, "#"sv,"<"sv, ">"sv, "<="sv, ">="sv, "<<"sv, ">>"sv};
 	   
@@ -85,7 +85,7 @@ namespace utils{
 		   for(size_t i =0; i<v.size(); i++){
 			   if (v[i] == '"'){
 				   out.push_back(v.substr(prev, i-prev));		
-				   size_t et = string_literal_end(v, i);
+				   size_t et = string_literal_end(v, i)+1;
 				   out.push_back(v.substr(i, et-i));
 				   i = et;
 				   prev = i;
@@ -141,6 +141,15 @@ namespace utils{
 		   std::sort(delims.begin(), delims.end(), cmp);
 		   vector<vector<string_view>> out = {};
 		   vector<string_view> lines = split_string_by_delim(str, "\n"sv);
+		   {
+				vector<string_view> new_lines = {};
+				for(size_t i =0; i<lines.size(); i++){
+					if(i%2 == 0){
+						new_lines.push_back(lines[i]);
+					}
+				}
+				lines = std::move(new_lines);
+		   }
 		   for(auto i:lines){
 			   vector<string_view> no_space= split_string_by_delim(i, " "sv);
 			   vector<string_view> no_tab ={};

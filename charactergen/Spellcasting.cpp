@@ -6,6 +6,7 @@
 //
 
 #include "Spellcasting.hpp"
+
 //also known spell amounts
 static const SpellSlots Innate[20] = {
   //level 1

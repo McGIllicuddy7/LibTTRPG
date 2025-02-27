@@ -74,4 +74,49 @@ Grimoire generate_spells(int level, bool innate_caster, MagicTypes magic_type,EN
       SpellbookAdd(out,NinthlevelBuff);
       SpellbookAdd(out,TenthlevelBuff);
     }
+    out.innate_caster = innate_caster;
+    out.spellslots = innate_caster ? innate_spellslots_by_level(level) : prepared_spellslots_by_level(level);
+    return out;
   }
+std::ostream& operator<<(std::ostream& os, const Grimoire & grim){
+    std::string tmp = grim.innate_caster ? "innate spellcasting" : "prepared spellcasting";
+    if(grim.cantrips.size()>0){
+        tmp += utils::format("cantrips:{}\n", grim.cantrips);
+    }
+    if(grim.first_level_spells.size()>0){
+        tmp += utils::format("1st[{} slots]:{}\n", (int)grim.spellslots.level1, grim.first_level_spells);
+    }
+    if(grim.second_level_spells.size()>0){
+        tmp += utils::format("2nd[{} slots]:{}\n", (int)grim.spellslots.level2, grim.second_level_spells);
+    }
+    if(grim.third_level_spells.size()>0){
+        tmp += utils::format("3rd[{} slots]:{}\n", (int)grim.spellslots.level3, grim.third_level_spells);
+    }
+    if(grim.fourth_level_spells.size()>0){
+        tmp += utils::format("4th[{} slots]:{}\n", (int)grim.spellslots.level4, grim.fourth_level_spells);
+    }
+    if(grim.fifth_level_spells.size()>0){
+        tmp += utils::format("5th[{} slots]:{}\n",(int)grim.spellslots.level5, grim.fifth_level_spells);
+    }
+    if(grim.sixth_level_spells.size()>0){
+        tmp += utils::format("6th[{} slots]:{}\n", (int)grim.spellslots.level6, grim.sixth_level_spells);
+    }
+    if(grim.seventh_level_spells.size()>0){
+        tmp += utils::format("7th[{} slots]:{}\n", (int)grim.spellslots.level7, grim.seventh_level_spells);
+    }
+    if(grim.eighth_level_spells.size()>0){
+        tmp += utils::format("8th[{} slots]:{}\n", (int)grim.spellslots.level8, grim.eighth_level_spells);
+    }
+    if(grim.ninth_level_spells.size()>0){
+        tmp += utils::format("9th[{} slots]:{}\n", (int)grim.spellslots.level9, grim.ninth_level_spells);
+    }
+    if(grim.tenth_level_spells.size()>0){
+        tmp += utils::format("10th[{} slots]:{}\n", (int)grim.spellslots.level10, grim.tenth_level_spells);
+    }
+    if(grim.spellbook.size()>0){
+        tmp += utils::format("spellbook:{}\n", grim.spellbook);
+    }
+    os << tmp;
+    return os;
+
+}

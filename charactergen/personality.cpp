@@ -2,21 +2,21 @@
 #include "Names.hpp"
 #include "Utils.hpp"
 #include "types.hpp"
-static string rand_first_name(vector<string> BaseArray, EGender Gender){
+ string rand_first_name(vector<string> BaseArray, EGender Gender){
     int s = random_int()%100;
     if(s<25){ return (Gender == Female ? random_element(HumanFemmeFirstNames) :random_element(HumanMascFirstNames));}
     if(s<50){return (Gender == Female ? random_element(GiffFemmeFirstnames) :random_element(GiffMascFirstNames));}
     if(s<75){return (Gender == Female ? random_element(TieflingFemmeFirstNames) :random_element(TieflingMascFirstNames));}
     return random_element(BaseArray);
   }
-  static string rand_last_name(vector<string> BaseArray){
+   string rand_last_name(vector<string> BaseArray){
     int s = random_int()%100;
     if(s<25){ return random_element(humanLastNames);}
     if(s<50){return random_element(GiffLastnames);}
     if(s<75){random_element(TieflingLastNames);}
     return random_element(BaseArray);
   }
-  static EGender generate_gender(void){
+    EGender generate_gender(void){
     int s = random_int()%100;
     if(s<45){
       return Female;
@@ -87,7 +87,7 @@ static string rand_first_name(vector<string> BaseArray, EGender Gender){
     "Interested in: Drugs","Knife and Dagger Collector","Sword Collector","Weapon Collector","Weapon Collector","Shield and Weapon Collector","Armor Collector","Book and Scroll Collector","Mineral and Gem Collector","Ornament and Jewelry Collector","Coin and Token Collector",
     "Trophy and Skin Collector","Porcelain,China, and Crystal Collector","Art Collector","Interested in: Community Service","Interested in: Altruism","Interested in: Not Much"
   };
-  vector<string> GeneratePersonality(void){
+  vector<string> generate_personality(void){
     vector<string> Personality;
     int r;
     r = roll_dice("1d10");

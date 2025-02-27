@@ -38,18 +38,20 @@ double random_double_in_range(double min, double max){
 int roll_dice(const char * die){
   int cur = 0;
   int len = (int)strlen(die);
-  char nd[10];
-  char  ds[10];
+  char nd[10] = {0};
+  char  ds[10] = {0};
   for(int i = 0; i<len; i++){
     if(die[i]== 'd'){
       cur = i;
-      i = len;
+      break;
     }
   }
+  std::cout <<cur<<"\n";
   memcpy(nd, die, cur);
   memcpy(ds, die+cur+1, len-cur);
   int numdice = atoi(nd);
   int diesize = atoi(ds);
+  std::cout <<"rolling "<<numdice << "d"<<diesize <<"\n";
   int total = 0;
   for(int i = 0; i<numdice; i++){
     total += random_int()%diesize+1;

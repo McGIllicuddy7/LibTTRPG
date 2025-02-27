@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 using namespace std;
-vector<string> HumanMascFirstNames = {"Alan", "Alun", "Arthur", "Arthyen", "Austell", "Benesek", "Blyth", "Branek", "Branwalather", "Brengy",
+inline vector<string> HumanMascFirstNames = {"Alan", "Alun", "Arthur", "Arthyen", "Austell", "Benesek", "Blyth", "Branek", "Branwalather", "Brengy",
 "Breoc", "Bryok", "Budic", "Buthek", "Cadan", "Cador", "Cadreth", "Caradoc", "Carasek", "Carrow", "Caswyn", "Cleder", "Clemow", "Clesek",
 "Colan", "Colyn", "Corentyn", "Cornelly", "Costentyn", "Costetyn", "Crantok", "Credan", "Daveth", "Davy", "Denzel", "Digory", "Docco", "Doniert",
 "Donyerth", "Durngarth", "Elid", "Enoder", "Ervan", "Feoc", "Gawen", "Gerens", "Gerent", "Germoc", "Germoe", "Glewas", "Goran", "Gorlas", "Goron",
@@ -20,7 +20,7 @@ vector<string> HumanMascFirstNames = {"Alan", "Alun", "Arthur", "Arthyen", "Aust
 "Sythyn", "Talan", "Talek", "Tomas", "Trevedic", "Tristan", "Trystan", "Udy", "Uther", "Uthno", "Vark", "Vyvyan", "Welet", "Wella", "Weryn", "Wethinoc", "Withell",
 "Worrec", "Yestin", "Ythel"};
 
-vector<string> HumanFemmeFirstNames =  {"Ailla", "Angelet", "Arranz", "Athwenna", "Banallan", "Barenwyn", "Berlewen", "Bersaba", "Beryan", "Blejan",
+inline vector<string> HumanFemmeFirstNames =  {"Ailla", "Angelet", "Arranz", "Athwenna", "Banallan", "Barenwyn", "Berlewen", "Bersaba", "Beryan", "Blejan",
 "Bryluen", "Burien", "Caja", "Carenza", "Ceinwen", "Chesten", "Columba", "Conwenna", "Cordelia", "Crewenna", "Cryda", "Delen", "Demelza", "Derowen",
 "Derwa", "Dywana", "Ebrel", "Elestren", "Elowen", "Endelienta", "Endelyon", "Eseld", "Eselt", "Esyld", "Eva", "Ewa", "Ewe", "Glanna", "Gweniver", "Gwennol",
 "Hedra", "Jenifer", "Jenifry", "Jenna", "Jowanet", "Kayna", "Kelynen", "Kensa", "Kerensa", "Kerenza", "Keresyk", "Kerra", "Kew", "Ladoca", "Loveday", "Lowenek",
@@ -29,7 +29,7 @@ vector<string> HumanFemmeFirstNames =  {"Ailla", "Angelet", "Arranz", "Athwenna"
 "Rozen", "Rozenwyn", "Senara", "Sevi", "Sowena", "Steren", "Talwyn", "Tamara", "Tamsyn", "Tecca", "Tegen", "Tregereth", "Tressa", "Trevenna", "Tryfena", "Vorva",
 "Weneppa", "Wenn", "Wenna", "Wylmet", "Ygerna", "Zethar"};
 
-vector<string>  humanLastNames = {"Andrewartha", "Angrave", "Annear", "Anning", "Bain", "Baragwanath", "Beckerleg", "Bedell", "Bennetto", "Bennetts", "Berriman",
+inline vector<string>  humanLastNames = {"Andrewartha", "Angrave", "Annear", "Anning", "Bain", "Baragwanath", "Beckerleg", "Bedell", "Bennetto", "Bennetts", "Berriman",
 "Berryman", "Bescoby", "Bice", "Biddick", "Binney", "Blamey", "Boase", "Boden", "Bolitho", "Bonython", "Borlase", "Bosanko", "Bosanquet", "Bray", "Briddon", "Bryant",
 "Carbines", "Cardell", "Care", "Carlyon", "Carnell", "Carveth", "Causley", "Chegwidden", "Chenhalls", "Chenoweth", "Clemow", "Clemson", "Climo", "Clymo", "Coad", "Cocking",
 "Colenso", "Colley", "Congdon", "Corin", "Couch", "Cowling", "Craddick", "Crago", "Craze", "Crowle", "Cundy", "Curnow", "Daniel", "Deveril", "Dobell", "Dowling", "Eade",
@@ -47,7 +47,7 @@ vector<string>  humanLastNames = {"Andrewartha", "Angrave", "Annear", "Anning", 
  "Trevethan", "Trevithick", "Trevorrow", "Trewarthen", "Treweeke", "Trewhella", "Trewin", "Trezona", "Trounson", "Trudgen", "Truscott", "Tyack", "Uren", "Veal", "Vear",
  "Vellenoweth", "Venton", "Verran", "Vial", "Vosper", "Voss", "Warne", "Warren", "Wearne", "White", "Wickett", "Williams", "Windle", "Withiel", "Yelland", "Yourand"};
 
-vector<string>  DwarfFemmeFirstNames = {"Ase", "Ægileif", "Adís", "Ágærthr", "Aldís", "Álfdís", "Álfeithr", "Álfgerthr", "Álfhildr", "Alfny", "Alfrun", "Alví",
+inline vector<string>  DwarfFemmeFirstNames = {"Ase", "Ægileif", "Adís", "Ágærthr", "Aldís", "Álfdís", "Álfeithr", "Álfgerthr", "Álfhildr", "Alfny", "Alfrun", "Alví",
 "Alfvör", "Algun", "Álöf", "Alvoer", "Anddísi", "Arnbjórg", "Arndís", "Arneidr", "Arneithr", "Arnfríthr", "Arngerthr", "Arngunnr", "Arnkatla", "Arnlaug", "Arnleif",
 "Arnljot", "Arnóra", "Arnrithr", "Arnthruthr", "Æsa", "Ásbjórg", "Ásdís", "Ásgerthr", "Ásgunnr", "Áshildr", "Áskatla", "Aslaug", "Ásleif", "Ásmóthr", "Ásny", "Ásta",
 "Ástríthr", "Ásvör", "Authbjorg", "Authfríthr", "Authhildr", "Authr", "Bera", "Bergdís", "Bergljót", "Bergthóra", "Birna", "Bjargey", "Bjarlaug", "Bjollok", "Björg", "Bolla", "Bót", "Bóthæithr", "Bothildr", "Böthney", "Bótví", "Bryndís", "Bryngerthr", "Brynhildr", "Dagfrithr", "Dagny", "Dagrún", "Dalla", "Dís", "Dísælfr", "Drifa",
@@ -69,7 +69,7 @@ vector<string>  DwarfFemmeFirstNames = {"Ase", "Ægileif", "Adís", "Ágærthr",
   "Thrainn", "Thrasi", "Thróndr", "Thröstr", "Tindr", "Tjórvi", "Torfi", "Torrathr Yngvarr", "Tyrfingr", "Úlfar", "Úlfhethinn",
   "Úlfljótr", "Úlfr", "Valbrandr", "Valgarthr", "Váli", "Vébrandr", "Végestr", "Vémundr", "Vestarr", "Vestmathr", "Véthormr", "Vífill", "Vigfúss"};
 
-vector<string>  DwarfMascFirstNames= {"Álfr", "Án", "Ari", "Arinbjörn", "Ármóthr", "Arnbjórn", "Arngeirr",
+inline vector<string>  DwarfMascFirstNames= {"Álfr", "Án", "Ari", "Arinbjörn", "Ármóthr", "Arnbjórn", "Arngeirr",
   "Arngrímr", "Arnljotr", "Arnmóthr", "Arnórr", "Arnríthr", "Ásbjórn", "Ásbrandr", "Ásgeirr", "Áskell", "Áslákr",
   "Ásmólfr", "Ásmundr", "Athalsteinn", "Athils", "Atli", "Authun", "Ævarr", "Barthi", "Bárthr", "Bergr", "Bergthórr",
   "Bersi", "Bjarni", "Bjórn", "Bödmóthr", "Bogi", "Bolli", "Bölverkr", "Börkr", "Bóthvarr", "Bótólfr", "Brandr", "Brúni",
@@ -89,7 +89,7 @@ vector<string>  DwarfMascFirstNames= {"Álfr", "Án", "Ari", "Arinbjörn", "Árm
     "Sumarlithi", "Surtr", "Svanr", "Svarthöfthi", "Svartr", "Sveinbjörn", "Sveinungr", "Svertingr", "Tanni", "Teitr", "Thengill", "Thithrandi", "Thjóthólfr", "Thórarinn",
     "Thorbergr", "Thorbjörn", "Thorbrandr", "Thorfinnr", "Thorgeirr", "Thorgestr"};
 
-vector<string>  DwarfLastNames = {"Aase", "Ægileif", "Adís", "Ágærthr", "Aldís", "Álfdís", "Álfeithr", "Álfgerthr", "Álfhildr", "Alfny", "Alfrun", "Alví", "Alfvör",
+inline vector<string>  DwarfLastNames = {"Aase", "Ægileif", "Adís", "Ágærthr", "Aldís", "Álfdís", "Álfeithr", "Álfgerthr", "Álfhildr", "Alfny", "Alfrun", "Alví", "Alfvör",
     "Algun", "Álöf", "Alvoer", "Anddísi", "Arnbjórg", "Arndís", "Arneidr", "Arneithr", "Arnfríthr", "Arngerthr", "Arngunnr", "Arnkatla", "Arnlaug", "Arnleif", "Arnljot",
     "Arnóra", "Arnrithr", "Arnthruthr", "Æsa", "Ásbjórg", "Ásdís", "Ásgerthr", "Ásgunnr", "Áshildr", "Áskatla", "Aslaug", "Ásleif", "Ásmóthr", "Ásny", "Ásta", "Ástríthr",
     "Ásvör", "Authbjorg", "Authfríthr", "Authhildr", "Authr", "Bera", "Bergdís", "Bergljót", "Bergthóra", "Birna", "Bjargey", "Bjarlaug", "Bjollok", "Björg", "Bolla", "Bót",
@@ -109,7 +109,7 @@ vector<string>  DwarfLastNames = {"Aase", "Ægileif", "Adís", "Ágærthr", "Ald
       "Thorlaug", "Thorleif", "Thorlót", "Thórny", "Thórodda", "Thórunn", "Thórvé", "Thórvör", "Thraslaug", "Thuríthr", "Tófa", "Úlfeithr", "Úlfhildr", "Úlfrún",
       "Valbjörg", "Valdís", "Valgerthr", "Védís", "Vefreyja", "Vefrithr", "Vélaug", "Vény", "Vigdís", "Vilborg", "Vilgerthr", "Yngvildr", "Yrr"};
 
-vector<string> ElfMascFirstNames = {"Aedd", "Aelhaearn", "Aeron", "Afan", "Afon", "Amhar", "Amlawdd", "Amren", "Anarand", "Anarawd", "Aneirin", "Angwyn", "Anian",
+inline vector<string> ElfMascFirstNames = {"Aedd", "Aelhaearn", "Aeron", "Afan", "Afon", "Amhar", "Amlawdd", "Amren", "Anarand", "Anarawd", "Aneirin", "Angwyn", "Anian",
       "Anwas", "Anwyl", "Arllechwedd", "Arthawd", "Arthien", "Arthwr", "Arvel", "Auryn", "Auwyn", "Avaon", "Barri", "Bedrawd", "Bedwin", "Bedwor", "Bedwyr", "Berwyn",
       "Blaen", "Blathaon", "Bleddyn", "Bledri", "Bradwen", "Bran", "Brathach", "Brychan", "Bryn", "Brynmor", "Brys", "Cadarn", "Cadawg", "Cadel", "Cadellin", "Cadfael",
       "Cadfan", "Cadlew", "Cadoc", "Cadreith", "Cadwaladr", "Cadwallon", "Cadwgawn", "Cadwr", "Cadwyr", "Cai", "Caradoc", "Caradog", "Carannog", "Carantoc", "Carnedyr",
@@ -127,7 +127,7 @@ vector<string> ElfMascFirstNames = {"Aedd", "Aelhaearn", "Aeron", "Afan", "Afon"
        "Riogoned", "Sedwei", "Seithennin", "Sel", "Selyf", "Senyllt", "Sugyn", "Sulgen", "Sulien", "Syvwlch", "Talfryn", "Taliesin", "Tarrant", "Tegvan", "Tegwared", "Teilo",
        "Teregud", "Teryrnon", "Trahaearn", "Treman", "Trevelyan", "Tringad", "Trystan", "Tudur", "Tudwal", "Tungyr", "Twrgadarn", "Tywysog", "Uchdryd", "Urien", "Uther",
        "Varwawc", "Vychan", "Wadu", "Wynn", "Ysgawyn", "Ystrwyth"};
-vector<string> ElfFemmeFirstNames = {"Aanor", "Aderyn", "Adsiltia", "Adwen", "Aeronwy", "Agharat", "Almedha", "Angharad", "Angharat", "Angwen", "Anwyl", "Aregwedd",
+inline vector<string> ElfFemmeFirstNames = {"Aanor", "Aderyn", "Adsiltia", "Adwen", "Aeronwy", "Agharat", "Almedha", "Angharad", "Angharat", "Angwen", "Anwyl", "Aregwedd",
 "Arianwen", "Badellfawr", "Belisama", "Blodeuwedd", "Blodeyn", "Blodwen", "Brandgaine", "Brangwirin", "Branwen", "Brisen", "Cain", "Canda", "Ceinwen", "Ceri", "Cigfa",
 "Coalaulin", "Cordula", "Coulava", "Creiddylad", "Creirwy", "Darerca", "Druantia", "Dwynwen", "Eiddwen", "Eira", "Eiralys", "Eirian", "Eirianwen", "Eirlys", "Eiron",
 "Eirwen", "Eirwyn", "Eleri", "Elin", "Ellylw", "Eluned", "Elwy", "Elwyn", "Eneuawy", "Enid", "Ennogen", "Enrhydreg", "Eoghania", "Erdudfyl", "Esyllt", "Eurfron", "Eurneid",
@@ -138,7 +138,7 @@ vector<string> ElfFemmeFirstNames = {"Aanor", "Aderyn", "Adsiltia", "Adwen", "Ae
  "Regau", "Rhawn", "Rhedyn", "Rhiain", "Rhiannon", "Rhianwen", "Rhonwen", "Rhoswen", "Saeth", "Sirona", "Suilaliun", "Sulwyn", "Taghwystyl", "Tancoystl", "Tangustel",
  "Tangwen", "Tegan", "Tegau", "Tegwen", "Teleri", "Telyn", "Yseult"};
 
-vector<string>  ElfLastNames= {"Ablach", "Áedammair", "Affraic", "Aíbinn", "Aideen", "Aífe", "Ailbe", "Aileann", "Ailleann", "Áine", "Almaith", "Anga", "Anlaith",
+inline vector<string>  ElfLastNames= {"Ablach", "Áedammair", "Affraic", "Aíbinn", "Aideen", "Aífe", "Ailbe", "Aileann", "Ailleann", "Áine", "Almaith", "Anga", "Anlaith",
 "Aodhnait", "Aoibheann", "Aróc", "Barrdub", "Be Bhionn", "Bé Fáil", "Bébhinn", "Bél", "Belocc", "Ben Mide", "Ben Muman", "Bil", "Brigid", "Brigit", "Cacht", "Caillech Domnaill",
 "Caillech Finnen", "Cainnech", "Caíntigern", "Caírech", "Catan", "Cellach", "Chrodoara", "Ciannait", "Ciar", "Cingit", "Clothra", "Cnes", "Coblaith", "Cochrann", "Cocrich",
 "Cóemfhind", "Coímell", "Colan", "Columba", "Conandil", "Concessa", "Conchend", "Conchenn", "Condal", "Congan", "Crínóc", "Cróeb", "Cuach", "Cumman", "Dailfind", "Dairine",
@@ -153,14 +153,14 @@ vector<string>  ElfLastNames= {"Ablach", "Áedammair", "Affraic", "Aíbinn", "Ai
   "Samthann", "Saraid", "Sarnat", "Scathach", "Scáthdercc", "Sciath", "Sebdann", "Selblaith", "Sétach", "Sín", "Sinech", "Sithmaith", "Sodelb", "Sogáes", "Suaibsech",
    "Táethen", "Tailefhlaith", "Taileflaith", "Tailltiu", "Téiti", "Temair", "Tlachtga", "Tómnat", "Tuathflaith", "Uaithne", "Uallach", "Uasal", "Uathach"};
 
-vector<string> DragonbornFirstNames = {"Arjhan", "Balasa", "Bharash", "Donaar", "Ghesh", "Heskan", "Kriv", "Medrash", "Mehen", "Nadar", "Pandjed", "Patrin", "Rhogar",
+inline vector<string> DragonbornFirstNames = {"Arjhan", "Balasa", "Bharash", "Donaar", "Ghesh", "Heskan", "Kriv", "Medrash", "Mehen", "Nadar", "Pandjed", "Patrin", "Rhogar",
 "Shamash", "Shedinn", "Tarhun", "Torinn", "Akra", "Biri", "Daar", "Farideh", "Harann", "Havilar", "Jheri", "Kava", "Korinn", "Mishann", "Nala", "Perra", "Raiann", "Sora",
  "Surina", "Thava", "Uadjit"};
 
- vector<string> DragonbornLastNames = {"Clethtinthiallor", "Daardendrian", "Delmirev", "Drachedandion", "Fenkenkabradon", "Kepeshkmolik", "Kerrhylon,Kimbatuul",
+ inline vector<string> DragonbornLastNames = {"Clethtinthiallor", "Daardendrian", "Delmirev", "Drachedandion", "Fenkenkabradon", "Kepeshkmolik", "Kerrhylon,Kimbatuul",
  "Linxakasendalor", "Myastan", "Nemmonis", "Norixius", "Ophinshtalajiir", "Prexijandilin", "Shestendeliathm", "Turnuroth", "Verthisathurgiesh", "Yarjerit"};
 
-vector<string> GiffFemmeFirstnames = {"Adélaïde", "Adèle", "Adeline", "Adorée", "Adrienne", "Agathe", "Agnès", "Aimée", "Alexandra", "Alexia", "Alice",
+inline vector<string> GiffFemmeFirstnames = {"Adélaïde", "Adèle", "Adeline", "Adorée", "Adrienne", "Agathe", "Agnès", "Aimée", "Alexandra", "Alexia", "Alice",
  "Alicia", "Aline", "Alison", "Alphonsine", "Amandine", "Amarante", "Ambre", "Amélie", "Anaëlle", "Anaïs", "Andréa", "Andrée", "Angèle", "Angeline", "Angelique",
  "Anna", "Anne", "Anne- Louise", "Anne-Marie", "Annette", "Antoinette", "Apolline", "Arianne", "Arienne", "Arlette", "Aude", "Audrey", "Aurélie", "Aurore", "Avril",
  "Axelle", "Barbara", "Béatrice", "Bénédicte", "Benjamine", "Benoite", "Bernadette", "Bernardine", "Berthe", "Blanche", "Brigitte", "Camille", "Carine", "Carla", "Carole",
@@ -185,7 +185,7 @@ vector<string> GiffFemmeFirstnames = {"Adélaïde", "Adèle", "Adeline", "Adoré
      "Toinette", "Valentine", "Valérie", "Véronique", "Victoire", "Victoria", "Victorine", "Vienne", "Violette", "Vivienne", "Yolande", "Yseult", "Yvette", "Yvonne",
      "Zephyrine", "Zézette", "Zoé"};
 
-vector<string> GiffMascFirstNames = {"Abel", "Absolon", "Achille", "Adam", "Adolphe", "Adrien", "Aimé", "Alain", "Alan", "Albert", "Alex", "Alexandre",
+inline vector<string> GiffMascFirstNames = {"Abel", "Absolon", "Achille", "Adam", "Adolphe", "Adrien", "Aimé", "Alain", "Alan", "Albert", "Alex", "Alexandre",
     "Alexis", "Alfred", "Allan", "Alphonse", "Ambroise", "Amédée", "Anatole", "André", "Anselme", "Anthony", "Antoine", "Antonin", "Aristide", "Armand", "Arnaud",
     "Arsène", "Arthur", "Auguste", "Augustin", "Aurèle", "Aurelien", "Axel", "Aymeric", "Baltasar", "Baptiste", "Barnabé", "Barthélémy", "Basile", "Bastien", "Baudouin",
     "Benjamin", "Benoit", "Bernard", "Bertrand", "Blaise", "Boniface", "Brice", "Bruno", "Bryan", "Cédric", "Célestin", "Cesaire", "César", "Charles", "Charles-Henri",
@@ -207,7 +207,7 @@ vector<string> GiffMascFirstNames = {"Abel", "Absolon", "Achille", "Adam", "Adol
     "Thibaut", "Thierry", "Thomas", "Timothée", "Tom", "Tony", "Toussaint", "Tristan", "Ulrich", "Urbain", "Valentin", "Valère", "Valéry", "Vespasien", "Victor",
     "Vincent", "Virgile", "William", "Xavier", "Yanis", "Yann", "Yannic", "Yves", "Yvon"};
 
-vector<string> GiffLastnames = {"Abelin", "Abiven", "Abrioux", "Agenet", "Aignan", "Alaize", "Alary", "Allain", "Allaire", "André", "Andrieux", "Andrus", "Angot",
+inline vector<string> GiffLastnames = {"Abelin", "Abiven", "Abrioux", "Agenet", "Aignan", "Alaize", "Alary", "Allain", "Allaire", "André", "Andrieux", "Andrus", "Angot",
 "Apavou", "April", "Armand", "Arpin", "Arsenault", "Asselin", "Aubé", "Aubert", "Aubier", "Aubron", "Aubry", "Auclair", "Audette", "Audinot", "Aurillac", "Auvinet",
 "Avare", "Ayrault", "Babineaux", "Bachelot", "Bachere", "Bacquet", "Baguet", "Balladur", "Bardet", "Baroin", "Barrière", "Barrot", "Bascou", "Bassot", "Bataille",
 "Bauché", "Baumel", "Bazaine", "Béart", "Beauchamps", "Beaudry", "Beaulieu", "Beausoleil", "Becquerel", "Bédard", "Bégin", "Béland", "Bélanger", "Bellemare", "Benoit",
@@ -251,14 +251,14 @@ vector<string> GiffLastnames = {"Abelin", "Abiven", "Abrioux", "Agenet", "Aignan
     "Vaxès", "Vegnault", "Veilleux", "Vergnier", "Vérien", "Vernaudon", "Verreau", "Vertefeuille", "Veyret", "Vézien", "Vidalies", "Viens", "Villeneuve",
     "Vincent", "Viollet", "Voisin", "Vuillaume", "Yvon"};
 
-vector<string> GnomeFirstNames = {"Adan", "Adva", "Aiko", "Amorette", "Aripine", "Armida", "Belita", "Bonita", "Brenna", "Brooke", "Bingles", "Banxi",
+inline vector<string> GnomeFirstNames = {"Adan", "Adva", "Aiko", "Amorette", "Aripine", "Armida", "Belita", "Bonita", "Brenna", "Brooke", "Bingles", "Banxi",
 "Bink", "Banli", "Bitsy", "Bitty", "Bixi", "Carlin", "Charlene Celqys", "Carnoa", "Darra", "Demi", "Dinky", "Elfi", "Flimp", "Giggbert", "Half-Pint",
  "Herble", "Helna", "Hisxif"};
 
-vector<string>  GnomeLastNames = {"Dustseeker", "Nuttlattle", "Bernifitlacks", "Ipswoms", "Pelletsniffer", "Tinkerfoo", " Gemhair",
+inline vector<string>  GnomeLastNames = {"Dustseeker", "Nuttlattle", "Bernifitlacks", "Ipswoms", "Pelletsniffer", "Tinkerfoo", " Gemhair",
 "Blaesocket", "Sabblewloth", "Muwlebra", "Giobibaar", "Woh", "Apleldosp", "Mirlon", "Peedlupnon"};
 
-vector<string> GoblinFemmeFirstNames = {"Amu", "Aija", "Aila", "Aili", "Aina", "Aini", "Ainikki", "Aino", "Aira", "Airi", "Alli",
+inline vector<string> GoblinFemmeFirstNames = {"Amu", "Aija", "Aila", "Aili", "Aina", "Aini", "Ainikki", "Aino", "Aira", "Airi", "Alli",
 "Amanda", "Anna", "Anneli", "Anni", "Anniina", "Annikki", "Ansa", "Anu", "Arja", "Armi", "Asla", "Asta", "Auli", "Aulikki", "Aurora",
 "Eija", "Eila", "Eine", "Eini", "Eira", "Elina", "Ella", "Emilia", "Emma", "Enni", "Erja", "Erkka", "Essi", "Eveliina", "Hanna", "Heini",
  "Helena", "Hellevi", "Helli", "Helmi", "Helvi", "Henna", "Heta", "Hilja", "Hilkka", "Hilla", "Hille", "Hillevi", "Hilma", "Iida", "Ilma",
@@ -275,7 +275,7 @@ vector<string> GoblinFemmeFirstNames = {"Amu", "Aija", "Aila", "Aili", "Aina", "
 "Tytti", "Tyyne", "Tyyni", "Ulla", "Ulpu", "Unelma", "Uolevi", "Usko", "Uula", "Valma", "Valpuri", "Vanamo", "Vappu", "Varma", "Varpu", "Vaula", "Veera",
 "Vellamo", "Venla", "Viena", "Vieno", "Virpi", "Virva", "Virve", "Vuokko"};
 
-vector<string>  GoblinMascFirstNames = {"Aalto", "Aapo", "Aappo", "Aarre", "Aarto", "Aatos", "Aatto", "Aatu", "Ahti", "Ahto", "Ahvo", "Aimo", "Aki",
+inline vector<string>  GoblinMascFirstNames = {"Aalto", "Aapo", "Aappo", "Aarre", "Aarto", "Aatos", "Aatto", "Aatu", "Ahti", "Ahto", "Ahvo", "Aimo", "Aki",
 "Aku", "Albert", "Ale", "Aleksi", "Ali", "Alpi", "Alpo", "Altti", "Ano", "Antero", "Antti", "Arhippa", "Arho", "Ari", "Armas", "Arsi", "Arttu", "Arvi",
 "Arvo", "Asko", "Asmo", "Atro", "Atso", "Atte", "Auno", "Auvo", "Bengt", "Eemeli", "Eetu", "Eikki", "Elias", "Ensio", "Esko", "Hannu", "Heikki", "Heimo", "Henrik",
 "Herkko", "Hiski", "Iikka", "Iiri", "Iiro", "Ilkka", "Ilmari", "Ilmo", "Ilpo", "Ilppo", "Into", "Isko", "Ismo", "Isto", "Jalmari", "Jalo", "Jami", "Jari", "Jarkko",
@@ -288,7 +288,7 @@ vector<string>  GoblinMascFirstNames = {"Aalto", "Aapo", "Aappo", "Aarre", "Aart
 "Teuvo", "Toimi", "Toivo", "Tomi", "Touko", "Tuomas", "Turkka", "Turo", "Tuukka", "Tuure", "Ukko", "Uljas", "Untamo", "Unto", "Uolevi", "Uoti", "Urho", "Urmas", "Urpo",
 "Uuno", "Väinämö", "Väinö", "Valio", "Valo", "Valtteri", "Veijo", "Veikko", "Veiko", "Veini", "Veli", "Vesa", "Ville", "Visa", "Voitto", "Ylermi", "Yrjänä"};
 
-vector<string>  GoblinLastNames = {"Aakula", "Aaltonen", "Ahlapuro", "Ahtisaari", "Aikio", "Airikkala", "Alapassi", "Alatalo", "Aunula", "Carpelan", "Erkko",
+inline vector<string>  GoblinLastNames = {"Aakula", "Aaltonen", "Ahlapuro", "Ahtisaari", "Aikio", "Airikkala", "Alapassi", "Alatalo", "Aunula", "Carpelan", "Erkko",
 "Haapajarvi", "Haapaniemi", "Haavikko", "Hakkinen", "Hakonen", "Halvari", "Hämäläinen", "Hännenen", "Hannila", "Harju", "Hartikainen", "Hästesko", "Hättönen",
 "Heikkilä", "Heikkinen", "Heilimo", "Hinkkanene", "Hirvimäki", "Hirvonen", "Huhtamo", "Huovinen", "Hurskainen", "Husu", "Hynninen", "Iiasalo", "Immonen", "Irjala",
 "Isosomppi", "Isotalo", "Jaatinen", "Jänne", "Jarvilehto", "Järvinen", "Jeskanen", "Juteini", "Kaakinen", "Kääriänen", "Kallela", "Kallionkieli", "Kaltiainen",
@@ -305,7 +305,7 @@ vector<string>  GoblinLastNames = {"Aakula", "Aaltonen", "Ahlapuro", "Ahtisaari"
 "Vähätalo", "Vaijärvi", "Väinöla", "Vallinen", "Valtari", "Vänskä", "Varjo", "Varonen", "Veintie", "Verkko", "Viitasalo", "Vilhu", "Vilkuna", "Virén", "Virjonen",
 "Virtanen", "Vuoti", "Wirkkala", "Yrjö"};
 
-vector<string> HalflingFemmeFirstNames = {"Adain", "Aderyn", "Adwen", "Aeronwen", "Alison", "Alys", "Amanda", "Angharad", "Ann", "Anna", "Annest", "Annwyl",
+inline vector<string> HalflingFemmeFirstNames = {"Adain", "Aderyn", "Adwen", "Aeronwen", "Alison", "Alys", "Amanda", "Angharad", "Ann", "Anna", "Annest", "Annwyl",
  "Anwen", "Anwyl", "Aranwen", "Arian", "Ariana", "Arianwen", "Arwenna", "Arwyn", "Aylwen", "Barbara", "Beatrice", "Bethan", "Betrys", "Blanceflor", "Blodwen", "Blodwin",
 "Blodwyn", "Brangwen", "Branwen", "Briant", "Bronwen", "Brynn", "Cadi", "Cari", "Caris", "Carol", "Caron", "Caryl", "Carys", "Cate", "Cath", "Cati", "Catrin", "Ceinwen",
 "Ceinwin", "Ceri", "Cerys", "Christine", "Ciara", "Claire", "Clarisse", "Cordelia", "Corry", "Deborah", "Del", "Delia", "Delwen", "Delwin", "Delwyn", "Delyth","Deryn",
@@ -320,7 +320,7 @@ vector<string> HalflingFemmeFirstNames = {"Adain", "Aderyn", "Adwen", "Aeronwen"
 "Siani", "Sioned", "Siwan", "Susan", "Taffia", "Taffine", "Tegwen", "Tracey", "Vanora", "Victoria", "Vivian", "Viviane", "Vivianne", "Viviene", "Vivienne", "Wenda",
 "Winnifred", "Wynne", "Ysbail", "Yseult"};
 
-vector<string> HalflingMascFirstNames = {"Alan", "Aled", "Alexander", "Alun", "Alwyn", "Alyn", "Ambrose", "Andras", "Andreas", "Aneirin", "Aneurin", "Arthur",
+inline vector<string> HalflingMascFirstNames = {"Alan", "Aled", "Alexander", "Alun", "Alwyn", "Alyn", "Ambrose", "Andras", "Andreas", "Aneirin", "Aneurin", "Arthur",
 "Arwel", "Arwyn", "Asaph", "Awen", "Benedict", "Benet", "Berwyn", "Bevan", "Blaen", "Blair", "Blaire", "Blayre", "Bleddig", "Bleddyn", "Bradwen", "Brian", "Brinley",
 "Broderick", "Bryn", "Brynach", "Brynley", "Brynmor", "Brynn", "Cade", "Cadel", "Cadogan", "Cadwgan", "Caerwyn", "Cai", "Caradoc", "Caradog", "Carr", "Carwyn", "Catesby",
 "Cedig", "Cedric", "Cedrych", "Cemlyn", "Ceredig", "Ceri", "Charles", "Christopher", "Cledwyn", "Clyde", "Clywd", "Cole", "Colwyn", "Conwy", "Cyngen", "Cynstenian",
@@ -342,7 +342,7 @@ vector<string> HalflingMascFirstNames = {"Alan", "Aled", "Alexander", "Alun", "A
 "Tomos", "Trahearn", "Trefor", "Trevor", "Tristan", "Trystan", "Tudor", "Tudur", "Tudyr", "Twm", "Uren", "Urien", "Valentine", "Vaughan", "Vaughn", "Walter",
 "Watkin", "Wilim", "William", "Win", "Wmffre", "Wyn", "Wyndod", "Yago", "Yestin", "Yevan"};
 
-vector<string> HalflingLastNames = {"Abadam", "Abernethy", "Abethell", "Abraham", "Adams", "Adda", "Alban", "Allen", "Andrews", "Annwyl", "Anthony", "Anwell",
+inline vector<string> HalflingLastNames = {"Abadam", "Abernethy", "Abethell", "Abraham", "Adams", "Adda", "Alban", "Allen", "Andrews", "Annwyl", "Anthony", "Anwell",
 "Anwill", "Anwyl", "Arnold", "Arthur", "Ash", "Ashe", "Ashton", "Astley", "Aston", "Atha", "Aubrey", "Austin", "Awbrey", "Babb", "Babbs", "Bach", "Badham", "Balch",
 "Barry", "Batch", "Bateman", "Batha", "Bathoe", "Baugh", "Baughan", "Bawn", "Bayliss", "Baynham", "Beach", "Beavan", "Bebb", "Beddoe", "Beddoes", "Bedow", "Bedward",
 "Bedwards", "Beedle", "Beethel", "Beinon", "Bellis", "Benbough", "Benbow", "Bengough", "Bengrisse", "Bengry", "Benjamin", "Bennet", "Bennett", "Bennion", "Bethall",
@@ -377,7 +377,7 @@ vector<string> HalflingLastNames = {"Abadam", "Abernethy", "Abethell", "Abraham"
 "Vane", "Vaughan", "Wace", "Walters", "Wardlow", "Warlow", "Warren", "Waters", "Watkins", "Watkiss", "Watt", "Watts", "Weaver", "Welch", "Welling", "Wellins",
 "Welsh", "Whittal", "Wild", "Wilding", "Williams", "Willis", "Wilson", "Withers", "Wogan", "Woosencroft", "Worthing", "Wyn", "Wynn", "Wynne", "Young"};
 
-vector<string> TieflingMascFirstNames= {"Adebugi", "Adiatorix", "Adnamati", "Advorix", "Agedillios", "Agisilius", "Albic", "Allobroxus",
+inline vector<string> TieflingMascFirstNames= {"Adebugi", "Adiatorix", "Adnamati", "Advorix", "Agedillios", "Agisilius", "Albic", "Allobroxus",
 "Alpius", "Ambaxius", "Ambillus", "Ambiorix", "Andecamulos", "Andecarius", "Andegasi", "Andergi", "Andosteni", "Annmoris", "Artos", "Ateano",
 "Atepagus", "Ateponius", "Atesios", "Atessatis", "Atporix", "Atrectus", "Atrixtos", "Aventinus", "Balorix", "Banui", "Bellognatus", "Bilicedo",
 "Bimmos", "Bodocenos", "Borili", "Borso", "Borvonicus", "Bratronos", "Britomartus", "Brocchus", "Bussumarus", "Cabiros", "Cacurio", "Cambus", "Camerianus",
@@ -396,7 +396,7 @@ vector<string> TieflingMascFirstNames= {"Adebugi", "Adiatorix", "Adnamati", "Adv
 "Vercombogius", "Versignos", "Verter", "Vertros", "Veruico", "Vicixtillus", "Victi", "Vindedo", "Viranus", "Viratus", "Viriacius", "Virico", "Virisimi", "Virocantus",
  "Vitousurix", "Vlatcani", "Vlatos", "Vlatugni", "Vocorix", "Vopiscus", "Vosegus", "Voteporix"};
 
-vector<string>  TieflingFemmeFirstNames = {"Abrexta", "Adginna", "Adiania", "Adiega", "Admata", "Adnamitu", "Adnamu", "Aduorix", "Advorix", "Aesica", "Agedia",
+inline vector<string>  TieflingFemmeFirstNames = {"Abrexta", "Adginna", "Adiania", "Adiega", "Admata", "Adnamitu", "Adnamu", "Aduorix", "Advorix", "Aesica", "Agedia",
 "Aia", "Albina", "Alla", "Alleticia", "Allusa", "Alpina", "Alteurita", "Andebrocirix", "Anderca", "Anderica", "Anderina", "Andoca", "Annama", "Arrotala",
 "Atectorigiana", "Atessatia", "Atioxta", "Auctiona", "Audata", "Aulricmara", "Banna", "Banona", "Barita", "Betudaca", "Bileseton", "Billia", "Borissa", "Boudenna",
 "Boudicca", "Boudilatis", "Brocchia", "Buscilla", "Cabrilla", "Cabura", "Caburena", "Caccosa", "Camula", "Cantexta", "Carantia", "Carantusa", "Carata", "Caretosa",
@@ -413,11 +413,11 @@ vector<string>  TieflingFemmeFirstNames = {"Abrexta", "Adginna", "Adiania", "Adi
 "Verica", "Verodumna", "Vicana", "Viccu", "Viccus", "Victisirana", "Vindauscia", "Viralira", "Viratia", "Virciu", "Viriondaga", "Visurix", "Vlatucia", "Vocara",
 "Vrittia", "Vrogenia"};
 
-vector<string>  TieflingLastNames = {"Cadurci", "Carnutes", "Cimbri", "Mattiaci", "Nemetes", "Sequani", "Sugambri", "Teutoni", "Triboci", "Ubii",
+inline vector<string>  TieflingLastNames = {"Cadurci", "Carnutes", "Cimbri", "Mattiaci", "Nemetes", "Sequani", "Sugambri", "Teutoni", "Triboci", "Ubii",
 "Vangiones", "Venelli", "Sedlak", "Szereban", "Taran", "Vanan", "Zatchet", "Markolak", "Raeburn", "Aimery", "Donoghan", "Leerstrom", "Carnago",
 "Benak", "Falken", "Umbermoor", "Wendell"};
 
-vector<string>  OrcMascFirstNames = {"Adomnán", "Áed", "Áedgen", "Áengus", "Affiath", "Ailchú", "Ailerán", "Ailill", "Aindíles", "Ainmere", "Airard", "Airbertach",
+inline vector<string>  OrcMascFirstNames = {"Adomnán", "Áed", "Áedgen", "Áengus", "Affiath", "Ailchú", "Ailerán", "Ailill", "Aindíles", "Ainmere", "Airard", "Airbertach",
 "Amalgaid", "Amargein", "Amlaíb", "Anfudán", "Anmchaid", "Artt", "Artúr", "Assíd", "Báetán", "Báethchellach", "Báethgalach", "Báethíne", "Baiscend", "Banbán", "Bécc",
 "Beollán", "Blathmac", "Bran", "Bressal", "Brian", "Briccéne", "Bróccan", "Búadach", "Búadachán", "Caicher", "Cailte", "Cairpre", "Cáirthenn", "Carthach", "Cathal",
 "Cathalán", "Cathassach", "Cellach", "Cenn Fáelad", "Cennétig", "Cerball", "Cernach", "Cernachán", "Cett", "Cian", "Cillíne", "Cináed", "Clérchéne", "Cobthach", "Colcu",
@@ -438,7 +438,7 @@ vector<string>  OrcMascFirstNames = {"Adomnán", "Áed", "Áedgen", "Áengus", "
 "Séigíne", "Selbach", "Senach", "Senchán", "Sétnae", "Sitric", "Suibne", "Tadc", "Tadhg", "Tairdelbach", "Tanaide", "Tigernach", "Tigernán", "Tighearnán",
 "Tipraite", "Tomaltach", "Tomás", "Tressach", "Trian", "Tuathal", "Uaithne", "Uallgarg"};
 
-vector<string> OrcFemmeFirstNames = {"Ablach", "Áedammair", "Affraic", "Aíbinn", "Aideen", "Aífe", "Ailbe", "Aileann", "Ailleann", "Áine", "Almaith", "Anga", "Anlaith",
+inline vector<string> OrcFemmeFirstNames = {"Ablach", "Áedammair", "Affraic", "Aíbinn", "Aideen", "Aífe", "Ailbe", "Aileann", "Ailleann", "Áine", "Almaith", "Anga", "Anlaith",
 "Aodhnait", "Aoibheann", "Aróc", "Barrdub", "Be Bhionn", "Bé Fáil", "Bébhinn", "Bél", "Belocc", "Ben Mide", "Ben Muman", "Bil", "Brigid", "Brigit", "Cacht",
 "Caillech Domnaill", "Caillech Finnen", "Cainnech", "Caíntigern", "Caírech", "Catan", "Cellach", "Chrodoara", "Ciannait", "Ciar", "Cingit", "Clothra", "Cnes",
 "Coblaith", "Cochrann", "Cocrich", "Cóemfhind", "Coímell", "Colan", "Columba", "Conandil", "Concessa", "Conchend", "Conchenn", "Condal", "Congan", "Crínóc", "Cróeb",
@@ -454,6 +454,6 @@ vector<string> OrcFemmeFirstNames = {"Ablach", "Áedammair", "Affraic", "Aíbinn
 "Sín", "Sinech", "Sithmaith", "Sodelb", "Sogáes", "Suaibsech", "Táethen", "Tailefhlaith", "Taileflaith", "Tailltiu", "Téiti", "Temair", "Tlachtga", "Tómnat",
 "Tuathflaith", "Uaithne", "Uallach", "Uasal", "Uathach"};
 
-vector<string>  OrcLastNames = {"Alemanni", "Burgundii", "Chatti", "Bastarnae", "Batavi", "Chauci", "Cherusci", "Franconi", "Gepidae", "Gothi", "Ostrogothi",
+inline vector<string>  OrcLastNames = {"Alemanni", "Burgundii", "Chatti", "Bastarnae", "Batavi", "Chauci", "Cherusci", "Franconi", "Gepidae", "Gothi", "Ostrogothi",
 "Visigothi", "Harudes", "Norici", "Suebi", "Hermundri", "Langobardi", "Marcomanni", "Quadi", "Tulingi", "Vandal"};
 #endif /* Names_h */

@@ -1,4 +1,5 @@
 #pragma once
+#include "Utils.hpp"
 #include "types.hpp"
 struct Grimoire{
     vector<string_view> cantrips;
@@ -13,5 +14,8 @@ struct Grimoire{
     vector<string_view> ninth_level_spells;
     vector<string_view> tenth_level_spells;
     vector<string_view> spellbook;
+    bool innate_caster;
+    SpellSlots spellslots;
 };
+std::ostream& operator<<(std::ostream& os, const Grimoire & grim);
 Grimoire generate_spells(int level, bool innate_caster, MagicTypes magic_type,ENPC_Type npc_type);
