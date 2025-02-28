@@ -1,20 +1,47 @@
 #pragma once 
-#include "arena.h"
+#include "arena.hpp"
 #include <string>
 #include <string_view> 
 #include <sstream>
 #include <vector>
 #include <iostream>
+template <typename T> T random_element(const std::vector<T>& value){
+    return value[rand()%value.size()];
+}
+template<typename T> std::vector<T> array_choose(std::vector<T> v, int num){
+    std::vector<T> v1 = v;
+    std::vector<T> out;
+    for(int i =0 ; i<num; i++){
+      int r = rand()%v1.size();
+      out.push_back(v1[r]);
+      v1.erase(v1.begin()+r);
+    }
+    return out;
+}
+template<typename T> bool array_contains(std::vector<T> v, T num){
+    for(size_t i = 0; i<v.size(); i++){
+        if(v[i] == num){
+          return true;
+        }
+      }
+      return false;
+}
+template<typename T> std::vector<T> array_select(std::vector<T> v, int num){
+    std::vector<T> out;
+    for(int i =0 ; i<num; i++){
+      int r = rand()%v.size();
+      out.push_back(v[r]);
+    }
+    return out;
+}
 template<typename T> std::ostream& operator<<(std::ostream& os, const std::vector<T>& obj)
 {
-    os <<"[";
     for(size_t i =0; i<obj.size(); i++){
         os<< obj[i];
         if (i<obj.size()-1){
             os<<",";
         }
     }
-    os <<"]";
     return os;
 }
 namespace utils{

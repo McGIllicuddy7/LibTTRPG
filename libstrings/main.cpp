@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "arena.h"
+#include "arena.hpp"
 #include <cstring>
 #include <string_view>
 #include <iostream>
