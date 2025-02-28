@@ -3,7 +3,7 @@
 #include <cstring>
 #include <string_view>
 #include <iostream>
-#include "libstrings.h"
+#include "libstrings.hpp"
 using std::vector;
 using std::string;
 using std::string_view;

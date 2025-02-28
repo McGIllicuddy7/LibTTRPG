@@ -1,7 +1,7 @@
 files= main.cpp Abilities.cpp Ancestries.cpp Character.cpp Spellcasting.cpp Utils.cpp personality.cpp grimoire.cpp
 flags=-std=c++17 -Wall -Wextra -pedantic -g3
-include= -I /opt/homebrew/include -L /opt/homebrew/lib - I ../libstrings/
-libs=  -lm -lprofiler ../libstrings/libstrings.a
+include= -I /opt/homebrew/include -L /opt/homebrew/lib -I../libstrings/
+libs=  -lm -lprofiler 
 make:$(files)
 	g++ $(files) $(flags) $(include) $(libs)
 windows:main.cpp Abilities.cpp Ancestries.cpp Character.cpp Spellcasting.cpp Utils.cpp 

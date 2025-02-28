@@ -58,7 +58,7 @@ namespace utils{
     std::vector<std::string_view> split_string_by_delims(std::string_view base, std::vector<std::string_view> delims, bool extract_string_literals = true);
     std::vector<std::vector<std::string_view>> tokenize(std::string_view str,std::vector<std::string_view> delims);
      
-    inline constexpr std::string format(const std::string_view fmt){
+    inline std::string format(const std::string_view fmt){
         return std::string(fmt);
     }
     template<typename T,typename... Args> std::string format(const std::string_view fmt,T value, Args...args){
@@ -74,7 +74,7 @@ namespace utils{
                         out <<fmt.substr(0,i);
                         out << "{}";
                         std::string_view second = fmt.substr(i+4, fmt.size()-i-2); 
-                        std::string tmp = format(second,args...);
+                        std::string tmp = utils::format(second,args...);
                         out <<tmp;
                         return out.str();;
                     }
@@ -92,12 +92,12 @@ namespace utils{
             std::string_view second = fmt.substr(index+2, fmt.size()-index-2);
             out << base;
             out <<value;
-            std::string tmp = format(second,args...);
+            std::string tmp = utils::format(second,args...);
             out << tmp;
             return out.str();
         }
     }
     template<typename... Args>void print(const std::string_view fmt,Args...args){
-        std::cout <<format(fmt, args...);
+        std::cout <<utils::format(fmt, args...);
     }
 }
