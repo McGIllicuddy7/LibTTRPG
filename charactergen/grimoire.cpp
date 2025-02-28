@@ -48,20 +48,20 @@ Grimoire generate_spells(int level, bool innate_caster, MagicTypes magic_type,EN
       vector<string_view> FifthlevelBuff = array_choose(Spells5thlevelLut[magic_type], Book.level5);
       vector<string_view> SixthlevelBuff = array_choose(Spells6thlevelLut[magic_type], Book.level6);
       vector<string_view> SeventhlevelBuff = array_choose(Spells7thlevelLut[magic_type], Book.level7);
-      vector<string_view> EightlevelBuff = array_choose(Spells8thlevelLut[magic_type], Book.level8);
+      vector<string_view> EighthlevelBuff = array_choose(Spells8thlevelLut[magic_type], Book.level8);
       vector<string_view> NinthlevelBuff = array_choose(Spells9thlevelLut[magic_type], Book.level9);
       vector<string_view> TenthlevelBuff = array_choose(Spells10thlevelLut[magic_type], Book.level10);
-      out.cantrips = array_choose(CantripsLut[magic_type], Slots.Cantrips);
-      out.first_level_spells = array_select(Spells1stlevelLut[magic_type], Slots.level1);
-      out.second_level_spells = array_select(Spells2ndlevelLut[magic_type], Slots.level2);
-      out.third_level_spells = array_select(Spells3rdlevelLut[magic_type], Slots.level3);
-      out.fourth_level_spells = array_select(Spells4thlevelLut[magic_type], Slots.level4);
-      out.fifth_level_spells = array_select(Spells5thlevelLut[magic_type], Slots.level5);
-      out.sixth_level_spells = array_select(Spells6thlevelLut[magic_type], Slots.level6);
-      out.seventh_level_spells = array_select(Spells7thlevelLut[magic_type], Slots.level7);
-      out.eighth_level_spells = array_select(Spells8thlevelLut[magic_type], Slots.level8);
-      out.ninth_level_spells = array_select(Spells9thlevelLut[magic_type], Slots.level9);
-      out.tenth_level_spells = array_select(Spells10thlevelLut[magic_type], Slots.level10);
+      out.cantrips = array_select(CantripBuff, Slots.Cantrips);
+      out.first_level_spells = array_select(FirstlevelBuff,Slots.level1);
+      out.second_level_spells = array_select(SecondlevelBuff, Slots.level2);
+      out.third_level_spells = array_select(ThirdlevelBuff, Slots.level3);
+      out.fourth_level_spells = array_select(FourthlevelBuff, Slots.level4);
+      out.fifth_level_spells = array_select(FifthlevelBuff, Slots.level5);
+      out.sixth_level_spells = array_select(SixthlevelBuff, Slots.level6);
+      out.seventh_level_spells = array_select(SeventhlevelBuff, Slots.level7);
+      out.eighth_level_spells = array_select(EighthlevelBuff, Slots.level8);
+      out.ninth_level_spells = array_select(NinthlevelBuff, Slots.level9);
+      out.tenth_level_spells = array_select(TenthlevelBuff, Slots.level10);
       SpellbookAdd(out,CantripBuff);
       SpellbookAdd(out,FirstlevelBuff);
       SpellbookAdd(out,SecondlevelBuff);
@@ -70,7 +70,7 @@ Grimoire generate_spells(int level, bool innate_caster, MagicTypes magic_type,EN
       SpellbookAdd(out,FifthlevelBuff);
       SpellbookAdd(out,SixthlevelBuff);
       SpellbookAdd(out,SeventhlevelBuff);
-      SpellbookAdd(out,EightlevelBuff);
+      SpellbookAdd(out,EighthlevelBuff);
       SpellbookAdd(out,NinthlevelBuff);
       SpellbookAdd(out,TenthlevelBuff);
     }
@@ -79,7 +79,7 @@ Grimoire generate_spells(int level, bool innate_caster, MagicTypes magic_type,EN
     return out;
   }
 std::ostream& operator<<(std::ostream& os, const Grimoire & grim){
-    std::string tmp = grim.innate_caster ? "innate spellcasting" : "prepared spellcasting";
+    std::string tmp = grim.innate_caster ? "innate spellcasting:\n" : "prepared spellcasting:\n";
     if(grim.cantrips.size()>0){
         tmp += utils::format("cantrips:{}\n", grim.cantrips);
     }

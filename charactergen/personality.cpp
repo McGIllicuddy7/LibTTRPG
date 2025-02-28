@@ -120,3 +120,54 @@
     Personality.push_back(random_element(Interests));
     return Personality;
   }
+size_t generate_age(EAncestries ancestry, size_t level){
+    size_t out = 0;
+    size_t lv_mult = 1;
+    if(ancestry == Dwarf){
+      lv_mult = 5;
+      out = 30+roll_dice("15d20");
+      for(int i =0; i<6; i++){
+        size_t tmp = 30+roll_dice("15d20");
+        if(tmp<out){
+          out = tmp;
+        }
+      }
+    } else if (ancestry == Elf){
+      lv_mult = 10;
+      out = 30+roll_dice("40d20");
+      for(int i =0; i<6; i++){
+        size_t tmp = 30+roll_dice("40d20");
+        if(tmp<out){
+          out = tmp;
+        }
+      }
+    } else if (ancestry == Halfling){
+      lv_mult = 2;
+      out = 30+roll_dice("5d20");
+        for(int i =0; i<2; i++){
+          size_t tmp = 30+roll_dice("5d20");
+          if(tmp<out){
+            out = tmp;
+          }
+        }
+    } else if(ancestry == Gnome){
+      lv_mult = 3;
+      out = 30+roll_dice("20d20");
+      for(int i =0; i<6; i++){
+        size_t tmp = 30+roll_dice("20d20");
+        if(tmp<out){
+          out = tmp;
+        }
+      }
+    } else if(ancestry == Human || ancestry ==Goblin || ancestry == Orc || ancestry == Catfolk){       
+      out = 14+roll_dice("4d20");
+      for(int i =0; i<50; i++){
+        size_t tmp = 14+roll_dice("4d20");
+        if(tmp<out){
+          out = tmp;
+        }
+      }
+    } 
+    out += lv_mult*level;
+    return out;
+}

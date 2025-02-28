@@ -35,7 +35,7 @@ template<typename T> vector<T> array_choose(vector<T> v, int num){
     return out;
 }
 template<typename T> bool array_contains(vector<T> v, T num){
-    for(int i = 0; i<v.size(); i++){
+    for(size_t i = 0; i<v.size(); i++){
         if(v[i] == num){
           return true;
         }
@@ -75,7 +75,7 @@ namespace utils{
     std::vector<std::string_view> split_string_by_delims(std::string_view base, std::vector<std::string_view> delims, bool extract_string_literals = true);
     std::vector<std::vector<std::string_view>> tokenize(std::string_view str,std::vector<std::string_view> delims);
      
-    inline constexpr std::string format(const std::string_view fmt){
+    inline std::string format(const std::string_view fmt){
         return std::string(fmt);
     }
     template<typename T,typename... Args> std::string format(const std::string_view fmt,T value, Args...args){

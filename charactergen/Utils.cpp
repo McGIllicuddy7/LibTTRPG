@@ -15,8 +15,6 @@ unsigned long random_int(void){
   if(Seed == 0){
     struct timespec res;
     long nano1;
-
-    /* read consecutive nanosecond values */
     clock_gettime(CLOCK_REALTIME,&res);
     nano1 = res.tv_nsec;
     Seed = nano1;
@@ -46,12 +44,10 @@ int roll_dice(const char * die){
       break;
     }
   }
-  std::cout <<cur<<"\n";
   memcpy(nd, die, cur);
   memcpy(ds, die+cur+1, len-cur);
   int numdice = atoi(nd);
   int diesize = atoi(ds);
-  std::cout <<"rolling "<<numdice << "d"<<diesize <<"\n";
   int total = 0;
   for(int i = 0; i<numdice; i++){
     total += random_int()%diesize+1;

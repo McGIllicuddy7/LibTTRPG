@@ -10,6 +10,7 @@ struct NPC{
     MagicTypes magic_type;
     MartialTypes martial_type;
     bool innate_caster;
+    size_t age;
     StatSet stats;
     Grimoire grimoire;
     std::vector<Weapon> weapons;

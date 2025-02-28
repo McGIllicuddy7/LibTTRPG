@@ -6,7 +6,7 @@
 //
 
 
-#include "Names.hpp"
+
 #include "Utils.hpp"
 #include "Abilities.hpp"
 #include "Ancestries.hpp"
@@ -153,7 +153,7 @@ vector<Weapon> weapon_calculation(MartialTypes mt, ENPC_Type npc_type, int level
       }
     }
   }
-  for(int i = 0; i<out.size(); i++){
+  for(size_t i = 0; i<out.size(); i++){
       bool fin = out[i].Finnese;
       bool ran = out[i].Ranged;
       out[i].Bonus = calculate_ac_and_per_bonus(level)+calculate_modifier(strength)*(!fin && !ran)+calculate_modifier(dexterity)*(fin ||ran);
@@ -214,6 +214,7 @@ StatSet calculate_skills(StatSet stats, vector<int> TrainedSkills, vector<int> E
   SetUpSkills(stats, Performance,performance, Charisma);
   SetUpSkills(stats, Religion, religion,Wisdom);
   SetUpSkills(stats,Society,society,Charisma);
+  SetUpSkills(stats,Survival,survival,Wisdom);
   SetUpSkills(stats, Stealth, stealth,Dexterity);
   SetUpSkills(stats, Thievery,thievery, Dexterity);
   stats.perception= 0+calculate_modifier(stats.wisdom);
@@ -292,8 +293,9 @@ StatSet generate_laborer_stats(NPC_Request request){
   out.intelligence = ability_score();
   out.wisdom = ability_score();
   out.charisma = ability_score();
-  out.ac = 10+calculate_modifier(out.dexterity);
+  out.ac = 12+calculate_modifier(out.dexterity)+out.level;
   out.hp = (8+calculate_modifier(out.constitution))*out.level;
+  out.perception = 2+calculate_modifier(out.wisdom)+out.level;
   out.reflex_save = calculate_modifier(out.dexterity)+save_basis(out.level);
   out.fort_save= calculate_modifier(out.constitution)+high_save_basis(out.level);
   out.will_save = calculate_modifier(out.wisdom)+save_basis(out.level);
@@ -310,7 +312,8 @@ StatSet generate_merchant_stats(NPC_Request request){
   out.intelligence = high_ability_score();
   out.wisdom = ability_score();
   out.charisma = high_ability_score();
-  out.ac = 10+calculate_modifier(out.dexterity);
+  out.perception = 2+calculate_modifier(out.wisdom)+out.level;
+  out.ac = 12+calculate_modifier(out.dexterity)+out.level;;
   out.hp = (6+calculate_modifier(out.constitution))*out.level;
   out.reflex_save = calculate_modifier(out.dexterity)+save_basis(out.level);
   out.fort_save= calculate_modifier(out.constitution)+save_basis(out.level);
@@ -328,8 +331,9 @@ StatSet generate_noble_stats(NPC_Request request){
   out.intelligence = ability_score();
   out.wisdom = ability_score();
   out.charisma = high_ability_score();
-  out.ac = 10+calculate_modifier(out.dexterity);
+  out.ac = 12+calculate_modifier(out.dexterity)+out.level;
   out.hp = (8+calculate_modifier(out.constitution))*out.level;
+  out.perception = 2+calculate_modifier(out.wisdom)+out.level;
   out.reflex_save = calculate_modifier(out.dexterity)+save_basis(out.level);
   out.fort_save= calculate_modifier(out.constitution)+save_basis(out.level);
   out.will_save = calculate_modifier(out.wisdom)+high_save_basis(out.level);
@@ -338,7 +342,7 @@ StatSet generate_noble_stats(NPC_Request request){
   return out;
 }
 StatSet generate_fighter_stats(NPC_Request request){
-  StatSet out;
+  StatSet out = {};
   out.level = request.level;
   bool ranged = request.martial_type == OrganizedRanged || request.martial_type == DisorganizedRanged;
   out.strength = ranged? ability_score():high_ability_score();
@@ -347,8 +351,9 @@ StatSet generate_fighter_stats(NPC_Request request){
   out.intelligence = ability_score();
   out.wisdom = ability_score();
   out.charisma = ability_score();
-  out.ac = 10+calculate_modifier(out.dexterity);
+  out.ac = 12+calculate_modifier(out.dexterity)+out.level;;
   out.hp = (10+calculate_modifier(out.constitution))*out.level;
+  out.perception = 2+calculate_modifier(out.wisdom)+out.level;
   out.reflex_save = calculate_modifier(out.dexterity)+(ranged ? high_save_basis(out.level): save_basis(out.level));
   out.fort_save= calculate_modifier(out.constitution)+(ranged ? save_basis(out.level) : high_save_basis(out.level));
   out.will_save = calculate_modifier(out.wisdom)+save_basis(out.level);
@@ -365,8 +370,9 @@ StatSet generate_magic_user_stats(NPC_Request request){
   out.intelligence = high_ability_score();
   out.wisdom = ability_score();
   out.charisma = ability_score();
-  out.ac = 10+calculate_modifier(out.dexterity);
+  out.ac = 12+calculate_modifier(out.dexterity)+out.level;;
   out.hp = (6+calculate_modifier(out.constitution))*out.level;
+  out.perception = 2+calculate_modifier(out.wisdom)+out.level;
   out.reflex_save = calculate_modifier(out.dexterity)+save_basis(out.level);
   out.fort_save= calculate_modifier(out.constitution)+save_basis(out.level);
   out.will_save = calculate_modifier(out.wisdom)+high_save_basis(out.level);
@@ -384,8 +390,9 @@ StatSet generate_gish_stats(NPC_Request request){
   out.intelligence = high_ability_score();
   out.wisdom = ability_score();
   out.charisma = ability_score();
-  out.ac = 10+calculate_modifier(out.dexterity);
+  out.ac = 10+calculate_modifier(out.dexterity)+out.level;;
   out.hp = (10+calculate_modifier(out.constitution))*out.level;
+  out.perception = 2+calculate_modifier(out.wisdom)+out.level;
   out.reflex_save = calculate_modifier(out.dexterity)+(ranged ? high_save_basis(out.level): save_basis(out.level));
   out.fort_save= calculate_modifier(out.constitution)+(ranged ? save_basis(out.level) : high_save_basis(out.level));
   out.will_save = calculate_modifier(out.wisdom)+save_basis(out.level);
@@ -402,8 +409,9 @@ StatSet generate_magic_using_thief_stats(NPC_Request request){
   out.intelligence = high_ability_score();
   out.wisdom = ability_score();
   out.charisma = ability_score();
-  out.ac = 10+calculate_modifier(out.dexterity);
+  out.ac = 12+calculate_modifier(out.dexterity)+out.level;;
   out.hp = (8+calculate_modifier(out.constitution))*out.level;
+  out.perception = 2+calculate_modifier(out.wisdom)+out.level;
   out.reflex_save = calculate_modifier(out.dexterity)+high_save_basis(out.level);
   out.fort_save= calculate_modifier(out.constitution)+save_basis(out.level);
   out.will_save = calculate_modifier(out.wisdom)+save_basis(out.level);
@@ -420,8 +428,9 @@ StatSet generate_priest_stats(NPC_Request request){
   out.intelligence = ability_score();
   out.wisdom = high_ability_score();
   out.charisma = high_ability_score();
-  out.ac = 10+calculate_modifier(out.dexterity);
+  out.ac = 12+calculate_modifier(out.dexterity)+out.level;;
   out.hp = (8+calculate_modifier(out.constitution))*out.level;
+  out.perception = 2+calculate_modifier(out.wisdom)+out.level;
   out.reflex_save = calculate_modifier(out.dexterity)+high_save_basis(out.level);
   out.fort_save= calculate_modifier(out.constitution)+save_basis(out.level);
   out.will_save = calculate_modifier(out.wisdom)+save_basis(out.level);
@@ -431,6 +440,7 @@ StatSet generate_priest_stats(NPC_Request request){
 }
 StatSet generate_thief_stats(NPC_Request request){
   StatSet out;
+  memset(&out, 0, sizeof(out));
   out.level = request.level;
   out.strength = ability_score();
   out.constitution = high_ability_score();
@@ -438,8 +448,9 @@ StatSet generate_thief_stats(NPC_Request request){
   out.intelligence = ability_score();
   out.wisdom = ability_score();
   out.charisma = ability_score();
-  out.ac = 10+calculate_modifier(out.dexterity);
+  out.ac = 12+calculate_modifier(out.dexterity)+out.level;
   out.hp = (8+calculate_modifier(out.constitution))*out.level;
+  out.perception = 2+calculate_modifier(out.wisdom)+out.level;
   out.reflex_save = calculate_modifier(out.dexterity)+high_save_basis(out.level);
   out.fort_save= calculate_modifier(out.constitution)+save_basis(out.level);
   out.will_save = calculate_modifier(out.wisdom)+save_basis(out.level);
@@ -482,6 +493,7 @@ NPC generate_character(NPC_Request request){
     out.grimoire = generate_spells(request.level, request.innate_caster,request.magic_type, request.npc_type);
     out.weapons = weapon_calculation(request.martial_type, request.npc_type,request.level, out.stats.strength, out.stats.dexterity);
     out.personality = generate_personality();
+    out.age = generate_age( out.ancestry,out.stats.level);
     return out;
 }
 
@@ -496,5 +508,5 @@ std::string format_npc(const NPC& npc){
       }
       return out.str();
   };
-  return utils::format("{}\nlevel:{} {} {} {}\nmartial_type:{}\nmagic_type:{}\nac:{} hp:{} reflex:{} fortitude:{} will:{}\nstrength: {}\ndexterity:{}\nconstitution:{}\nintelligence:{}\nwisdom:{}\ncharisma:{}\nperception:{}\nskills:acrobatics {}, arcana {}, athletics {},crafting {}, deception {}, diplomacy {}, intimidation {}, lore {}, medicine {}, nature {}, occultism {}, performance {}, religion {}, society {}, stealth {}, survival {}, thievery {}\nabilities:{}\n{}\nweapons:{}\npersonality:{}\n", npc.name,npc.stats.level, npc.gender, npc.ancestry, npc.npc_type, npc.martial_type,npc.magic_type, npc.stats.ac, npc.stats.hp, bonus(npc.stats.reflex_save), bonus(npc.stats.fort_save), bonus(npc.stats.will_save), npc.stats.strength, npc.stats.dexterity, npc.stats.constitution, npc.stats.intelligence, npc.stats.wisdom, npc.stats.charisma, bonus(npc.stats.perception),bonus(npc.stats.acrobatics), bonus(npc.stats.arcana), bonus(npc.stats.athletics), bonus(npc.stats.crafting), bonus(npc.stats.deception), bonus(npc.stats.diplomacy), bonus(npc.stats.intimidation), bonus(npc.stats.lore), bonus(npc.stats.medicine), bonus(npc.stats.nature), bonus(npc.stats.occultism), bonus(npc.stats.performance), bonus(npc.stats.religion), bonus(npc.stats.society), bonus(npc.stats.stealth), bonus(npc.stats.survival), bonus(npc.stats.thievery),npc.stats.abilities, npc.grimoire, npc.weapons,npc.personality);
+  return utils::format("{}\nlevel:{} {} {} {}\nmartial_type:{}\nmagic_type:{}\nage:{}\nac:{} hp:{} reflex:{} fortitude:{} will:{}\nstrength: {}\ndexterity:{}\nconstitution:{}\nintelligence:{}\nwisdom:{}\ncharisma:{}\nperception:{}\nskills:acrobatics {}, arcana {}, athletics {},crafting {}, deception {}, diplomacy {}, intimidation {}, lore {}, medicine {}, nature {}, occultism {}, performance {}, religion {}, society {}, stealth {}, survival {}, thievery {}\nabilities:{}\n{}\nweapons:{}\npersonality:{}\n", npc.name,npc.stats.level, npc.gender, npc.ancestry, npc.npc_type, npc.martial_type,npc.magic_type,npc.age, npc.stats.ac, npc.stats.hp, bonus(npc.stats.reflex_save), bonus(npc.stats.fort_save), bonus(npc.stats.will_save), npc.stats.strength, npc.stats.dexterity, npc.stats.constitution, npc.stats.intelligence, npc.stats.wisdom, npc.stats.charisma, bonus(npc.stats.perception),bonus(npc.stats.acrobatics), bonus(npc.stats.arcana), bonus(npc.stats.athletics), bonus(npc.stats.crafting), bonus(npc.stats.deception), bonus(npc.stats.diplomacy), bonus(npc.stats.intimidation), bonus(npc.stats.lore), bonus(npc.stats.medicine), bonus(npc.stats.nature), bonus(npc.stats.occultism), bonus(npc.stats.performance), bonus(npc.stats.religion), bonus(npc.stats.society), bonus(npc.stats.stealth), bonus(npc.stats.survival), bonus(npc.stats.thievery),npc.stats.abilities, npc.grimoire, npc.weapons,npc.personality);
 }

@@ -92,7 +92,7 @@ vector<string_view> abilities_text(const Ability * default_ability, const vector
     out.push_back((*default_ability)[0]);
   }
   vector<int> indicies;
-  for(int i = 0; i<list.size(); i++){
+  for(size_t i = 0; i<list.size(); i++){
     indicies.push_back(i);
   }
   for(int i = 0; i<NumToChoose; i++){
@@ -104,15 +104,21 @@ vector<string_view> abilities_text(const Ability * default_ability, const vector
   return out;
 }
 vector<string_view> get_laborer_abilities(int level,MartialTypes martial_type, MagicTypes magic_type){
+  (void)martial_type;
+  (void)magic_type;
   vector<Ability> LaborerAbilities = {QuickDraw, QuickRummage,Bravery, AirOfAuthority, BrutalBeating, GangUp,SnaggingStrike,AppraisingEye,IntimidatingStrike};
   return abilities_text(NULL, LaborerAbilities, level, 1);
 }
 vector<string_view> get_merchant_abilities(int level,MartialTypes martial_type, MagicTypes magic_type){
+  (void)martial_type;
+  (void)magic_type;
   const Ability * default_ability = &AppraisingEye;
   vector<Ability> MerchantAbilites = {AirOfAuthority, FontOfKnowledge,VersitilePerformace,Bravery,CallToAction};
   return abilities_text(default_ability, MerchantAbilites, level, 1);
 }
 vector<string_view> get_fighter_abilities(int level,MartialTypes martial_type, MagicTypes magic_type){
+  (void)martial_type;
+  (void)magic_type;
   const Ability * default_ability;
  vector<Ability> FighterAbilities;
   if(martial_type == OrganizedMelle){
@@ -138,6 +144,8 @@ vector<string_view> get_fighter_abilities(int level,MartialTypes martial_type, M
   return abilities_text(default_ability, FighterAbilities,level, 2);
 }
 vector<string_view>  get_gish_abilities(int level, MartialTypes martial_type,MagicTypes magic_type){
+  (void)martial_type;
+  (void)magic_type;
   vector<Ability> MartialAbilities;
   if(martial_type == OrganizedMelle){
     vector<Ability> OrgMelleAbilities = {SuddenCharge, SnaggingStrike, AttackOfOpportunity, ShieldWarden,GangUp,TrickAttack,
@@ -177,6 +185,8 @@ vector<string_view>  get_gish_abilities(int level, MartialTypes martial_type,Mag
   return out;
 }
 vector<string_view>  get_thief_abilities(int level,MartialTypes martial_type, MagicTypes magic_type){
+  (void)martial_type;
+  (void)magic_type;
   const Ability * default_ability = &SneakAttack;
   vector<Ability> Abilities;
   if(martial_type == OrganizedMelle){
@@ -198,11 +208,15 @@ vector<string_view>  get_thief_abilities(int level,MartialTypes martial_type, Ma
   return abilities_text(default_ability, Abilities, level,2);
 }
 vector<string_view>  get_noble_abilities(int level,MartialTypes martial_type, MagicTypes magic_type){
+  (void)martial_type;
+  (void)magic_type;
   const Ability * default_ability = &CourtlyGrace;
   vector<Ability> Abilities = {CallToAction,LieToMe, AirOfAuthority,Bravery,TrickAttack};
   return abilities_text(default_ability, Abilities, level,2);
 }
 vector<string_view>  get_magic_user_abilities(int level,MartialTypes martial_type, MagicTypes magic_type){
+  (void)martial_type;
+  (void)magic_type;
   const Ability *default_ability = &FontOfKnowledge;
   vector<Ability> MagicAbilities;
   if(magic_type == Arcane || magic_type == Occult){
@@ -220,6 +234,8 @@ vector<string_view>  get_magic_user_abilities(int level,MartialTypes martial_typ
   return abilities_text(default_ability, MagicAbilities, level,2);
 }
 vector<string_view> get_magic_using_thief_abilities(int level,MartialTypes martial_type, MagicTypes magic_type){
+  (void)martial_type;
+  (void)magic_type;
   const Ability * default_ability = &SneakAttack;
   vector<Ability> Abilities;
   if(martial_type == OrganizedMelle){
@@ -253,12 +269,14 @@ vector<string_view> get_magic_using_thief_abilities(int level,MartialTypes marti
   }
   vector<string_view> out =  abilities_text(default_ability,Abilities, level, 1);
   vector<string_view> maot = abilities_text(NULL, MagicAbilities, level,1);
-  for(int i = 0; i<maot.size(); i++){
+  for(size_t i = 0; i<maot.size(); i++){
     out.push_back(maot[i]);
   }
   return out;
 }
 vector<string_view>  get_priest_abilities(int level, MartialTypes martial_type, MagicTypes magic_type){
+  (void)martial_type;
+  (void)magic_type;
   vector<Ability>Abilities = {CallToAction,LieToMe, AirOfAuthority, Bravery,Bravery,TrickAttack};
   return abilities_text(NULL, Abilities, level,1);
 }

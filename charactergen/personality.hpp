@@ -20,3 +20,4 @@ string rand_last_name(vector<string> BaseArray);
 EGender generate_gender(void);
 string generate_name(EAncestries Ancestry, EGender Gender);
 vector<string> generate_personality(void);
+size_t generate_age(EAncestries ancestry, size_t level);
