@@ -217,7 +217,7 @@ StatSet calculate_skills(StatSet stats, vector<int> TrainedSkills, vector<int> E
   SetUpSkills(stats,Survival,survival,Wisdom);
   SetUpSkills(stats, Stealth, stealth,Dexterity);
   SetUpSkills(stats, Thievery,thievery, Dexterity);
-  stats.perception= 0+calculate_modifier(stats.wisdom);
+  stats.perception= 0+calculate_modifier(stats.wisdom)+stats.level;
   if(LegendarySkills.size()>0){
     stats.perception +=8;
   } else if (MasteredSkills.size()>0){
@@ -490,7 +490,9 @@ NPC generate_character(NPC_Request request){
     out.martial_type = request.martial_type;
     out.magic_type = request.magic_type;  
     out.stats = generate_stats(request);
-    out.grimoire = generate_spells(request.level, request.innate_caster,request.magic_type, request.npc_type);
+    if(out.magic_type != MagicNONE){
+      out.grimoire = generate_spells(request.level, request.innate_caster,request.magic_type, request.npc_type);
+    }
     out.weapons = weapon_calculation(request.martial_type, request.npc_type,request.level, out.stats.strength, out.stats.dexterity);
     out.personality = generate_personality();
     out.age = generate_age( out.ancestry,out.stats.level);
