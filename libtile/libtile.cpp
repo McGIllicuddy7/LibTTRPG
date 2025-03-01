@@ -1,0 +1,180 @@
+#include "libtile.hpp"
+#include "AStar.h"
+#include <unordered_map>
+using std::unordered_map;
+Tile::Tile(){
+    type = TileEmpty;
+    occupied = false;
+    child =0;
+}  
+void Tile::draw(DrawingState * draw,size_t x, size_t y, size_t pixel_size)const{
+    static const int colors[][3] = {{255,255,255}, {0, 125, 0}, {125, 125, 125}, {125, 120, 0}, {0,0,120}, {65, 65, 32}, {60,60, 60}};
+    size_t div  = occupied ? 1:2;
+    const int* color = colors[type];
+    draw->draw_rectangle(x,y,pixel_size, pixel_size, color[0]/div, color[1]/div, color[2]/div);
+}
+TileSet::TileSet(){
+    height = 0;
+    width =0;
+    pixel_size = 70;
+    tiles = {};
+}
+void TileSet::setup(size_t in_height, size_t in_width){
+    height = in_height;
+    width = in_width;
+    tiles = {};
+    for(size_t y =0; y<height; y++){
+        for(size_t x = 0; x<width; x++){
+            tiles.push_back(Tile());
+        }
+    }
+}
+const Tile& TileSet::get(int x, int y)const {
+    return tiles[y*width+x];
+}
+Tile& TileSet::get(int x, int y){
+    return tiles[y*width+x];
+}
+Tile *TileSet::operator[](int y_coord){
+    return &tiles[y_coord*width];
+}
+size_t TileSet::get_height()const{
+    return height;
+}
+size_t TileSet::get_width()const{
+    return width;
+}
+void TileSet::render(DrawingState * draw)const {
+    for(size_t y =0; y<height; y++){
+        for(size_t x =0; x<width; x++){
+            const Tile & a = get(x,y);
+            a.draw(draw, x*pixel_size, y*pixel_size, pixel_size);
+            
+        }
+    }
+}
+std::vector<Int2> TileSet::path_between(int x1, int y1, int x2, int y2){
+    std::vector<AStarNode_t> nodes;
+    int start = 0;
+    int end =0;
+    for(size_t y =0; y<height; y++){
+        for(size_t x = 0; x<width; x++){
+            if(x == (size_t)x1 && y == (size_t)y1){
+                start = y*width+x;
+            }
+            if(x == (size_t)x2 &&y ==(size_t)y2){
+                end = y*width+x;
+            }
+            AStarNode_t node;
+            std::vector<int> edges;
+            std::vector<double> distances;
+            double euc_distance = sqrt((double)((x2-x)*(x2-x)+(y2-y)*(y2-y)));
+            if(x>0){
+                if(!get(x-1,y).is_wall){
+                    edges.push_back(y*width+x-1);
+                    distances.push_back(1);
+                }
+            }
+            if(x<width-1){
+                if(!get(x+1,y).is_wall){
+                    edges.push_back(y*width+x+1);
+                    distances.push_back(1);
+                }
+            }
+            if(y>0){
+                if(!get(x,y-1).is_wall){
+                    edges.push_back((y-1)*width+x);
+                    distances.push_back(1);
+                }
+            }
+            if(y<height-1){
+                if(!get(x,y+1).is_wall){
+                    edges.push_back((y+1)*width+x);
+                    distances.push_back(1);
+                }
+            }
+            node.edges = edges;
+            node.distances = distances;
+            node.euc_distance = euc_distance;
+        }
+    }
+    std::vector<int> path = AStar(nodes, start, end);
+    std::vector<Int2> out;
+    int x = x1;
+    int y = y1;
+    out.push_back({x,y});
+    for(size_t i =0; i<path.size(); i++){
+        const static Int2 idexs[] = {{-1, 0}, {1,0}, {0, -1}, {0,1}};
+        int index = path[i];
+        int offset =0;
+        for(int j =0; j<4; j++){
+            Int2 off = idexs[j-offset];
+            if(get(x+off.x, y+off.y).is_wall){
+                offset += 1;
+                continue;
+            }
+            if(j-offset == index){
+                x += off.x;
+                y += off.y;
+                out.push_back({x,y});
+            }
+        }
+        
+    }
+    return out;
+}
+bool TileSet::path_between_exists(int x1, int y1, int x2, int y2){
+    if(x1 == y1 && x2 == y2){
+        return true;
+    } else{
+        return path_between(x1,y1,x2,y2).size()>0;
+    }
+}
+void rlImageDrawingState::render_out(std::string path){
+    ExportImage( m_image,path.c_str());
+}
+rlImageDrawingState::rlImageDrawingState(size_t height, size_t width){
+    m_image = GenImageColor(height, width, BLACK);
+}
+bool rlImageDrawingState::load_image(std::string path){
+    if(m_loaded_images.contains(path)){
+        return true;
+    }
+    Image a= LoadImage(path.c_str());
+    m_loaded_images.insert({path,a});
+    return true;
+}
+void rlImageDrawingState::draw_image(const std::string & texture_path,int x, int y, int height, int width){
+    if(!m_loaded_images.contains(texture_path)){
+        load_image(texture_path);
+    }
+    Image& img = m_loaded_images[texture_path];
+    Rectangle base ={};
+    base.x =0;
+    base.y =0;
+    base.width = m_image.width;
+    base.height = m_image.height;
+    Rectangle target;
+    target.x = x;
+    target.y = y;
+    target.height = height;
+    target.width = width;
+    ImageDraw(&m_image,img,base, target, WHITE);
+
+}
+void rlImageDrawingState::draw_rectangle(int x, int y, int height, int width, int r, int g, int b){
+    Color col;
+    col.r = r;
+    col.g = g;
+    col.b = b;
+    ImageDrawRectangle(&m_image, x,y,height, width, col);
+}
+bool rlImageDrawingState::unload_image(std::string path){
+    if(!m_loaded_images.contains(path)){
+        return false;
+    }
+    Image a= m_loaded_images[path];
+    m_loaded_images.erase(path);
+    UnloadImage(a);
+    return true;
+}
