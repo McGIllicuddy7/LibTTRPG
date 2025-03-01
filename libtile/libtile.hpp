@@ -36,7 +36,7 @@ class TileSet{
     std::vector<Tile> tiles;
     public:
     TileSet();
-    void setup(size_t in_height, size_t in_width);
+    void setup(size_t in_height, size_t in_width, size_t pixel_size);
     void randomize();
     size_t get_height()const;
     size_t get_width()const ;
@@ -46,6 +46,8 @@ class TileSet{
     Tile *operator[](int y_coord);
     std::vector<Int2> path_between(int x1, int y1, int x2, int y2);
     bool path_between_exists(int x1, int y1, int x2, int y2);
+    void set_list_to(const std::vector<Int2>& points, TileType type, bool is_wall);
+    void set_list_to(const std::vector<Int2>& points, TileType type);
 };
 class rlImageDrawingState:public DrawingState{
     Image m_image;

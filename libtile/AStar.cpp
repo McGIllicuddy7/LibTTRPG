@@ -69,6 +69,7 @@ std::vector<int> AStar(std::vector<AStarNode_t> in_nodes, int start, int end){
 	//set up
 	const double inf = 10e15;
 	for(size_t i =0; i<in_nodes.size(); i++){
+
 		AStarInternalNode_t node;
 		node.idx = i;
 		node.edges = in_nodes[i].edges;

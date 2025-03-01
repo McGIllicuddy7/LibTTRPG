@@ -19,15 +19,24 @@ TileSet::TileSet(){
     pixel_size = 70;
     tiles = {};
 }
-void TileSet::setup(size_t in_height, size_t in_width){
+void TileSet::setup(size_t in_height, size_t in_width, size_t in_pixel_size){
     height = in_height;
     width = in_width;
+    pixel_size = in_pixel_size;
     tiles = {};
     for(size_t y =0; y<height; y++){
         for(size_t x = 0; x<width; x++){
             tiles.push_back(Tile());
         }
     }
+}
+void TileSet::randomize(){
+    for(size_t y =0; y<height; y++){
+        for(size_t x = 0; x<width; x++){
+            (*this)[y][x].is_wall = rand()%5 == 0;
+            (*this)[y][x].type =  (*this)[y][x].is_wall? TileStoneBricks : TileWood; 
+        }
+    } 
 }
 const Tile& TileSet::get(int x, int y)const {
     return tiles[y*width+x];
@@ -57,8 +66,13 @@ std::vector<Int2> TileSet::path_between(int x1, int y1, int x2, int y2){
     std::vector<AStarNode_t> nodes;
     int start = 0;
     int end =0;
+    unordered_map<int, Int2> indexs;
     for(size_t y =0; y<height; y++){
         for(size_t x = 0; x<width; x++){
+            Int2 p;
+            p.x = x;
+            p.y = y;
+            indexs.insert({y*width+x, p});
             if(x == (size_t)x1 && y == (size_t)y1){
                 start = y*width+x;
             }
@@ -96,30 +110,18 @@ std::vector<Int2> TileSet::path_between(int x1, int y1, int x2, int y2){
             node.edges = edges;
             node.distances = distances;
             node.euc_distance = euc_distance;
+            nodes.push_back(node);
         }
     }
     std::vector<int> path = AStar(nodes, start, end);
     std::vector<Int2> out;
     int x = x1;
     int y = y1;
+    std::cout <<x<<" "<<y<<"\n";
     out.push_back({x,y});
     for(size_t i =0; i<path.size(); i++){
-        const static Int2 idexs[] = {{-1, 0}, {1,0}, {0, -1}, {0,1}};
-        int index = path[i];
-        int offset =0;
-        for(int j =0; j<4; j++){
-            Int2 off = idexs[j-offset];
-            if(get(x+off.x, y+off.y).is_wall){
-                offset += 1;
-                continue;
-            }
-            if(j-offset == index){
-                x += off.x;
-                y += off.y;
-                out.push_back({x,y});
-            }
-        }
-        
+        Int2 p = indexs[path[i]];
+        out.push_back(p);
     }
     return out;
 }
@@ -128,6 +130,21 @@ bool TileSet::path_between_exists(int x1, int y1, int x2, int y2){
         return true;
     } else{
         return path_between(x1,y1,x2,y2).size()>0;
+    }
+}
+void TileSet::set_list_to(const std::vector<Int2>& points, TileType type, bool is_wall){
+    for(auto i:points){
+        int x = i.x;
+        int y = i.y;
+        get(x,y).type = type;
+        get(x,y).is_wall = is_wall;
+    }
+}
+void TileSet::set_list_to(const std::vector<Int2>& points, TileType type){
+    for(auto i:points){
+        int x = i.x;
+        int y = i.y;
+        get(x,y).type = type;
     }
 }
 void rlImageDrawingState::render_out(std::string path){
@@ -167,6 +184,7 @@ void rlImageDrawingState::draw_rectangle(int x, int y, int height, int width, in
     col.r = r;
     col.g = g;
     col.b = b;
+    col.a = 255;
     ImageDrawRectangle(&m_image, x,y,height, width, col);
 }
 bool rlImageDrawingState::unload_image(std::string path){
