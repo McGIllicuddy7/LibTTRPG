@@ -6,10 +6,12 @@ struct Int2{
     int x;
     int y;
 };
+
 class DrawingState{
     public:
     virtual bool load_image(std::string path) = 0;
     virtual void draw_image(const std::string & texture_path,int x, int y, int height, int width) = 0;
+    virtual void draw_pixel(int x, int y, int r, int g, int b)= 0;
     virtual void draw_rectangle(int x, int y, int height, int width, int r, int g, int b) = 0;
     virtual bool unload_image(std::string path) = 0;
 };
@@ -56,8 +58,9 @@ class rlImageDrawingState:public DrawingState{
     
     rlImageDrawingState(size_t height, size_t width);
     void render_out(std::string path);
-    virtual bool load_image(std::string path);
-    virtual void draw_image(const std::string & texture_path,int x, int y, int height, int width);
-    virtual void draw_rectangle(int x, int y, int height, int width, int r, int g, int b);
-    virtual bool unload_image(std::string path);
+    bool load_image(std::string path);
+    void draw_image(const std::string & texture_path,int x, int y, int height, int width);
+    void draw_pixel(int x, int y, int r, int g, int b);
+    void draw_rectangle(int x, int y, int height, int width, int r, int g, int b);
+    bool unload_image(std::string path);
 };
