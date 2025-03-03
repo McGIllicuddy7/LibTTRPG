@@ -6,6 +6,7 @@ using std::unique_ptr;
 using std::make_unique;
 using namespace LibTile;
 #include <iostream>
+#include <unordered_set>
 struct IntRoom{ 
     unique_ptr<IntRoom> child1;
     unique_ptr<IntRoom> child2;
@@ -88,9 +89,74 @@ struct IntRoom{
 Dungeon::Dungeon(){
     
 }
+LibTile::Int2 Dungeon::Room::center(){
+    return {location.x+extent.x/2, location.y+extent.y/2};
+}
+vector<LibTile::Int2> Dungeon::Room::boundary(){
+    std::vector<Int2> points;
+    int y = -1;
+    int x =-1;
+    for( x = -1;x<extent.x;x++){
+        int yp = location.y+y;
+        int xp = location.x+x;
+        points.push_back({xp, yp});
+    }
+    y = extent.y;
+    for( x = -1;x<extent.x;x++){
+        int yp = location.y+y;
+        int xp = location.x+x;
+        points.push_back({xp, yp});
+    }
+    x = -1;
+    for( y = -1;y<extent.y;y++){
+        int yp = location.y+y;
+        int xp = location.x+x;
+        points.push_back({xp, yp});
+    } 
+    x = extent.x;
+    for( y = -1;y<extent.y;y++){
+        int yp = location.y+y;
+        int xp = location.x+x;
+        points.push_back({xp, yp});
+    } 
+    points.push_back({location.x+extent.x, location.y+extent.y});
+    return points;
+}
+std::pair<Int2, Int2> nearest_points(Dungeon::Room & r1, Dungeon::Room & r2){
+    auto distance = [](auto a, auto b){return (a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y);};
+    auto p1s = r1.boundary();
+    auto p2s = r2.boundary();
+    auto c1 = r1.center();
+    auto c2 = r2.center();
+    Int2 a = p1s[0];
+    Int2 b = p2s[0];
+    int dist = distance(a,b);
+    int cdist = distance(a, c1)+distance(b,c2);
+    for(auto i:p1s){
+        for(auto j:p2s){
+            double d = distance(i,j);
+            double cd = distance(i, c1)+distance(j,c2);
+            if(d<dist){
+                a = i;
+                b =j;
+                dist = d;
+                cdist = cd;
+            }
+            if(dist == d){
+                if(cd<cdist){
+                    a = i;
+                    b =j;
+                    dist = d;
+                    cdist = cd; 
+                }
+            }
+        }
+    }
+    return {a,b};
+}
 Dungeon Dungeon::create(int width, int height, Dungeon * above){
     (void)above;
-    int offset = 1;
+    int offset = 10;
     constexpr size_t pixel_sz = 35;
     Dungeon out;
     TileSet tiles;
@@ -99,7 +165,7 @@ Dungeon Dungeon::create(int width, int height, Dungeon * above){
     IntRoom base;
     base.location = {offset,offset};
     base.extent = {width-offset, height-offset};
-    base.split(7);
+    base.split(20);
     std::vector<IntRoom*> inter_rooms;
     base.find_roots(inter_rooms);
     for(size_t i =0; i<inter_rooms.size(); i++){
@@ -116,7 +182,18 @@ Dungeon Dungeon::create(int width, int height, Dungeon * above){
         for(size_t y= rooms[i].location.y; y<rooms[i].location.y+rooms[i].extent.y; y++){
             for(size_t x= rooms[i].location.x; x<rooms[i].location.x+rooms[i].extent.x; x++){
                 tiles[y][x].type = TileWood;
-                
+            }
+        }
+    }
+    for(size_t i  =0; i<rooms.size(); i++){
+        for(size_t j = i+1; j<rooms.size(); j++){
+            std::function<bool(Tile&)> pred = [](auto t){return t.type != TileWood;};
+            auto ps = nearest_points(rooms[i], rooms[j]);
+            Int2 p1 = ps.first;
+            Int2 p2 = ps.second;
+            auto p = tiles.path_between_pred(p1.x, p1.y, p2.x, p2.y, pred);
+            if(p.size()>0 && p.size()<offset*2+1){
+                tiles.set_list_to(p, TileStoneBricks);
             }
         }
     }

@@ -11,6 +11,8 @@ struct Dungeon{
         std::vector<size_t> connections;
         std::vector<LibTile::Int2> up_stair_locations;
         std::vector<LibTile::Int2> down_stair_locations;
+        LibTile::Int2 center();
+        std::vector<LibTile::Int2> boundary();
     };
     LibTile::TileSet tiles;
     private:

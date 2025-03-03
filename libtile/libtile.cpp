@@ -241,6 +241,75 @@ bool TileSet::path_between_exists(int x1, int y1, int x2, int y2){
         return path_between(x1,y1,x2,y2).size()>0;
     }
 }
+std::vector<Int2> TileSet::path_between_pred(int x1, int y1, int x2, int y2,std::function<bool(Tile&)> pred){
+    std::vector<AStarNode_t> nodes;
+    int start = 0;
+    int end =0;
+    unordered_map<int, Int2> indexs;
+    for(size_t y =0; y<height; y++){
+        for(size_t x = 0; x<width; x++){
+            Int2 p;
+            p.x = x;
+            p.y = y;
+            indexs.insert({y*width+x, p});
+            if(x == (size_t)x1 && y == (size_t)y1){
+                start = y*width+x;
+            }
+            if(x == (size_t)x2 &&y ==(size_t)y2){
+                end = y*width+x;
+            }
+            AStarNode_t node;
+            std::vector<int> edges;
+            std::vector<double> distances;
+            double euc_distance = sqrt((double)((x2-x)*(x2-x)+(y2-y)*(y2-y)));
+            if(x>0){
+                if(pred(get(x-1, y))){
+                    edges.push_back(y*width+x-1);
+                    distances.push_back(1);
+                }
+            }
+            if(x<width-1){
+                if(pred(get(x+1, y))){
+                    edges.push_back(y*width+x+1);
+                    distances.push_back(1);
+                }
+            }
+            if(y>0){
+                if(pred(get(x, y-1))){
+                    edges.push_back((y-1)*width+x);
+                    distances.push_back(1);
+                }
+            }
+            if(y<height-1){
+                if(pred(get(x, y+1))){
+                    edges.push_back((y+1)*width+x);
+                    distances.push_back(1);
+                }
+            }
+            node.edges = edges;
+            node.distances = distances;
+            node.euc_distance = euc_distance;
+            nodes.push_back(node);
+        }
+    }
+    std::vector<int> path = AStar(nodes, start, end);
+    std::vector<Int2> out;
+    int x = x1;
+    int y = y1;
+    out.push_back({x,y});
+    for(size_t i =0; i<path.size(); i++){
+        Int2 p = indexs[path[i]];
+        out.push_back(p);
+    }
+    return out;
+}
+bool TileSet::path_between_exists_pred(int x1, int y1, int x2, int y2,std::function<bool(Tile&)> pred){
+    if(x1 == y1 && x2 == y2){
+        return true;
+    } else{
+        return path_between_pred(x1,y1,x2,y2,pred).size()>0;
+    }
+}
 void TileSet::set_list_to(const std::vector<Int2>& points, TileType type, bool is_wall){
     for(auto i:points){
         int x = i.x;

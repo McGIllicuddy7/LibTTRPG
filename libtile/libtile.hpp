@@ -2,6 +2,7 @@
 #include <vector>
 #include <unordered_map>
 #include <raylib.h>
+#include <functional>
 namespace LibTile{
 struct Int2{
     int x;
@@ -49,6 +50,8 @@ class TileSet{
     Tile *operator[](int y_coord);
     std::vector<Int2> path_between(int x1, int y1, int x2, int y2);
     bool path_between_exists(int x1, int y1, int x2, int y2);
+    std::vector<Int2> path_between_pred(int x1, int y1, int x2, int y2, std::function<bool(Tile&)>);
+    bool path_between_exists_pred(int x1, int y1, int x2, int y2,std::function<bool(Tile&)>);
     void set_list_to(const std::vector<Int2>& points, TileType type, bool is_wall);
     void set_list_to(const std::vector<Int2>& points, TileType type);
     bool borders_type(int x, int y, TileType type) const;

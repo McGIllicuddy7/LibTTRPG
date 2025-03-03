@@ -8,14 +8,14 @@ struct AStarInternalNode_t{
 	double h;
 	//cost from the start of the path to the node
 	double g;
-	double f(){
+	double f()const {
 		return h+g;
 	}
-	bool operator ==(AStarInternalNode_t other){
+	bool operator ==(AStarInternalNode_t other)const {
 		return other.idx == this->idx;
 	}
 };
-static int set_min(std::vector<AStarInternalNode_t> set){
+static int set_min(const std::vector<AStarInternalNode_t>& set){
 	const double inf = 10e15;
 	double minval = inf*2;
 	double minidx = -1;
@@ -31,7 +31,7 @@ static int set_min(std::vector<AStarInternalNode_t> set){
 	}
 	return minidx;
 }
-static std::vector<int> reconstruct_path(std::vector<int> camefrom, int current){
+static std::vector<int> reconstruct_path(const std::vector<int>& camefrom, int current){
 	std::vector<int> out = {};
 	while(camefrom[current] != -1){
 		out.push_back(current);
@@ -40,7 +40,7 @@ static std::vector<int> reconstruct_path(std::vector<int> camefrom, int current)
     out.push_back(current);
 	return out;
 }
-std::vector<int> SetRemove(std::vector<int> set, int index){
+std::vector<int> SetRemove(const std::vector<int>& set, int index){
 	std::vector<int> out = {};
 	for(size_t i =0; i<set.size(); i++){
 		out.push_back(set[i]);
@@ -48,7 +48,7 @@ std::vector<int> SetRemove(std::vector<int> set, int index){
 	out.erase(out.begin()+(index));
 	return out;
 }
-static bool SetContains(std::vector<int> set, int value){
+static bool SetContains(const std::vector<int>& set, int value){
 	if(set.size() == 0){
 		return false;
 	}
@@ -68,8 +68,8 @@ std::vector<int> AStar(std::vector<AStarNode_t> in_nodes, int start, int end){
 	std::vector<AStarInternalNode_t> nodes = {};
 	//set up
 	const double inf = 10e15;
+	nodes.reserve(in_nodes.size());
 	for(size_t i =0; i<in_nodes.size(); i++){
-
 		AStarInternalNode_t node;
 		node.idx = i;
 		node.edges = in_nodes[i].edges;
@@ -83,19 +83,23 @@ std::vector<int> AStar(std::vector<AStarNode_t> in_nodes, int start, int end){
 	std::vector<int> openset = {start};
 	std::vector<int> camefrom = {};
 	//camefrom set up;
+	camefrom.reserve(nodes.size());
 	for(size_t i =0; i<nodes.size(); i++){
 		camefrom.push_back(-1);
 	}
 	//end camefrom set up
 	std::vector<double> fscore = {};
 	//fscore set up
+	fscore.reserve(nodes.size());
 	for(size_t i = 0; i<nodes.size(); i++){
 		fscore.push_back(inf);
 	}
 	fscore[start] = nodes[start].h;
 	//end fscore set up
+	std::vector<AStarInternalNode_t> tmp = {};
+	tmp.reserve(openset.size());
 	while(openset.size()>0){
-		std::vector<AStarInternalNode_t> tmp = {};
+		tmp.clear();
 		for(size_t i =0; i<openset.size(); i++){
 			tmp.push_back(nodes[openset[i]]);
 		}
@@ -108,17 +112,14 @@ std::vector<int> AStar(std::vector<AStarNode_t> in_nodes, int start, int end){
 		for(size_t i =0; i<nodes[current].edges.size(); i++){
 			int neighbor = nodes[current].edges[i];
 			double tmp_g_score = nodes[current].g+nodes[current].edge_distances[i];
-			//printf("tmp g score: %f, g score: %f\n", tmp_g_score, nodes[neighbor].g);
 			if(tmp_g_score<nodes[neighbor].g){
 				camefrom[neighbor] = current;
 				nodes[neighbor].g = tmp_g_score;
 				if(!SetContains(openset, neighbor)){
-					//printf("called\n");
 					openset.push_back(neighbor);
 				}
 			}
 		}
 	}
-	//end fscore set up
 	return {};
 }
