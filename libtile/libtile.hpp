@@ -2,6 +2,7 @@
 #include <vector>
 #include <unordered_map>
 #include <raylib.h>
+namespace LibTile{
 struct Int2{
     int x;
     int y;
@@ -50,12 +51,12 @@ class TileSet{
     bool path_between_exists(int x1, int y1, int x2, int y2);
     void set_list_to(const std::vector<Int2>& points, TileType type, bool is_wall);
     void set_list_to(const std::vector<Int2>& points, TileType type);
+    bool borders_type(int x, int y, TileType type) const;
 };
 class rlImageDrawingState:public DrawingState{
     Image m_image;
     std::unordered_map<std::string, Image> m_loaded_images;
-    public:
-    
+    public: 
     rlImageDrawingState(size_t height, size_t width);
     void render_out(std::string path);
     bool load_image(std::string path);
@@ -64,3 +65,4 @@ class rlImageDrawingState:public DrawingState{
     void draw_rectangle(int x, int y, int height, int width, int r, int g, int b);
     bool unload_image(std::string path);
 };
+}

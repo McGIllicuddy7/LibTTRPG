@@ -3,6 +3,7 @@
 #include <raylib.h>
 #include "libtile.hpp"
 #include <time.h>
+using namespace Libtile;
 int main(void){
 	const int height =40;
 	const int width =40;

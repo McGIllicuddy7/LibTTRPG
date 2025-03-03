@@ -1,7 +1,9 @@
+
 #include "libtile.hpp"
 #include "AStar.h"
 #include <unordered_map>
 using std::unordered_map;
+using namespace LibTile;
 Tile::Tile(){
     type = TileEmpty;
     is_wall = false;
@@ -18,8 +20,8 @@ static void draw_tile_empty(DrawingState * draw, size_t x, size_t y, size_t size
     draw->draw_rectangle(x,y,size, size, 255,0,255);
 }
 static void draw_tile_grass(DrawingState * draw, size_t x, size_t y, size_t size, bool is_wall){
-    int c1 = is_wall ? 200:200-64;
-    int c2 = is_wall ? 128 :128-64;
+    int c1 = is_wall ? 128:128-64;
+    int c2 = is_wall ? 128-32 :128-64-32;
     for(size_t i =y; i<size+y; i++){
         for(size_t j =x; j<size+x; j++){
             int color = hash_point(i,j);
@@ -141,7 +143,7 @@ void TileSet::randomize(){
         for(size_t x = 0; x<width; x++){
             (*this)[y][x].is_wall = rand()%5 ==0;
             bool t = rand()%5 == 0;
-            (*this)[y][x].type = t?  TileDirt : TileWood;
+            (*this)[y][x].type = t?  TileGrass : TileWood;
         }
     } 
 }
@@ -191,24 +193,24 @@ std::vector<Int2> TileSet::path_between(int x1, int y1, int x2, int y2){
             std::vector<double> distances;
             double euc_distance = sqrt((double)((x2-x)*(x2-x)+(y2-y)*(y2-y)));
             if(x>0){
-                if(!get(x-1,y).is_wall){
+                if(!get(x-1,y).is_wall && !get(x-1,y).occupied){
                     edges.push_back(y*width+x-1);
                     distances.push_back(1);
                 }
             }
             if(x<width-1){
-                if(!get(x+1,y).is_wall){
+                if(!get(x+1,y).is_wall && !get(x-1,y).occupied){
                     edges.push_back(y*width+x+1);
                     distances.push_back(1);
                 }
             }
             if(y>0){
-                if(!get(x,y-1).is_wall){
+                if(!get(x,y-1).is_wall && !get(x-1,y).occupied){
                     edges.push_back((y-1)*width+x);
                     distances.push_back(1);
                 }
             }
-            if(y<height-1){
+            if(y<height-1 && !get(x-1,y).occupied){
                 if(!get(x,y+1).is_wall){
                     edges.push_back((y+1)*width+x);
                     distances.push_back(1);
@@ -253,6 +255,19 @@ void TileSet::set_list_to(const std::vector<Int2>& points, TileType type){
         int y = i.y;
         get(x,y).type = type;
     }
+}
+bool TileSet::borders_type(int x, int y, TileType type)const {
+    static const Int2 boundaries[8] = {{-1, 1}, {0, 1}, {1,1}, {-1, 0}, {1,0}, {-1, -1}, {0, -1}, {1,-1}};
+    for(int i =0; i<8; i++){
+        int xp = x+boundaries[i].x;
+        int yp = y+boundaries[i].y;
+        if(xp>=0 && yp>=0 && xp<(int)width && yp<(int)height){
+            if(get(x,y).type == type){
+                return true;
+            }
+        }
+    }
+    return false;
 }
 void rlImageDrawingState::render_out(std::string path){
     ExportImage( m_image,path.c_str());

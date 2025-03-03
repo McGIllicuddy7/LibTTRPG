@@ -1,6 +1,6 @@
-files = main.cpp
-flags = -std=c++26
-libs = ../libstrings/libstrings.a
-includes = -I ../libstrings -I ../libtile/
+files =  main.cpp dungeon.cpp ../libtile/libtile.a
+flags = -std=c++20
+libs = -lraylib  -L /opt/homebrew/lib  
+includes = -I ../libstrings -I ../libtile/ 
 make: $(files)
-	g++ $(files) $(includes) $(flags) $(libs)
+	g++  $(files) $(includes) $(flags) $(libs)
