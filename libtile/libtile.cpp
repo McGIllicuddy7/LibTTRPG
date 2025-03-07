@@ -126,6 +126,7 @@ static void draw_tile_stone_bricks(DrawingState * draw, size_t x, size_t y, size
 void Tile::draw(DrawingState * draw,size_t x, size_t y, size_t pixel_size)const{
     static void (*functions[])(DrawingState * draw, size_t x, size_t y, size_t size, bool is_wall)= {draw_tile_empty, draw_tile_grass, draw_tile_stone, draw_tile_dirt, draw_tile_water,draw_tile_wood, draw_tile_stone_bricks};
     functions[type](draw, x, y, pixel_size, is_wall);
+    if(this->child)this->child->on_render(draw,x,y,pixel_size);
 }
 TileSet::TileSet(){
     height = 0;

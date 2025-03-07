@@ -1,6 +1,6 @@
 files =  main.cpp dungeon.cpp ../libstrings/libstrings.a ../libtile/AStar.cpp ../libtile/libtile.cpp
 flags = -std=c++20 
-libs = -lraylib  -L /opt/homebrew/lib  -lprofiler 
+libs = -lraylib  -L /opt/homebrew/lib -I ../libptr/ -lprofiler 
 includes = -I ../libstrings -I ../libtile/ -I /opt/homebrew/include -L /opt/homebrew/lib
 make: $(files)
 	clang++  $(files) $(includes) $(flags) $(libs)

@@ -2,7 +2,7 @@
 #include "libtile.hpp"
 #include "dungeon.hpp"
 #include "threads.hpp"
-#include </opt/homebrew/include/gperftools/profiler.h>
+
 
 //without vector being reserved ./a.out  10.94s user 0.04s system 99% cpu 11.037 total
 //with vector being reserved ./a.out  10.02s user 0.03s system 98% cpu 10.197 total
@@ -25,14 +25,21 @@ int main(int argc, const char ** argv){
     const size_t width =75;
     constexpr size_t pixel_size = 35;
     const bool is_building = false;
+    std::vector<Dungeon *> dungeons = {};
     Dungeon * previous = 0;
     for(int i =0; i<2; i++){
-        Dungeon* dun =new Dungeon(Dungeon::create(width, height,pixel_size,is_building,previous));
+        Dungeon* dun =new Dungeon(Dungeon::create(width, height,pixel_size,is_building,previous)); 
+        dungeons.push_back(dun);
+        previous = dun;
+        
+    }
+
+    for(size_t i =0; i<dungeons.size(); i++){
+        Dungeon * dun = dungeons[i];
         LibTile::rlImageDrawingState state(width*pixel_size, height*pixel_size);
         dun->tiles.render(&state);
         state.render_out(utils::format("test{}.png", i));
-        delete previous;
-        previous = dun;
+        delete dun;
     }
     utils::join_all_threads();
     auto stop = std::chrono::high_resolution_clock::now();

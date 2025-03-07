@@ -175,14 +175,14 @@ namespace utils{
 	   }
 		
 	   std::string read_file_to_string(std::string_view path){
-		   if (std::ifstream ifs {path}) {
+		   if (std::ifstream ifs {std::string(path)}) {
 			   std::string data((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
 			   return data;
 		   }	
 		   return {};
 	   }
 	   bool write_string_to_file(std::string_view path, std::string_view string){
-		   std::fstream file {path};
+		   std::fstream file {std::string(path)};
 		   file <<string;
 		   return true;
 	   }

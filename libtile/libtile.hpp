@@ -5,6 +5,7 @@
 #include <functional>
 #include <memory>
 #include "libstrings.hpp"
+#include <math.h>
 namespace LibTile{
 struct Int2{
     int x;
@@ -22,7 +23,7 @@ class DrawingState{
 class TileableEntity{
     public:
     virtual void on_render(DrawingState* state,size_t x, size_t y, size_t pixel_size) = 0;
-    virtual ~TileableEntity() = 0;
+    virtual inline ~TileableEntity(){};
 };
 enum TileType:uint8_t{
     TileEmpty,TileGrass, TileStone, TileDirt, TileWater,TileWood, TileStoneBricks,TileCarpetRed, TileCarpetBlue,TileCarpetGreen,TileCarpetPurple,

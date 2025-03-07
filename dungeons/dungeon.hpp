@@ -2,6 +2,11 @@
 #include <vector>
 #include "libtile.hpp"
 #include "arena.hpp"
+class Stairs:public LibTile::TileableEntity{
+public:
+    bool up; 
+    void on_render(LibTile::DrawingState* state, size_t x, size_t y, size_t pixel_size);
+};
 struct Dungeon{
     public:
     struct Room{

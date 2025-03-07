@@ -113,8 +113,8 @@ LibTile::Int2 Dungeon::Room::center()const {
 }
 vector<Int2>  Dungeon::Room::all_contained_points()const{
     vector<Int2> out;
-    for(int y= location.y; y<location.y+extent.y; y++){
-        for(int x =location.x;x<location.x+extent.x; x++){
+    for(int y= location.y; y<location.y+extent.y-1; y++){
+        for(int x =location.x;x<location.x+extent.x-1; x++){
             out.push_back({x,y});
         }
     }
@@ -382,8 +382,14 @@ void setup_stairs(Dungeon& top, Dungeon& bottom, LibTile::TileSet& top_tiles){
         }while(true);
     }
     for(auto i:stair_locations){
+        Stairs stairs;
+        stairs.up = true;
         top.down_stair_locations.push_back(i);
+        
+        top.tiles.get(i.x, i.y).child = std::make_shared<Stairs>(stairs);
+        stairs.up = false;
         bottom.up_stair_locations.push_back(i);
+        bottom.tiles.get(i.x, i.y).child = std::make_shared<Stairs>(stairs);
     }
 }
 Dungeon Dungeon::create(int width, int height,size_t pixel_sz,bool is_building,Dungeon * above){
@@ -444,6 +450,11 @@ Dungeon Dungeon::create(int width, int height,size_t pixel_sz,bool is_building,D
     }
     out.tiles = tiles;
     out.rooms = rooms;
+    if(above){
+        printf("called setup\n");
+        setup_stairs(out, *above,above->tiles);
+    }
+
     return out; 
 }
 LibTile::TileSet Dungeon::sillouette()const{
@@ -468,4 +479,8 @@ LibTile::TileSet Dungeon::sillouette()const{
         }
     }
     return out; 
+}
+
+void Stairs::on_render(LibTile::DrawingState * state, size_t x, size_t y, size_t pixel_size){
+    state->draw_rectangle(x+1, y+1, pixel_size, pixel_size, 255, 0,0);
 }

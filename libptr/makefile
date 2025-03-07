@@ -1,6 +1,6 @@
 targets = 
 otargets = libtile.o Astar.o
-libs =  -L /opt/homebrew/lib -I ../libstrings/ -fsanitize=address
+libs =  -L /opt/homebrew/lib -I ../libstrings/ -I ../libptr/ -fsanitize=address
 flags = -Wall -Wextra -pedantic -std=c++20 -g3
 make: $(targets) 
 	clang++ main.cpp $(targets) $(flags) $(libs) -lraylib
