@@ -113,8 +113,8 @@ LibTile::Int2 Dungeon::Room::center()const {
 }
 vector<Int2>  Dungeon::Room::all_contained_points()const{
     vector<Int2> out;
-    for(int y= location.y; y<location.y+extent.y-1; y++){
-        for(int x =location.x;x<location.x+extent.x-1; x++){
+    for(int y= location.y; y<location.y+extent.y; y++){
+        for(int x =location.x;x<location.x+extent.x; x++){
             out.push_back({x,y});
         }
     }
@@ -482,5 +482,6 @@ LibTile::TileSet Dungeon::sillouette()const{
 }
 
 void Stairs::on_render(LibTile::DrawingState * state, size_t x, size_t y, size_t pixel_size){
-    state->draw_rectangle(x+1, y+1, pixel_size, pixel_size, 255, 0,0);
+    if(up)state->draw_rectangle(x+1, y+1, pixel_size, pixel_size, 255, 0,0);
+    else state->draw_rectangle(x+1, y+1, pixel_size, pixel_size, 0,0,255);
 }
