@@ -113,8 +113,8 @@ LibTile::Int2 Dungeon::Room::center()const {
 }
 vector<Int2>  Dungeon::Room::all_contained_points()const{
     vector<Int2> out;
-    for(int y= location.y; y<location.y+extent.y; y++){
-        for(int x =location.x;x<location.x+extent.x; x++){
+    for(int y= location.y+2; y<location.y+extent.y-2; y++){
+        for(int x =location.x+2;x<location.x+extent.x-2; x++){
             out.push_back({x,y});
         }
     }
@@ -230,7 +230,7 @@ vector<Dungeon::Room> purge_rooms(const std::vector<Dungeon::Room>& base, int ra
             bool is_valid = true;
             vector<Int2> p = i.all_contained_points();
             for(const auto &j:p){
-                if(tiles.get(j.x, j.y).is_empty){
+                if(!tiles.get(j.x, j.y).occupied){
                     is_valid = false;
                     break;
                 }
@@ -351,7 +351,7 @@ void draw_connections(const std::vector<RoomConnection> & connections, TileSet& 
         }
     }
 }
-void setup_stairs(Dungeon& top, Dungeon& bottom, LibTile::TileSet& top_tiles){
+void setup_stairs( Dungeon& bottom,Dungeon& top, LibTile::TileSet& top_tiles){
     size_t ts= top.rooms.size();
     size_t bs = bottom.rooms.size();
     size_t rooms = ts>bs ?bs :ts;
@@ -369,7 +369,7 @@ void setup_stairs(Dungeon& top, Dungeon& bottom, LibTile::TileSet& top_tiles){
             vector<Int2> usable_points = {};
             vector<Int2> points =room.all_contained_points();
             for(auto i:points){
-                if(top_tiles.get(i.x, i.y).is_floor){
+                if(top_tiles.get(i.x, i.y).is_floor && top_tiles.get(i.x, i.y).occupied == false &&top_tiles.get(i.x, i.y).child == nullptr ){
                     usable_points.push_back(i);
                 }
             }
@@ -385,7 +385,6 @@ void setup_stairs(Dungeon& top, Dungeon& bottom, LibTile::TileSet& top_tiles){
         Stairs stairs;
         stairs.up = true;
         top.down_stair_locations.push_back(i);
-        
         top.tiles.get(i.x, i.y).child = std::make_shared<Stairs>(stairs);
         stairs.up = false;
         bottom.up_stair_locations.push_back(i);
@@ -452,7 +451,7 @@ Dungeon Dungeon::create(int width, int height,size_t pixel_sz,bool is_building,D
     out.rooms = rooms;
     if(above){
         printf("called setup\n");
-        setup_stairs(out, *above,above->tiles);
+        setup_stairs(out, *above, above->tiles);
     }
 
     return out; 
@@ -463,14 +462,14 @@ LibTile::TileSet Dungeon::sillouette()const{
         for(size_t x =0; x<out.get_width(); x++){
             if(out.get(x,y).is_floor || out.get(x,y).is_door || out.get(x,y).is_path || out.get(x,y).is_wall){
                 out.get(x,y).type = TileEmpty;
-                out.get(x,y).is_empty = false;
+                out.get(x,y).occupied = false;
                 out.get(x,y).is_floor = false;
                 out.get(x,y).is_path = false;
                 out.get(x,y).is_wall = false;
                 out.get(x,y).is_door = false;
             } else{
                 out.get(x,y).type = TileEmpty;
-                out.get(x,y).is_empty = true;
+                out.get(x,y).occupied = true;
                 out.get(x,y).is_floor = false;
                 out.get(x,y).is_path = false;
                 out.get(x,y).is_wall = false;
@@ -481,7 +480,30 @@ LibTile::TileSet Dungeon::sillouette()const{
     return out; 
 }
 
+LibTile::TileSet Dungeon::sillouette_only_floors()const{
+    LibTile::TileSet out = tiles;
+    for(size_t y =0; y<out.get_height(); y++){
+        for(size_t x =0; x<out.get_width(); x++){
+            if(out.get(x,y).is_floor){
+                out.get(x,y).type = TileEmpty;
+                out.get(x,y).occupied= true;
+                out.get(x,y).is_floor = false;
+                out.get(x,y).is_path = false;
+                out.get(x,y).is_wall = false;
+                out.get(x,y).is_door = false;
+            } else{
+                out.get(x,y).type = TileEmpty;
+                out.get(x,y).occupied = false;
+                out.get(x,y).is_floor = false;
+                out.get(x,y).is_path = false;
+                out.get(x,y).is_wall = false;
+                out.get(x,y).is_door = false;
+            }
+        }
+    }
+    return out; 
+}
 void Stairs::on_render(LibTile::DrawingState * state, size_t x, size_t y, size_t pixel_size){
-    if(up)state->draw_rectangle(x+1, y+1, pixel_size, pixel_size, 255, 0,0);
-    else state->draw_rectangle(x+1, y+1, pixel_size, pixel_size, 0,0,255);
+    if(up)state->draw_rectangle(x, y, pixel_size, pixel_size, 255, 0,0);
+    else state->draw_rectangle(x, y, pixel_size, pixel_size, 0,0,255);
 }

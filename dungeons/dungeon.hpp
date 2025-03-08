@@ -26,8 +26,8 @@ struct Dungeon{
     std::vector<LibTile::Int2> up_stair_locations;
     std::vector<LibTile::Int2> down_stair_locations;
     LibTile::TileSet sillouette()const;
+    LibTile::TileSet sillouette_only_floors()const;
     friend void setup_stairs(Dungeon& top, Dungeon&bottom, LibTile::TileSet& top_tiles);
     Dungeon();
     static Dungeon create(int width, int height, size_t pixel_sz,bool is_building, Dungeon *above);
 };
-void setup_stairs(Dungeon& top, Dungeon& bottom);

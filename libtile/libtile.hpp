@@ -35,7 +35,6 @@ struct Tile{
     bool water;
     bool is_path;
     bool is_floor;
-    bool is_empty;
     bool is_door;
     std::shared_ptr<TileableEntity> child;
     Tile();

@@ -12,7 +12,6 @@ Tile::Tile(){
     water = false;
     is_path = false;
     is_floor = false;
-    is_empty = false;
     is_door = false;
 } 
 
