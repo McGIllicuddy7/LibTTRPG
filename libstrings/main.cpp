@@ -2,7 +2,7 @@
 #include "arena.hpp"
 #include <cstring>
 #include <string_view>
-#include <iostream>
+#include <print>
 #include "libstrings.hpp"
 #include "threads.hpp"
 using std::vector;
@@ -11,6 +11,7 @@ using std::string_view;
 using namespace std::literals::string_view_literals;
 using utils::spawn;
 using utils::Future;
+using std::println;
 //with futures./a.out  5.48s user 0.09s system 426% cpu 1.308 total
 //without futures ./a.out  5.59s user 0.10s system 451% cpu 1.262 total
 //without futures ./a.out  17.57s user 0.22s system 98% cpu 18.138 total
@@ -49,6 +50,15 @@ void add_test(){
 	utils::join_all_threads();
 }
 int main(){
-
-	
+	RefSlice<int> ints = RefSlice<int>::make(100);	
+	for(size_t i =0; i<ints.size(); i++){
+		ints[i] =i;
+	}
+	for(auto & i: ints){
+		std::println("{}",i);
+	}
+	WeakSlice<int> wints= ints;
+	for(auto &i :wints){
+		println("{}", i);
+	}
 }

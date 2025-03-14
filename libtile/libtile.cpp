@@ -214,8 +214,8 @@ std::vector<Int2> TileSet::path_between(int x1, int y1, int x2, int y2){
                     distances.push_back(1);
                 }
             }
-            if(y<height-1 && !get(x-1,y).occupied){
-                if(!get(x,y+1).is_wall){
+            if(y<height-1){
+                if(!get(x,y+1).is_wall && !get(x,y+1).occupied){
                     edges.push_back((y+1)*width+x);
                     distances.push_back(1);
                 }

@@ -7,6 +7,7 @@
 #include <functional>
 #include <mutex>
 #include <string>
+#include <memory>
 //Unowned view into memory 
 template <typename T> struct Slice{
 	T * m_start;
@@ -29,8 +30,35 @@ template <typename T> struct Slice{
 		assert(index<m_len);
 		return *(m_start+index);
 	}
-
 };
+template <typename T>struct RefSlice{
+	std::shared_ptr<T[]> m_ptr;
+	size_t m_size;
+	RefSlice(std::shared_ptr<T[]> ptr, size_t size){
+		m_ptr = ptr;
+		m_size = size;
+	}
+	static RefSlice<T> make(size_t count){
+		std::shared_ptr<T[]> ptr = std::make_shared<T[]>(count);
+		return RefSlice(ptr, count);
+	}
+	T& operator[](size_t idx){
+		return m_ptr[idx];
+	}
+	const T& operator[](size_t idx)const{
+		return m_ptr[idx];
+	}
+	size_t size()const {
+		return m_size;
+	}
+	T* begin(){
+		return m_ptr.get();
+	}
+	T* end(){
+		return m_ptr.get()+m_size;
+	}
+};
+
 class Deletable{
 	public:
 	size_t value;
