@@ -11,3 +11,7 @@ profile: $(files)
 	make 
 	CPUPROFILE_FREQUENCY=1000000 ./a.out
 	pprof --text a.out dump.txt > output.txt
+
+install:$(files)
+	make
+	mv a.out /usr/local/bin/charactergen

@@ -24,10 +24,10 @@ int main(int argc, const char ** argv){
     const size_t height =75;
     const size_t width =75;
     constexpr size_t pixel_size = 35;
-    const bool is_building = false;
+    const bool is_building = true;
     std::vector<Dungeon *> dungeons = {};
     Dungeon * previous = 0;
-    for(int i =0; i<2; i++){
+    for(int i =0; i<10; i++){
         Dungeon* dun =new Dungeon(Dungeon::create(width, height,pixel_size,is_building,previous)); 
         dungeons.push_back(dun);
         previous = dun;

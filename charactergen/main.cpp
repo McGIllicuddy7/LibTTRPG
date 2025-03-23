@@ -297,6 +297,7 @@ NPC_Request parse_request(const std::vector<std::string_view>& args){
     return out;
 }
 int main(int argc, const char ** argv){
+    srand(time(0));
     std::vector<std::string_view> args = {};
     if (argc< 2){
         usage_message();
