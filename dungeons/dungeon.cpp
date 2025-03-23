@@ -230,7 +230,7 @@ vector<Dungeon::Room> purge_rooms(const std::vector<Dungeon::Room>& base, int ra
             bool is_valid = true;
             vector<Int2> p = i.all_contained_points();
             for(const auto &j:p){
-                if(!tiles.get(j.x, j.y).occupied){
+                if(tiles.get(j.x, j.y).occupied){
                     is_valid = false;
                     break;
                 }
