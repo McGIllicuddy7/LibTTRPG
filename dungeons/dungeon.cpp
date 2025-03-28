@@ -230,7 +230,7 @@ vector<Dungeon::Room> purge_rooms(const std::vector<Dungeon::Room>& base, int ra
             bool is_valid = true;
             vector<Int2> p = i.all_contained_points();
             for(const auto &j:p){
-                if(tiles.get(j.x, j.y).occupied){
+                if(!tiles.get(j.x, j.y).occupied){
                     is_valid = false;
                     break;
                 }
@@ -462,14 +462,14 @@ LibTile::TileSet Dungeon::sillouette()const{
         for(size_t x =0; x<out.get_width(); x++){
             if(out.get(x,y).is_floor || out.get(x,y).is_door || out.get(x,y).is_path || out.get(x,y).is_wall){
                 out.get(x,y).type = TileEmpty;
-                out.get(x,y).occupied = false;
+                out.get(x,y).occupied = true;
                 out.get(x,y).is_floor = false;
                 out.get(x,y).is_path = false;
                 out.get(x,y).is_wall = false;
                 out.get(x,y).is_door = false;
             } else{
                 out.get(x,y).type = TileEmpty;
-                out.get(x,y).occupied = true;
+                out.get(x,y).occupied = false;
                 out.get(x,y).is_floor = false;
                 out.get(x,y).is_path = false;
                 out.get(x,y).is_wall = false;
