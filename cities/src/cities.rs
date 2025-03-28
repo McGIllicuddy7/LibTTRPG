@@ -33,7 +33,7 @@ impl City{
         let center = Int2{x:(width/2) as i32, y:(height/2) as i32};
         let max_dist = (height*height/4) as i32;
         let mut out =HashSet::new();
-        let min_dim = 12;
+        let min_dim = 11;
         let min_count = min_dim*min_dim;
         let noise = NoiseRing::new(TAU, 5);
         for i in 0..buildings.len(){
