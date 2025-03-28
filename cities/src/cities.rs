@@ -92,6 +92,7 @@ impl City{
     }
     pub fn render_out(&self, name:&str){
         unsafe{
+            //raylib_rs::ffi::InitWindow(100, 50,b"rendering image\0".as_ptr() as *const i8);
             let mut img = raylib_rs::ffi::GenImageColor(self.grid.width() as i32, self.grid.height() as i32, raylib_rs::ffi::Color{r:0, g:0, b:0, a:255});
             for y in 0..self.grid.height(){
                 for x in 0..self.grid.width(){
@@ -99,10 +100,16 @@ impl City{
                     raylib_rs::ffi::ImageDrawPixel((&mut img) as *mut raylib_rs::ffi::Image,x as i32, y as i32, col);
                 }
             }
+            for i in 0..self.buildings.len(){
+                let b = &self.buildings[i];
+                let text = format!("{}\0",i);
+               // raylib_rs::ffi::ImageDrawText((&mut img) as *mut raylib_rs::ffi::Image, text.as_ptr() as *const i8, b.location.x, b.location.y, 12, Color { r: 0, g:255, b: 0, a: 255});
+            }
             let mut v = name.as_bytes().to_vec();
             v.push(0);
             raylib_rs::ffi::ExportImage(img, v.as_ptr() as *const i8);
             raylib_rs::ffi::UnloadImage(img);
+            //raylib_rs::ffi::CloseWindow();
         }
     }
 }

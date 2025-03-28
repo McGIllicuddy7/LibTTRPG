@@ -1,4 +1,4 @@
-use std::{error::Error, f64::consts:: TAU, fmt::Display, ops::Mul};
+use std::{error::Error, f64::consts:: TAU, fmt::Display, ops::Mul, sync::atomic::AtomicI64};
 
 use rand::random_range;
 
@@ -96,7 +96,8 @@ impl<T> Grid<T>{
 impl <T:Send+Sync>Grid<T>{
     pub fn shader<'a>(&'a mut self, kernel:&'a (impl (Fn(usize, usize,&T)->T)+Sync)){
         let _ = std::thread::scope(|scope|{
-            let sz = self.height/std::thread::available_parallelism().expect("msg");
+           // let sz = self.height/std::thread::available_parallelism().unwrap();
+           let sz = self.height/16;
             let values = self.values.chunks_mut(self.width*sz);
             let mut y = 0;
             let width = self.width;
