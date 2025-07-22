@@ -129,7 +129,7 @@ impl City {
     }
     pub fn new(height: usize, width: usize) -> Self {
         let mut vor = Voronoi::new(height, width);
-        let mut theta0 = (rand::random::<i32>() % 1000) as f64 / 1000.0 * 2.0 * 3.14;
+        let mut theta0 = (rand::random::<i32>() % 1000) as f64 / 1000.0 * 2.0 * 3.14 * 0.0;
         vor.divide_jiggle(height * width / 64000, 1, 2, &mut theta0);
         for i in 0..4 {
             vor.subdivide_jiggle(8 / (i + 1), 2, (10 * (i + 1) + i) as i32, &mut theta0);

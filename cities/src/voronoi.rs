@@ -97,27 +97,29 @@ impl Voronoi {
         if dy < 2 {
             dy = 2;
         }
-        let theta = *theta0 + (rand::random::<i32>() % 1000 - 500) as f64 / 60000.0 * 2. * 3.14;
+        let theta =
+            *theta0 + (rand::random::<i32>() % 1000 - 500) as f64 / 60000.0 * 2. * 3.14 * 0.0;
         *theta0 = theta;
-        let basis_x_x = theta.cos();
-        let basis_x_y = theta.sin();
-        let basis_y_x = (theta + 3.14 / 2.0).cos();
-        let basis_y_y = (theta + 3.14 / 2.0).sin();
         for i in 0..nc as i32 {
             for j in 0..nc as i32 {
                 let delx = (dx * jiggle_mult) / jiggle_div;
                 let dely = (dy * jiggle_mult) / jiggle_div;
                 let jitter_x = random_range(-delx..delx + 1);
                 let jitter_y = random_range(-dely..dely + 1);
-                let p1 = Int2 {
+                let mut p1 = Int2 {
                     x: i * dx + min_x + dx / 2 + jitter_x,
                     y: j * dy + min_y + dy / 2 + jitter_y,
                 };
-                let point = Int2 {
-                    x: (p1.x as f64 * basis_x_x + p1.y as f64 * basis_y_x) as i32,
-                    y: (p1.x as f64 * basis_x_y + p1.y as f64 * basis_y_y) as i32,
+                p1.x -= (max_x - min_x) / 2;
+                p1.y -= (max_y - min_y) / 2;
+                let theta1 = f64::atan2(p1.x as f64, p1.y as f64) + theta;
+                let length = ((p1.x * p1.x + p1.y * p1.y) as f64).sqrt() as i32;
+                let mut point = Int2 {
+                    x: theta1.cos() as i32 * length,
+                    y: theta1.sin() as i32 * length,
                 };
-
+                point.x += (max_x - min_x) / 2;
+                point.y += (max_y - min_y) / 2;
                 new_points.push(point);
             }
         }
