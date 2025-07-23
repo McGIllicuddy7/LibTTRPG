@@ -188,7 +188,6 @@ impl NoiseRing {
             *i /= max;
         }
         let out = Self { length, values };
-        println!("{:#?}", out);
         out
     }
     pub fn sample(&self, idx: f64) -> f64 {

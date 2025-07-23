@@ -1,0 +1,15 @@
+cargo:rustc-link-lib=raylib
+cargo:rerun-if-env-changed=TARGET
+cargo:rerun-if-env-changed=BINDGEN_EXTRA_CLANG_ARGS_x86_64-unknown-linux-gnu
+cargo:rerun-if-env-changed=BINDGEN_EXTRA_CLANG_ARGS_x86_64_unknown_linux_gnu
+cargo:rerun-if-env-changed=BINDGEN_EXTRA_CLANG_ARGS
+cargo:rerun-if-changed=wrapper.h
+cargo:rerun-if-changed=/usr/include/raylib.h
+cargo:rerun-if-changed=/usr/lib/clang/20/include/stdarg.h
+cargo:rerun-if-changed=/usr/lib/clang/20/include/__stdarg_header_macro.h
+cargo:rerun-if-changed=/usr/lib/clang/20/include/__stdarg___gnuc_va_list.h
+cargo:rerun-if-changed=/usr/lib/clang/20/include/__stdarg_va_list.h
+cargo:rerun-if-changed=/usr/lib/clang/20/include/__stdarg_va_arg.h
+cargo:rerun-if-changed=/usr/lib/clang/20/include/__stdarg___va_copy.h
+cargo:rerun-if-changed=/usr/lib/clang/20/include/__stdarg_va_copy.h
+cargo:rerun-if-changed=/usr/lib/clang/20/include/stdbool.h

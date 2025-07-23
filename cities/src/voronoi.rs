@@ -89,6 +89,9 @@ impl Voronoi {
         }
         let mut new_points = Vec::new();
         let nc = count.isqrt();
+        if nc == 0 {
+            return;
+        }
         let mut dx = (max_x - min_x) / (nc as i32);
         if dx < 2 {
             dx = 2
@@ -97,30 +100,37 @@ impl Voronoi {
         if dy < 2 {
             dy = 2;
         }
-        let theta =
-            *theta0 + (rand::random::<i32>() % 1000 - 500) as f64 / 60000.0 * 2. * 3.14 * 0.0;
-        *theta0 = theta;
-        for i in 0..nc as i32 {
-            for j in 0..nc as i32 {
+        let theta = *theta0 + (rand::random::<i64>() % 1000) as f64 / 1000.0 * 2. * 3.14;
+        //*theta0 = theta;
+        for i in -(nc as i32 / 2 + 1)..nc as i32 / 2 + 2 {
+            for j in -(nc as i32 / 2 + 1)..nc as i32 / 2 + 2 {
+                let basx_x = theta.cos();
+                let basx_y = theta.sin();
+                let basy_x = basx_y;
+                let basy_y = -basx_x;
+                assert!((basx_x * basy_x + basx_y * basy_y).abs() < 0.01);
                 let delx = (dx * jiggle_mult) / jiggle_div;
                 let dely = (dy * jiggle_mult) / jiggle_div;
                 let jitter_x = random_range(-delx..delx + 1);
                 let jitter_y = random_range(-dely..dely + 1);
-                let mut p1 = Int2 {
-                    x: i * dx + min_x + dx / 2 + jitter_x,
-                    y: j * dy + min_y + dy / 2 + jitter_y,
+                let p1 = Int2 {
+                    x: i * dx,
+                    y: j * dy,
                 };
-                p1.x -= (max_x - min_x) / 2;
-                p1.y -= (max_y - min_y) / 2;
-                let theta1 = f64::atan2(p1.x as f64, p1.y as f64) + theta;
-                let length = ((p1.x * p1.x + p1.y * p1.y) as f64).sqrt() as i32;
-                let mut point = Int2 {
-                    x: theta1.cos() as i32 * length,
-                    y: theta1.sin() as i32 * length,
+                let px = p1.x as f64 * basx_x + p1.y as f64 * basy_x;
+                let py = p1.x as f64 * basx_y + p1.y as f64 * basy_y;
+                let mut p = Int2 {
+                    x: px as i32 + min_x + dx / 2 + jitter_x,
+                    y: py as i32 + min_y + dy / 2 + jitter_y,
                 };
-                point.x += (max_x - min_x) / 2;
-                point.y += (max_y - min_y) / 2;
-                new_points.push(point);
+                //p.x += self.width() as i32 / 2;
+                //p.y += self.height() as i32 / 2;
+                println!("{},{}", p.x, p.y);
+                if p.x < 0 || p.x > self.width() as i32 || p.y < 0 || p.y > self.height() as i32 {
+                    continue;
+                }
+
+                new_points.push(p);
             }
         }
         let base = self.points.len() + 1;
@@ -289,11 +299,38 @@ impl Voronoi {
         theta0: &mut f64,
     ) {
         let count = self.points.len();
+        let p = self.pop_count();
         for i in 0..count {
-            self.divide_masked_jiggle(subdivision_count, i + 1, jiggle_mult, jiggle_div, theta0);
+            let t = p[i + 1].isqrt() * subdivision_count / (120);
+            if t == 0 {
+                continue;
+            }
+            self.divide_masked_jiggle(t, i + 1, jiggle_mult, jiggle_div, theta0);
+        }
+    }
+    pub fn break_up(&mut self, thresh: usize, theta0: &mut f64) {
+        let p = self.pop_count();
+        let count = self.points.len();
+        for i in 0..count {
+            if p[i + 1] > thresh {
+                self.divide_masked_jiggle(4, i + 1, 0, 4, theta0);
+            }
         }
     }
     pub fn get_points(&self) -> &[Int2] {
         &self.points
+    }
+    pub fn pop_count(&self) -> Vec<usize> {
+        let mut out = Vec::new();
+        out.push(0);
+        for _ in 0..self.points.len() {
+            out.push(0);
+        }
+        for i in 0..self.height() {
+            for j in 0..self.width() {
+                out[*self.values.get(i, j)] += 1;
+            }
+        }
+        out
     }
 }

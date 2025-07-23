@@ -82,32 +82,35 @@ fn is_degenerate(height: usize, width: usize, points: &[Int2]) -> bool {
     } else {
         x1 - x0
     };
-    /*let rat = cm.dist_sqr(Int2 {
+    let rat = cm.dist_sqr(Int2 {
         x: (x1 - x0) / 2,
         y: (y1 - y0) / 2,
-    }) > mx * mx;*/
-    dx / dy >= 1.5 || dy / dx >= 1.5 || false
+    }) > mx * mx;
+    let _ = rat;
+    dx / dy >= 1.5 || dy / dx >= 1.5
 }
 
 impl City {
     pub fn purge_building_set(
         buildings: &[Building],
-        height: usize,
-        width: usize,
+        mut height: usize,
+        mut width: usize,
     ) -> HashSet<usize> {
+        //width *= 2;
+        //height *= 2;
         let center = Int2 {
             x: (width / 2) as i32,
             y: (height / 2) as i32,
         };
         let max_dist = (height * height / 4) as i32;
         let mut out = HashSet::new();
-        let min_dim = height * width / (200 * 200);
+        let min_dim = 25; //height * width / (300 * 300);
         let min_count = min_dim * min_dim;
         let noise = NoiseRing::new(TAU, 5);
         for i in 0..buildings.len() {
             let b = &buildings[i];
             let dist = b.location.dist_sqr(center);
-            let mul = 0.7
+            let mul = 1.0
                 + (noise.sample(crate::utils::angle_from(
                     b.location.x,
                     b.location.y,
@@ -117,10 +120,17 @@ impl City {
                     - 1.)
                     / 2.;
             let mut dst = (max_dist as f64 * (mul)) as i32;
-            if dst > max_dist {
-                dst = max_dist;
+            let mut max = 0;
+            for j in 0..buildings[i].points.len() {
+                if buildings[i].points[j].dist_sqr(center) > max {
+                    max = buildings[i].points[j].dist_sqr(center);
+                }
             }
-            if b.points.len() >= min_count && dist < dst && !is_degenerate(height, width, &b.points)
+            max = max.isqrt();
+            if b.points.len() >= min_count
+                && dist < dst
+                && max < dst
+                && !is_degenerate(height, width, &b.points)
             {
                 out.insert(i);
             }
@@ -128,16 +138,27 @@ impl City {
         out
     }
     pub fn new(height: usize, width: usize) -> Self {
+        fn new_theta() -> f64 {
+            (rand::random::<i32>() % 1000) as f64 / 1000.0 * 2.0 * 3.14
+        }
         let mut vor = Voronoi::new(height, width);
-        let mut theta0 = (rand::random::<i32>() % 1000) as f64 / 1000.0 * 2.0 * 3.14 * 0.0;
-        vor.divide_jiggle(height * width / 64000, 1, 2, &mut theta0);
-        for i in 0..4 {
-            vor.subdivide_jiggle(8 / (i + 1), 2, (10 * (i + 1) + i) as i32, &mut theta0);
-            if i == 0 || i == 1 || i == 2 || i == 3 {
+        let mut theta0 = new_theta();
+        vor.divide_jiggle(height * width / 160000, 1, 40, &mut theta0);
+        vor.shrink_divisions(1);
+        for i in 0..5 {
+            vor.subdivide_jiggle(
+                if i < 2 { 6 } else { 4 },
+                2,
+                (100 * (i + 1) * (i + 1)) as i32,
+                &mut theta0,
+            );
+            if i == 3 {
+                vor.break_up(4096, &mut theta0);
                 vor.shrink_divisions(1);
             }
         }
-        vor.shrink_divisions(2);
+
+        vor.shrink_divisions(1);
         let mut values = Vec::new();
         values.reserve_exact(height * width);
         (0..height * width).for_each(|_| {
@@ -213,13 +234,18 @@ impl City {
                     );
                 }
             }
-            for i in 0..self.buildings.len() {
-                let b = &self.buildings[i];
-                let text = format!("{}\0", i);
+            /*for i in 0..self.buildings.len() {
+                //let b = &self.buildings[i];
+                //let text = format!("{}\0", i);
                 // raylib_rs::ffi::ImageDrawText((&mut img) as *mut raylib_rs::ffi::Image, text.as_ptr() as *const i8, b.location.x, b.location.y, 12, Color { r: 0, g:255, b: 0, a: 255});
-            }
+            }*/
             let mut v = name.as_bytes().to_vec();
             v.push(0);
+            raylib_rs::ffi::ImageResizeNN(
+                &mut img,
+                self.grid.width() as i32 / 2,
+                self.grid.height() as i32 / 2,
+            );
             raylib_rs::ffi::ExportImage(img, v.as_ptr() as *const i8);
             raylib_rs::ffi::UnloadImage(img);
             //raylib_rs::ffi::CloseWindow();
