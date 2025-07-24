@@ -99,6 +99,10 @@ impl<T> Grid<T> {
         assert!(x < self.width && y < self.height);
         unsafe { self.values.get_unchecked(self.width * y + x) }
     }
+    pub fn get_mut(&mut self, x: usize, y: usize) -> &mut T {
+        assert!(x < self.width && y < self.height);
+        unsafe { self.values.get_unchecked_mut(self.width * y + x) }
+    }
     pub fn set(&mut self, x: usize, y: usize, v: T) {
         assert!(x < self.width && y < self.height);
         unsafe { *self.values.get_unchecked_mut(self.width * y + x) = v }
@@ -110,11 +114,18 @@ impl<T> Grid<T> {
         self.width
     }
 }
-impl<T: Send + Sync> Grid<T> {
+
+impl<T: Send + Sync + Clone> Grid<T> {
+    #[inline]
     pub fn shader<'a>(&'a mut self, kernel: &'a (impl (Fn(usize, usize, &T) -> T) + Sync)) {
         let _ = std::thread::scope(|scope| {
             // let sz = self.height/std::thread::available_parallelism().unwrap();
-            let sz = self.height / 16;
+            let tcount = std::thread::available_parallelism().unwrap().get() as usize;
+            let sz = if tcount == 1 {
+                self.height / tcount
+            } else {
+                tcount - 1
+            };
             let values = self.values.chunks_mut(self.width * sz);
             let mut y = 0;
             let width = self.width;
@@ -123,6 +134,73 @@ impl<T: Send + Sync> Grid<T> {
                     let ln = t.len();
                     for dy in 0..sz {
                         for x in 0..width {
+                            if (dy) * width + x >= ln {
+                                break;
+                            }
+                            let ptr = unsafe { t.get_unchecked_mut(dy * width + x) };
+                            let v = kernel(x, y + dy, ptr);
+                            *ptr = v;
+                        }
+                    }
+                };
+                y += sz;
+                scope.spawn(func);
+            }
+        });
+    }
+    #[inline]
+    pub fn shader_bound_single_thread<'a>(
+        &'a mut self,
+        kernel: &'a (impl (Fn(usize, usize, &T) -> T) + Sync),
+        min_x: usize,
+        max_x: usize,
+        min_y: usize,
+        max_y: usize,
+    ) {
+        for y in min_y..max_y {
+            for x in min_x..max_x {
+                let t = kernel(x, y, self.get(x, y));
+                self.set(x, y, t);
+            }
+        }
+    }
+    #[inline]
+    pub fn shader_bound<'a>(
+        &'a mut self,
+        kernel: &'a (impl (Fn(usize, usize, &T) -> T) + Sync),
+        min_x: usize,
+        max_x: usize,
+        min_y: usize,
+        max_y: usize,
+    ) {
+        let dx = max_x - min_x;
+        let dy = max_y - min_y;
+        if dx * dy < (128 * 128) {
+            return self.shader_bound_single_thread(kernel, min_x, max_x, min_y, max_y);
+        }
+        let _ = std::thread::scope(|scope| {
+            // let sz = self.height/std::thread::available_parallelism().unwrap();
+            let tcount = std::thread::available_parallelism().unwrap().get() as usize;
+            let sz = if tcount == 1 {
+                self.height / tcount
+            } else {
+                tcount - 1
+            };
+            let values = self.values.chunks_mut(self.width * sz);
+            let mut y = 0;
+            let width = self.width;
+            for t in values {
+                if y + sz < min_y {
+                    y += sz;
+                    continue;
+                }
+                if y > max_y {
+                    break;
+                }
+                let func = move || {
+                    let ln = t.len();
+                    for dy in 0..sz {
+                        for x in min_x..max_x + 1 {
                             if (dy) * width + x >= ln {
                                 break;
                             }

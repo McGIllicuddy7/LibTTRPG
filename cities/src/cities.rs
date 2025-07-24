@@ -87,14 +87,14 @@ fn is_degenerate(height: usize, width: usize, points: &[Int2]) -> bool {
         y: (y1 - y0) / 2,
     }) > mx * mx;
     let _ = rat;
-    dx / dy >= 1.5 || dy / dx >= 1.5
+    dx / dy >= 2.0 || dy / dx >= 2.0
 }
 
 impl City {
     pub fn purge_building_set(
         buildings: &[Building],
-        mut height: usize,
-        mut width: usize,
+        height: usize,
+        width: usize,
     ) -> HashSet<usize> {
         //width *= 2;
         //height *= 2;
@@ -110,7 +110,7 @@ impl City {
         for i in 0..buildings.len() {
             let b = &buildings[i];
             let dist = b.location.dist_sqr(center);
-            let mul = 1.0
+            let mul = 0.9
                 + (noise.sample(crate::utils::angle_from(
                     b.location.x,
                     b.location.y,
@@ -120,6 +120,9 @@ impl City {
                     - 1.)
                     / 2.;
             let mut dst = (max_dist as f64 * (mul)) as i32;
+            if dst > (width * width) as i32 / 4 - 10 {
+                dst = (width * width) as i32 / 4 - 10;
+            }
             let mut max = 0;
             for j in 0..buildings[i].points.len() {
                 if buildings[i].points[j].dist_sqr(center) > max {
@@ -143,22 +146,22 @@ impl City {
         }
         let mut vor = Voronoi::new(height, width);
         let mut theta0 = new_theta();
-        vor.divide_jiggle(height * width / 160000, 1, 40, &mut theta0);
-        vor.shrink_divisions(1);
-        for i in 0..5 {
+        vor.divide_jiggle(height * width / 80000, 1, 2, &mut theta0);
+        vor.shrink_divisions(6);
+        for i in 0..4 {
             vor.subdivide_jiggle(
                 if i < 2 { 6 } else { 4 },
                 2,
-                (100 * (i + 1) * (i + 1)) as i32,
+                (5 * (i + 1) * (i + 1)) as i32,
                 &mut theta0,
             );
             if i == 3 {
-                vor.break_up(4096, &mut theta0);
-                vor.shrink_divisions(1);
+                vor.break_up(100 * 100, &mut theta0);
+                vor.shrink_divisions(5);
             }
         }
 
-        vor.shrink_divisions(1);
+        vor.shrink_divisions(2);
         let mut values = Vec::new();
         values.reserve_exact(height * width);
         (0..height * width).for_each(|_| {
@@ -241,11 +244,13 @@ impl City {
             }*/
             let mut v = name.as_bytes().to_vec();
             v.push(0);
-            raylib_rs::ffi::ImageResizeNN(
-                &mut img,
-                self.grid.width() as i32 / 2,
-                self.grid.height() as i32 / 2,
-            );
+            if self.grid.width() > 1500 || self.grid.height() > 1500 {
+                raylib_rs::ffi::ImageResizeNN(
+                    &mut img,
+                    self.grid.width() as i32 / 2,
+                    self.grid.height() as i32 / 2,
+                );
+            }
             raylib_rs::ffi::ExportImage(img, v.as_ptr() as *const i8);
             raylib_rs::ffi::UnloadImage(img);
             //raylib_rs::ffi::CloseWindow();

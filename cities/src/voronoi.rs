@@ -100,7 +100,7 @@ impl Voronoi {
         if dy < 2 {
             dy = 2;
         }
-        let theta = *theta0 + (rand::random::<i64>() % 1000) as f64 / 1000.0 * 2. * 3.14;
+        let theta = *theta0 + (rand::random::<i64>() % 1000 - 500) as f64 / 5000.0 * 2. * 3.14;
         //*theta0 = theta;
         for i in -(nc as i32 / 2 + 1)..nc as i32 / 2 + 2 {
             for j in -(nc as i32 / 2 + 1)..nc as i32 / 2 + 2 {
@@ -125,13 +125,27 @@ impl Voronoi {
                 };
                 //p.x += self.width() as i32 / 2;
                 //p.y += self.height() as i32 / 2;
-                println!("{},{}", p.x, p.y);
+                //println!("{},{}", p.x, p.y);
                 if p.x < 0 || p.x > self.width() as i32 || p.y < 0 || p.y > self.height() as i32 {
                     continue;
                 }
 
                 new_points.push(p);
             }
+        }
+        let mut point_table = [const { [const { Vec::new() }; 10] }; 10];
+        for i in 0..new_points.len() {
+            let px = new_points[i].x * 10;
+            let py = new_points[i].y * 10;
+            let mut kx = px / self.width() as i32;
+            let mut ky = py / self.height() as i32;
+            if kx > 9 {
+                kx = 9;
+            }
+            if ky > 9 {
+                ky = 9;
+            }
+            point_table[ky as usize][kx as usize].push(i);
         }
         let base = self.points.len() + 1;
         {
@@ -142,9 +156,11 @@ impl Voronoi {
                     return *current;
                 }
                 let x = x as i32;
+
                 let y = y as i32;
                 let mut min = (height * width) as i32;
                 let mut min_idx = 0;
+
                 for i in 0..new_points.len() {
                     let p = new_points[i];
                     let dx = p.x - x;
@@ -155,9 +171,15 @@ impl Voronoi {
                         min_idx = i;
                     }
                 }
-                return min_idx + base;
+                base + min_idx
             };
-            self.values.shader(&shader);
+            self.values.shader_bound(
+                &shader,
+                min_x as usize,
+                max_x as usize,
+                min_y as usize,
+                max_y as usize,
+            );
         }
         for i in new_points {
             self.points.push(i);
