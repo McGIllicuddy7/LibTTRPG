@@ -180,7 +180,7 @@ impl<T: Send + Sync + Clone> Grid<T> {
         }
         let _ = std::thread::scope(|scope| {
             // let sz = self.height/std::thread::available_parallelism().unwrap();
-            let tcount = std::thread::available_parallelism().unwrap().get() as usize;
+            let tcount = 8; //std::thread::available_parallelism().unwrap().get() as usize;
             let sz = if tcount == 1 {
                 self.height / tcount
             } else {

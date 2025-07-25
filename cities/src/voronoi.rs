@@ -108,7 +108,7 @@ impl Voronoi {
                 let basx_y = theta.sin();
                 let basy_x = basx_y;
                 let basy_y = -basx_x;
-                assert!((basx_x * basy_x + basx_y * basy_y).abs() < 0.01);
+                //assert!((basx_x * basy_x + basx_y * basy_y).abs() < 0.01);
                 let delx = (dx * jiggle_mult) / jiggle_div;
                 let dely = (dy * jiggle_mult) / jiggle_div;
                 let jitter_x = random_range(-delx..delx + 1);
@@ -181,6 +181,7 @@ impl Voronoi {
                 max_y as usize,
             );
         }
+        self.points.reserve(new_points.len());
         for i in new_points {
             self.points.push(i);
         }
