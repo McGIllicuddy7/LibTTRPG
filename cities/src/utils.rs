@@ -96,15 +96,15 @@ impl<T> Grid<T> {
         })
     }
     pub fn get(&self, x: usize, y: usize) -> &T {
-        assert!(x < self.width && y < self.height);
+        //assert!(x < self.width && y < self.height);
         unsafe { self.values.get_unchecked(self.width * y + x) }
     }
     pub fn get_mut(&mut self, x: usize, y: usize) -> &mut T {
-        assert!(x < self.width && y < self.height);
+        //assert!(x < self.width && y < self.height);
         unsafe { self.values.get_unchecked_mut(self.width * y + x) }
     }
     pub fn set(&mut self, x: usize, y: usize, v: T) {
-        assert!(x < self.width && y < self.height);
+        //assert!(x < self.width && y < self.height);
         unsafe { *self.values.get_unchecked_mut(self.width * y + x) = v }
     }
     pub fn height(&self) -> usize {

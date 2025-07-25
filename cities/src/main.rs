@@ -11,7 +11,7 @@ fn main() {
         .blocklist(&["libc", "libgcc", "pthread", "vdso"])
         .build()
         .unwrap();
-    let city = City::new(1000, 1000);
+    let city = City::new(2000, 2000);
     city.render_out("test.png");
     println!("num_buildings:{}", city.buildings.len());
     if let Ok(report) = guard.report().build() {
