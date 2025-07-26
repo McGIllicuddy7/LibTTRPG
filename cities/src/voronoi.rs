@@ -46,6 +46,54 @@ impl Voronoi {
     pub fn width(&self) -> usize {
         return self.values.width();
     }
+    pub fn generate_voronoi_points(
+        &self,
+        nc: usize,
+        theta: f64,
+        dx: i32,
+        dy: i32,
+        jiggle_mult: i32,
+        jiggle_div: i32,
+        w0: i32,
+        h0: i32,
+        min_x: i32,
+        min_y: i32,
+        max_x: i32,
+        max_y: i32,
+    ) -> Vec<Int2> {
+        let mut new_points = Vec::new();
+        for i in -(nc as i32 / 2 + 1)..nc as i32 / 2 + 2 {
+            for j in -(nc as i32 / 2 + 1)..nc as i32 / 2 + 2 {
+                let basx_x = theta.cos();
+                let basx_y = theta.sin();
+                let basy_x = basx_y;
+                let basy_y = -basx_x;
+                //assert!((basx_x * basy_x + basx_y * basy_y).abs() < 0.01);
+                let delx = (dx * jiggle_mult) / jiggle_div;
+                let dely = (dy * jiggle_mult) / jiggle_div;
+                let jitter_x = random_range(-delx..delx + 1);
+                let jitter_y = random_range(-dely..dely + 1);
+                let p1 = Int2 {
+                    x: i * dx,
+                    y: j * dy,
+                };
+                let px = p1.x as f64 * basx_x + p1.y as f64 * basy_x;
+                let py = p1.x as f64 * basx_y + p1.y as f64 * basy_y;
+                let p = Int2 {
+                    x: px as i32 + min_x + dx / 2 + jitter_x,
+                    y: py as i32 + min_y + dy / 2 + jitter_y,
+                };
+                //p.x += self.width() as i32 / 2;
+                //p.y += self.height() as i32 / 2;
+                //println!("{},{}", p.x, p.y);
+                if p.x < 0 || p.x > w0 || p.y < 0 || p.y > h0 {
+                    continue;
+                }
+                new_points.push(p);
+            }
+        }
+        new_points
+    }
     pub fn divide_masked_jiggle(
         &mut self,
         count: usize,
@@ -54,18 +102,20 @@ impl Voronoi {
         jiggle_div: i32,
         theta0: &mut f64,
     ) {
+        let w0 = self.width() as i32;
+        let h0 = self.height() as i32;
         let mut min_x = 0;
         let mut min_y = 0;
-        let mut max_x = self.width() as i32;
-        let mut max_y = self.height() as i32;
+        let mut max_x = w0;
+        let mut max_y = h0;
         if mask != 0 {
-            min_x = self.width() as i32;
-            min_y = self.height() as i32;
+            min_x = w0;
+            min_y = h0;
             max_x = 0;
             max_y = 0;
             // let mut hit = false;
-            for y in 0..self.height() {
-                for x in 0..self.width() {
+            for y in 0..(h0 as usize) {
+                for x in 0..(w0 as usize) {
                     if self.get(x, y) != mask {
                         continue;
                     }
@@ -87,7 +137,7 @@ impl Voronoi {
                 return;
             }
         }
-        let mut new_points = Vec::new();
+
         let nc = count.isqrt();
         if nc == 0 {
             return;
@@ -102,74 +152,40 @@ impl Voronoi {
         }
         let theta = *theta0 + (rand::random::<i64>() % 1000 - 500) as f64 / 5000.0 * 2. * 3.14;
         //*theta0 = theta;
-        for i in -(nc as i32 / 2 + 1)..nc as i32 / 2 + 2 {
-            for j in -(nc as i32 / 2 + 1)..nc as i32 / 2 + 2 {
-                let basx_x = theta.cos();
-                let basx_y = theta.sin();
-                let basy_x = basx_y;
-                let basy_y = -basx_x;
-                //assert!((basx_x * basy_x + basx_y * basy_y).abs() < 0.01);
-                let delx = (dx * jiggle_mult) / jiggle_div;
-                let dely = (dy * jiggle_mult) / jiggle_div;
-                let jitter_x = random_range(-delx..delx + 1);
-                let jitter_y = random_range(-dely..dely + 1);
-                let p1 = Int2 {
-                    x: i * dx,
-                    y: j * dy,
-                };
-                let px = p1.x as f64 * basx_x + p1.y as f64 * basy_x;
-                let py = p1.x as f64 * basx_y + p1.y as f64 * basy_y;
-                let mut p = Int2 {
-                    x: px as i32 + min_x + dx / 2 + jitter_x,
-                    y: py as i32 + min_y + dy / 2 + jitter_y,
-                };
-                //p.x += self.width() as i32 / 2;
-                //p.y += self.height() as i32 / 2;
-                //println!("{},{}", p.x, p.y);
-                if p.x < 0 || p.x > self.width() as i32 || p.y < 0 || p.y > self.height() as i32 {
-                    continue;
-                }
-
-                new_points.push(p);
-            }
-        }
-        let mut point_table = [const { [const { Vec::new() }; 10] }; 10];
-        for i in 0..new_points.len() {
-            let px = new_points[i].x * 10;
-            let py = new_points[i].y * 10;
-            let mut kx = px / self.width() as i32;
-            let mut ky = py / self.height() as i32;
-            if kx > 9 {
-                kx = 9;
-            }
-            if ky > 9 {
-                ky = 9;
-            }
-            point_table[ky as usize][kx as usize].push(i);
-        }
         let base = self.points.len() + 1;
+        let new_points = self.generate_voronoi_points(
+            nc,
+            theta,
+            dx,
+            dy,
+            jiggle_mult,
+            jiggle_div,
+            w0,
+            h0,
+            min_x,
+            min_y,
+            max_x,
+            max_y,
+        );
         {
-            let height = self.height();
-            let width = self.width();
             let shader = |x: usize, y: usize, current: &usize| {
                 if *current != mask {
                     return *current;
                 }
                 let x = x as i32;
-
                 let y = y as i32;
-                let mut min = (height * width) as i32;
+                let mut min = h0 * w0;
                 let mut min_idx = 0;
-
                 for i in 0..new_points.len() {
                     let p = new_points[i];
                     let dx = p.x - x;
                     let dy = p.y - y;
                     let distance = dx * dx + dy * dy;
-                    if distance < min {
-                        min = distance;
-                        min_idx = i;
+                    if distance >= min {
+                        continue;
                     }
+                    min = distance;
+                    min_idx = i;
                 }
                 base + min_idx
             };

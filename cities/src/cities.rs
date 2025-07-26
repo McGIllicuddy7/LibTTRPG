@@ -148,7 +148,7 @@ impl City {
         let mut theta0 = new_theta();
         vor.divide_jiggle(height * width / 80000, 1, 2, &mut theta0);
         vor.shrink_divisions(3);
-        for i in 0..4 {
+        for i in 0..2 {
             vor.subdivide_jiggle(
                 if i < 2 { 6 } else { 4 },
                 2,
@@ -160,8 +160,8 @@ impl City {
             } else if i == 2 {
                 vor.shrink_divisions(1);
             }
-            if i == 3 {
-                vor.break_up(100 * 100, &mut theta0);
+            if i == 2 {
+                //                vor.break_up(128 * 128, &mut theta0);
             }
         }
 
