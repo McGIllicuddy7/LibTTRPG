@@ -147,7 +147,7 @@ impl City {
         let mut vor = Voronoi::new(height, width);
         let mut theta0 = new_theta();
         vor.divide_jiggle(height * width / 80000, 1, 2, &mut theta0);
-        vor.shrink_divisions(3);
+        vor.shrink_divisions(5);
         for i in 0..2 {
             vor.subdivide_jiggle(
                 if i < 2 { 6 } else { 4 },
@@ -156,16 +156,16 @@ impl City {
                 &mut theta0,
             );
             if i == 1 {
-                vor.shrink_divisions(2);
-            } else if i == 2 {
                 vor.shrink_divisions(1);
+            } else if i == 2 {
+                vor.shrink_divisions(3);
             }
             if i == 2 {
-                //                vor.break_up(128 * 128, &mut theta0);
+                vor.break_up(16 * 16, &mut theta0);
             }
         }
 
-        vor.shrink_divisions(1);
+        vor.shrink_divisions(4);
         let mut values = Vec::new();
         values.reserve_exact(height * width);
         (0..height * width).for_each(|_| {

@@ -62,6 +62,8 @@ impl Voronoi {
         max_y: i32,
     ) -> Vec<Int2> {
         let mut new_points = Vec::new();
+        let cx = (max_x - min_x) / 2;
+        let cy = (max_x - min_x) / 2;
         for i in -(nc as i32 / 2 + 1)..nc as i32 / 2 + 2 {
             for j in -(nc as i32 / 2 + 1)..nc as i32 / 2 + 2 {
                 let basx_x = theta.cos();
@@ -79,12 +81,12 @@ impl Voronoi {
                 };
                 let px = p1.x as f64 * basx_x + p1.y as f64 * basy_x;
                 let py = p1.x as f64 * basx_y + p1.y as f64 * basy_y;
-                let p = Int2 {
+                let mut p = Int2 {
                     x: px as i32 + min_x + dx / 2 + jitter_x,
                     y: py as i32 + min_y + dy / 2 + jitter_y,
                 };
-                //p.x += self.width() as i32 / 2;
-                //p.y += self.height() as i32 / 2;
+                p.x += cx;
+                p.y += cy;
                 //println!("{},{}", p.x, p.y);
                 if p.x < 0 || p.x > w0 || p.y < 0 || p.y > h0 {
                     continue;
@@ -150,7 +152,7 @@ impl Voronoi {
         if dy < 2 {
             dy = 2;
         }
-        let theta = *theta0 + (rand::random::<i64>() % 1000 - 500) as f64 / 5000.0 * 2. * 3.14;
+        let theta = *theta0 + (rand::random::<i64>() % 1000 - 500) as f64 / 7500.0 * 2. * 3.14;
         //*theta0 = theta;
         let base = self.points.len() + 1;
         let new_points = self.generate_voronoi_points(
@@ -347,12 +349,33 @@ impl Voronoi {
             self.divide_masked_jiggle(t, i + 1, jiggle_mult, jiggle_div, theta0);
         }
     }
+    pub fn shrink_divisions_masked(&mut self, loop_count: usize, mask: usize) {
+        let mut count = loop_count;
+        while count > 0 {
+            let mut out = self.clone();
+            for y in 0..self.height() {
+                for x in 0..self.width() {
+                    if self.get(x, y) != mask {
+                        continue;
+                    }
+                    if self.on_border_nonzero(x, y) {
+                        out.set(x, y, 0);
+                    }
+                }
+            }
+            *self = out;
+            count -= 1;
+        }
+    }
     pub fn break_up(&mut self, thresh: usize, theta0: &mut f64) {
         let p = self.pop_count();
         let count = self.points.len();
         for i in 0..count {
             if p[i + 1] > thresh {
                 self.divide_masked_jiggle(4, i + 1, 0, 4, theta0);
+                for j in 0..4 {
+                    self.shrink_divisions_masked(10, i + j);
+                }
             }
         }
     }
