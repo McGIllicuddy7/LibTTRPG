@@ -1,0 +1,10 @@
+/Users/bridget/LibTTRPG/table/target/debug/build/raylib-ffi-97a344a9fe382575/build_script_main-97a344a9fe382575: /Users/bridget/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/raylib-ffi-5.5.0/build/main.rs /Users/bridget/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/raylib-ffi-5.5.0/build/bind.rs /Users/bridget/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/raylib-ffi-5.5.0/build/wrap/mod.rs /Users/bridget/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/raylib-ffi-5.5.0/build/wrap/raylib_api.rs /Users/bridget/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/raylib-ffi-5.5.0/build/wrap/enums.rs /Users/bridget/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/raylib-ffi-5.5.0/build/wrap/colors.rs
+
+/Users/bridget/LibTTRPG/table/target/debug/build/raylib-ffi-97a344a9fe382575/build_script_main-97a344a9fe382575.d: /Users/bridget/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/raylib-ffi-5.5.0/build/main.rs /Users/bridget/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/raylib-ffi-5.5.0/build/bind.rs /Users/bridget/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/raylib-ffi-5.5.0/build/wrap/mod.rs /Users/bridget/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/raylib-ffi-5.5.0/build/wrap/raylib_api.rs /Users/bridget/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/raylib-ffi-5.5.0/build/wrap/enums.rs /Users/bridget/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/raylib-ffi-5.5.0/build/wrap/colors.rs
+
+/Users/bridget/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/raylib-ffi-5.5.0/build/main.rs:
+/Users/bridget/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/raylib-ffi-5.5.0/build/bind.rs:
+/Users/bridget/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/raylib-ffi-5.5.0/build/wrap/mod.rs:
+/Users/bridget/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/raylib-ffi-5.5.0/build/wrap/raylib_api.rs:
+/Users/bridget/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/raylib-ffi-5.5.0/build/wrap/enums.rs:
+/Users/bridget/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/raylib-ffi-5.5.0/build/wrap/colors.rs:

@@ -46,6 +46,126 @@ pub struct City {
     pub buildings: Vec<Building>,
     pub internal_voronoi: Voronoi,
 }
+pub fn rectangularize(points: &[Int2]) -> Vec<Int2> {
+    let mut out = Vec::new();
+    let mut max_dist = 0;
+    if points.is_empty() {
+        return out;
+    }
+    let mut max_point = points[0];
+    let mut center = Int2 { x: 0, y: 0 };
+    for i in points {
+        center.x += i.x;
+        center.y += i.y;
+    }
+    center.x /= points.len() as i32;
+    center.y /= points.len() as i32;
+    for i in points {
+        let d = i.dist_sqr(center);
+        if d > max_dist {
+            max_dist = d;
+            max_point = *i;
+        }
+    }
+    let d0 = Int2 {
+        x: max_point.x,
+        y: max_point.y,
+    };
+    let rt = Int2 { x: d0.y, y: -d0.x };
+    let mut d1c = Int2 { x: rt.x, y: rt.y };
+    let mut d1c_max = (rt.x - center.x) * (rt.x - center.x) + (rt.y - center.y) * (rt.y - center.y);
+    for i in points {
+        let dist = (i.x - center.x) * (rt.x - center.x) + (i.y - center.y) * (rt.y - center.y);
+        if dist.abs() < d1c_max {
+            d1c_max = dist.abs();
+            d1c = *i;
+        }
+    }
+    let d = ((d1c.x * d1c.x + d1c.y * d1c.y) as f64).sqrt();
+    let mx = (d1c_max as f64).sqrt();
+    d1c.x = (d1c.x as f64 * d / mx) as i32;
+    d1c.y = (d1c.y as f64 * d / mx) as i32;
+    let d1 = d1c;
+    /*if d1.x * d1.x + d1.y * d1.y < 100 {
+        return out;
+    }*/
+    let d2 = Int2 { x: -d0.x, y: -d0.y };
+    let d3 = Int2 { x: -d1.x, y: -d1.y };
+
+    let p0 = raylib_rs::ffi::Vector2 {
+        x: (center.x + d0.x) as f32,
+        y: (center.y + d0.y) as f32,
+    };
+    let p1 = raylib_rs::ffi::Vector2 {
+        x: (center.x + d1.x) as f32,
+        y: (center.y + d1.y) as f32,
+    };
+    let p2 = raylib_rs::ffi::Vector2 {
+        x: (center.x + d2.x) as f32,
+        y: (center.y + d2.y) as f32,
+    };
+    let p3 = raylib_rs::ffi::Vector2 {
+        x: (center.x + d3.x) as f32,
+        y: (center.y + d3.y) as f32,
+    };
+    let mut min_x = points[0].x + center.x;
+    let mut min_y = points[0].y + center.y;
+    let mut max_x = points[0].x + center.x;
+    let mut max_y = points[0].y + center.y;
+
+    for i in points {
+        if i.x < min_x {
+            min_x = i.x;
+        }
+        if i.y < min_y {
+            min_y = i.y;
+        }
+        if i.x > max_x {
+            max_x = i.x;
+        }
+        if i.y > max_y {
+            max_y = i.y;
+        }
+    }
+    /*
+    let ptts = [
+        Int2 {
+            x: pts[0].x + center.x,
+            y: pts[0].y + center.y,
+        },
+        Int2 {
+            x: pts[1].x + center.x,
+            y: pts[1].y + center.y,
+        },
+        Int2 {
+            x: pts[2].x + center.x,
+            y: pts[2].y + center.y,
+        },
+        Int2 {
+            x: pts[3].x + center.x,
+            y: pts[3].x + center.y,
+        },
+    ];*/
+    //    println!("{},{}, {}, {}", min_x, max_x, min_y, max_y);
+    for y in min_y..max_y + 1 {
+        for x in min_x..max_x + 1 {
+            let v2 = raylib_rs::ffi::Vector2 {
+                x: x as f32,
+                y: y as f32,
+            };
+            let c0 = unsafe { raylib_rs::ffi::CheckCollisionPointTriangle(v2, p0, p1, p3) };
+            let c1 = unsafe { raylib_rs::ffi::CheckCollisionPointTriangle(v2, p0, p2, p3) };
+            let c2 = unsafe { raylib_rs::ffi::CheckCollisionPointTriangle(v2, p1, p2, p3) };
+            //            let c3 = unsafe : raylib_rs::ffi::CheckCollisionPointTriangle(v2, p0, p1, p3) };
+            if c0 || c1 || c2 {
+                out.push(Int2 { x, y });
+            }
+        }
+    }
+    println!("{}", out.len());
+    out
+}
+
 fn is_degenerate(height: usize, width: usize, points: &[Int2]) -> bool {
     let mut x0 = points[0].x;
     let mut x1 = points[0].x;
@@ -104,7 +224,7 @@ impl City {
         };
         let max_dist = (height * height / 4) as i32;
         let mut out = HashSet::new();
-        let min_dim = 25; //height * width / (300 * 300);
+        let min_dim = 20;
         let min_count = min_dim * min_dim;
         let noise = NoiseRing::new(TAU, 5);
         for i in 0..buildings.len() {
@@ -147,7 +267,7 @@ impl City {
         let mut vor = Voronoi::new(height, width);
         let mut theta0 = new_theta();
         vor.divide_jiggle(height * width / 80000, 1, 2, &mut theta0);
-        vor.shrink_divisions(5);
+        vor.shrink_divisions(4);
         for i in 0..2 {
             vor.subdivide_jiggle(
                 if i < 2 { 6 } else { 4 },
@@ -165,7 +285,7 @@ impl City {
             }
         }
 
-        vor.shrink_divisions(4);
+        vor.shrink_divisions(3);
         let mut values = Vec::new();
         values.reserve_exact(height * width);
         (0..height * width).for_each(|_| {
@@ -191,7 +311,12 @@ impl City {
                 }
             }
         }
+        for i in &mut buildings {
+            let new_points = rectangularize(&i.points);
+            i.points = new_points;
+        }
         let idxes = Self::purge_building_set(&buildings, height, width);
+
         let mut grid = Grid::new(values, height, width);
         for y in 0..vor.height() {
             for x in 0..vor.width() {

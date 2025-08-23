@@ -1,0 +1,7 @@
+/Users/bridget/LibTTRPG/table/target/debug/build/raylib-sys-5b9b11f236d8fe75/out/lib/libraylib.a
+/Users/bridget/LibTTRPG/table/target/debug/build/raylib-sys-5b9b11f236d8fe75/out/include/raylib.h
+/Users/bridget/LibTTRPG/table/target/debug/build/raylib-sys-5b9b11f236d8fe75/out/include/rlgl.h
+/Users/bridget/LibTTRPG/table/target/debug/build/raylib-sys-5b9b11f236d8fe75/out/include/raymath.h
+/Users/bridget/LibTTRPG/table/target/debug/build/raylib-sys-5b9b11f236d8fe75/out/lib/pkgconfig/raylib.pc
+/Users/bridget/LibTTRPG/table/target/debug/build/raylib-sys-5b9b11f236d8fe75/out/lib/cmake/raylib/raylib-config-version.cmake
+/Users/bridget/LibTTRPG/table/target/debug/build/raylib-sys-5b9b11f236d8fe75/out/lib/cmake/raylib/raylib-config.cmake
