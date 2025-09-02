@@ -1,60 +1,68 @@
-use raylib_rs::ffi::*;
-pub use std::collections::HashMap;
-const ELEMENT_COUNT_MAX: usize = 16384;
-pub struct User {
-    pub username: String,
-}
+pub use std::collections::LinkedList;
+pub use std::sync::{Arc, Mutex};
 pub enum ElementType {
-    Note,
-    Token,
+    Text,
     Image,
+    Token,
 }
-pub struct Element {
-    pub owner: User,
-    pub element_type: ElementType,
-    pub message: String,
-    pub image: String,
-    pub x: i32,
-    pub y: i32,
-    pub width: i32,
-    pub height: i32,
+pub struct GuiElement {
+    pub x: usize,
+    pub y: usize,
+    pub height: usize,
+    pub width: usize,
+    pub text: String,
 }
+
 pub struct ElementRef {
     pub idx: u32,
-    pub genr: u32,
+    pub gnr: u32,
 }
-pub struct State {
-    pub selected_element: Option<usize>,
-    pub elements: Box<[Option<Element>]>,
-    pub generations: Box<[usize]>,
-    pub images: HashMap<String, Image>,
+pub enum Event {
+    ElementMove { idx: u32 },
+    ElementCreate { e: GuiElement },
+    ElementDestroy { e: ElementRef },
 }
-pub enum Event {}
-impl Default for State {
+pub struct GlobalState {
+    pub elements: Box<[Option<GuiElement>]>,
+    pub generations: Box<[u32]>,
+}
+impl Default for GlobalState {
     fn default() -> Self {
         Self::new()
     }
 }
-impl State {
+impl GlobalState {
     pub fn new() -> Self {
-        let mut elemns = Vec::new();
-        elemns.reserve_exact(ELEMENT_COUNT_MAX);
-        for _ in 0..ELEMENT_COUNT_MAX {
-            elemns.push(None);
-        }
+        let mut elements = Vec::new();
         let mut gens = Vec::new();
-        gens.reserve_exact(ELEMENT_COUNT_MAX);
-        for _ in 0..ELEMENT_COUNT_MAX {
+        elements.reserve_exact(4096);
+        gens.reserve_exact(4096);
+        for _ in 0..4096 {
+            elements.push(None);
             gens.push(0);
         }
         Self {
-            selected_element: None,
-            elements: elemns.into(),
+            elements: elements.into(),
             generations: gens.into(),
-            images: HashMap::new(),
         }
     }
-    pub fn update_local(&mut self) {
-        todo!()
+}
+pub struct LocalState {
+    pub prev_state: GlobalState,
+    pub events: Arc<Mutex<LinkedList<Event>>>,
+    pub selected: Option<ElementRef>,
+}
+impl Default for LocalState {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+impl LocalState {
+    pub fn new() -> Self {
+        Self {
+            prev_state: GlobalState::default(),
+            events: Arc::new(Mutex::new(LinkedList::new())),
+            selected: None,
+        }
     }
 }
