@@ -1,1 +1,1 @@
-/Users/bridget/LibTTRPG/table/target/debug/table: /Users/bridget/LibTTRPG/table/src/guitls.rs /Users/bridget/LibTTRPG/table/src/main.rs /Users/bridget/LibTTRPG/table/src/state.rs
+/home/bridget/libttrpg/table/target/debug/table: /home/bridget/libttrpg/table/src/guitls.rs /home/bridget/libttrpg/table/src/main.rs /home/bridget/libttrpg/table/src/state.rs
