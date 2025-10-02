@@ -100,7 +100,7 @@ pub struct Vec2 {
 }
 impl Vec2 {
     pub fn new(x: i32, y: i32) -> Self {
-        return Self { x, y };
+        Self { x, y }
     }
     pub fn dot(&self, other: Self) -> i32 {
         self.x * other.x + self.y * other.y

@@ -1,7 +1,7 @@
 use std::error::Error;
-pub use crate::letters::*;
+pub use super::letters::*;
 use minifb::{Key, Window, WindowOptions};
-pub use crate::math::*;
+pub use super::math::*;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct Color {
@@ -82,14 +82,14 @@ impl Image {
                 std::slice::from_raw_parts_mut(buffptr, self.height*self.width)
                 };
                 window
-                .update_with_buffer(&buffer, self.width, self.height)
+                .update_with_buffer(buffer, self.width, self.height)
                 .unwrap();
     }
     pub fn draw_forever(&self) {
         let mut window = Window::new(
             "Test - ESC to exit",
-        self.width as usize,
-            self.height as usize,
+        self.width,
+            self.height,
             WindowOptions::default(),
         )
         .unwrap_or_else(|e| {
@@ -102,7 +102,7 @@ impl Image {
         };
         while window.is_open() && !window.is_key_down(Key::Escape) {
             window
-                .update_with_buffer(&buffer, self.width, self.height)
+                .update_with_buffer(buffer, self.width, self.height)
                 .unwrap();
         }
     }
@@ -151,11 +151,38 @@ impl Image {
         let y0 = y as usize;
         for yp in 0..bmp.height{
             for xp in 0..bmp.width{
-                if bmp.get(xp, yp){
+                if bmp.get(xp as i32, yp as i32){
                     self.draw_pixel(xp+x0, yp+y0, color);
                 }
             }
         }
+    }
+    pub fn draw_bitmap_scaled(&mut self, x:i32, y:i32, w:i32, h:i32, bmp:&Bitmap, color:Color){
+        let x0 = x;
+        let y0 =y;
+        let wf = w as f32;
+        let hf = h as f32;
+        if x0<0 && x0+w<0 {
+            return;
+        }
+        if y0<0 && y0+h<0 {
+            return;
+        }
+        if x0>self.width as i32 {
+            return;
+        }
+        if y0>self.height as i32 {
+            return;
+        }
+        for yp in 0..h*2{
+            for xp in 0..w{
+                    let xf = xp as f32/wf;
+                    let yf = yp as f32/hf;
+                    if bmp.getf(xf, yf){
+                        self.draw_pixel((xp+x0) as usize, (yp+y0) as usize, color);
+                    }
+                }
+            }
     }
     pub fn draw_rect_shader<Shade:Shader>(&mut self, x:i32, y:i32, w:i32, h:i32, shader:&Shade){
         for yp in y..y+h{
@@ -203,12 +230,16 @@ impl Image {
         let bmp = char_to_bmp(c);
         self.draw_bitmap(x, y, bmp, color);
     }
+    pub fn draw_char_scaled(&mut self,x:i32, y:i32, w:i32, h:i32,c:char, color:Color){
+        let bmp = char_to_bmp(c);
+        self.draw_bitmap_scaled(x, y, w,h,bmp, color);
+    }
     pub fn draw_text(&mut self, x:i32, y:i32, text:&str, color:Color){
         let mut cx = x;
         let mut cy = y;
         for i in text.chars(){
             if i == '\n'{
-                cy += TEXT_SPACE;
+                cy += TEXT_SPACE_V;
                 cx = x;
             }else if i == '\t'{
                 cx += (TEXT_SPACE)*3;
@@ -219,8 +250,87 @@ impl Image {
             }
         }
     }
-}
+    pub fn draw_text_scaled(&mut self,x:i32, y:i32, height:i32, text:&str, color:Color){
+        let sf = height as f64/TEXT_HEIGHT as f64;
+        let w = (TEXT_WIDTH as f64*sf) as i32;
+        let h = (TEXT_HEIGHT as f64*sf) as i32;
+        let xoff = (TEXT_SPACE as f64*sf)as i32;
+        let yoff = (TEXT_SPACE_V as f64 *sf ) as i32;
+        let mut cx = x;
+        let mut cy = y;
+        for i in text.chars(){
+            if i == '\n'{
+                cy += yoff;
+                cx = x;
+            }else if i == '\t'{
+                cx += xoff*3;
+            }else{
+                self.draw_char_scaled(cx, cy, w,h,i, color);
+                cx += xoff
 
+            }
+        }
+    }
+    pub fn draw_text_width(&mut self,x:i32, y:i32, max_width:i32,height:i32, text:&str, color: Color){
+       let sf = height as f64/TEXT_HEIGHT as f64;
+        let w = (TEXT_WIDTH as f64*sf) as i32;
+        let h = (TEXT_HEIGHT as f64*sf) as i32;
+        let xoff = (TEXT_SPACE as f64*sf)as i32;
+        let yoff = (TEXT_SPACE_V as f64 *sf ) as i32;
+        let mut cx = x;
+        let mut cy = y;
+        for i in text.chars(){
+            if i == '\n' || cx-x+xoff>=max_width{
+                cy += yoff;
+                cx = x;
+            }else if i == '\t'{
+                cx += xoff*3;
+            }
+            if i != '\n' && i != '\t'{
+                self.draw_char_scaled(cx, cy, w,h,i, color);
+                cx += xoff
+
+            }
+        }
+    }
+    pub fn text_bounds(&self, height:i32,w:i32 ,text:&str)->(i32, i32){
+        let sf = height as f64/TEXT_HEIGHT as f64;
+        let xoff = (TEXT_SPACE as f64*sf)as i32;
+        let yoff = (TEXT_SPACE_V as f64 *sf ) as i32;
+        let mut cx = 0;
+        let mut cy = 0;
+        let mut max_cx = 0;
+        for i in text.chars(){
+            if i == '\n' || cx+xoff>=w{
+                cy += yoff;
+                if cx>max_cx{
+                    max_cx = cx;
+                }
+                cx = 0;
+            }else if i == '\t'{
+                cx += xoff*3;
+            }else{
+                cx += xoff
+
+            }
+        }
+        if cx>max_cx{
+            max_cx = cx;
+        }
+        (max_cx+xoff, cy+yoff)
+    }
+    pub fn draw_text_box(&mut self,x:i32, y:i32, w:i32, h:i32, text:&str, color: Color){
+            let mut hp = 100;
+            let ( _, mut by) = self.text_bounds(hp, w,text);
+            while by+2>=h{
+                hp -=1;
+                (_, by) = self.text_bounds(hp, w-2,text);
+                //println!("{},{}", bx,by)
+            }
+          //  println!("{hp}");
+            self.draw_text_width(x, y, w ,hp, text, color);
+    }
+}
 pub trait Shader{
     fn kernel(&self,screen_location:Vec2, text_coord:Vec2r)->Color;
 }
@@ -236,13 +346,35 @@ impl Bitmap{
         let data = unsafe{std::slice::from_raw_parts(inp.as_ptr() as * const u8, W*H)};
         Self { width: W, height: H, data}
     }
-    pub const fn get(&self,x:usize, y:usize)->bool{
-        if x>=self.width || y>= self.height{
+    pub const fn get(&self,x:i32, y:i32)->bool{
+        if x as usize>=self.width || y as usize>= self.height  || y<0 || x<0{
             return false;
         }
-        self.data[y*self.width+x] != 0
+        self.data[y as usize*self.width+x as usize] != 0
     }
     pub const fn getf(&self, x:f32, y:f32)->bool{
-        self.get((x*self.width as f32) as usize, (y*self.width as f32) as usize)
+        const OF:f32 = 0.30;
+        self.get((x*self.width as f32) as i32, (y*self.width as f32) as i32) ||       
+        self.get((x*self.width as f32+OF) as i32, (y*self.width as f32) as i32)||
+        self.get((x*self.width as f32-OF) as i32, (y*self.width as f32) as i32)||
+        self.get((x*self.width as f32) as i32, (y*self.width as f32+OF) as i32)||
+        self.get((x*self.width as f32) as i32, (y*self.width as f32-OF) as i32)
     }
+}
+pub fn begin_rendering(width:usize, height:usize)->(Image, Window){
+        let img = Image::new(width, height);
+        let mut window = Window::new(
+            "Test - ESC to exit",
+            img.width,
+            img.height,
+            WindowOptions::default(),
+        )
+        .unwrap_or_else(|e| {
+            panic!("{}", e);
+        });
+        window.set_target_fps(60);
+        (img, window)
+}
+pub fn window_should_continue(window:&Window, use_esc:bool)->bool{
+    window.is_open() && (!window.is_key_down(Key::Escape) ||!use_esc)
 }
