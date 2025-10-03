@@ -1,10 +1,12 @@
 pub mod imaglib;
 pub use minifb::{Key, Window, WindowOptions};
-
-use imaglib::draw::{begin_rendering, window_should_continue, BLACK, WHITE};
+pub mod map;
+use imaglib::draw::{begin_rendering, window_should_continue};
 pub use imaglib::draw::{Color, Image, Shader, Vec2, Vec2r};
 
-use crate::imaglib::draw;
+use crate::imaglib::draw::{self, rand, srand_time};
+use crate::imaglib::draw::colors::*;
+use crate::map::{City, VecField};
 struct Shade{
     tex:Image
 }
@@ -28,8 +30,8 @@ pub fn spinny(){
                img.clear(WHITE);
                 rt += 1.0/60.0;
                 img.draw_rect_rot(320, 240, 120, 120,rt ,&sh);
-                img.draw_rect(100, 320, 500, 100, Color { b: 0, g: 0, r: 125, a: 255 });
-                img.draw_text_box(100+2, 320+2,500-4,100-4,"howdy :3, THE QUICK BROWN FOX JUMPED OVER THE LAZY DOG\nthe quick brown fox jumped over the lazy dog lmao, also i love you", BLACK);
+                img.draw_rect(100, 320, 500, 100, RED);
+                img.draw_text_box(100+5, 320+5,500-10,100-10,"howdy :3, THE QUICK BROWN FOX JUMPED OVER THE LAZY DOG\nthe quick brown fox jumped over the lazy dog lmao, also i love you", PINK);
             img.draw(&mut window);
             let next =std::time::SystemTime::now(); 
           // println!("{:#?}", next.duration_since(timer).unwrap());
@@ -53,18 +55,63 @@ pub fn printr(){
         let (mut img, mut window) = begin_rendering(1000, 1000);
         let mut timer = std::time::SystemTime::now();
         let mut prev = timer.duration_since(timer).unwrap();
-        let txt = std::fs::read_to_string("src/draw.rs").unwrap();
+        let txt = std::fs::read_to_string("src/main.rs").unwrap();
         while window_should_continue(&window, true){
             let text = format!("fps:{:#?}\n{}",prev, txt);
             img.clear(BLACK);
            // img.draw_rect_rot(320, 240, 120, 120,rt ,&sh);
-            img.draw_text_scaled(0, 0, 14,&text, WHITE);
+            img.draw_text_scaled(0, 0, 14,&text, DARK_TEAL);
             img.draw(&mut window);
             let next =std::time::SystemTime::now(); 
             prev = next.duration_since(timer).unwrap();   
             timer = next;
         }
 }
+pub fn rands(){
+    let mut counts = [0;10];
+    srand_time();
+    for _ in 0..100{
+        let v = rand()%10;
+        println!("{v}");
+        counts[v as usize]+=1;
+    } 
+    for i in 0..counts.len(){
+        print!("{i}:{},", counts[i]);
+    }
+}
+pub fn map(){
+    srand_time();
+    let mut img = Image::new(1000, 1000);
+    img.clear(WHITE);
+    let mut msh= City::new(1000,1000,40);
+    msh.build();
+   // msh.draw(&mut img,BLACK, false);
+    //img.draw_forever();
+}
+pub fn map_draw(){
+    srand_time();
+    let (mut img, mut window) = begin_rendering(1000, 1000);
+    img.clear(WHITE);
+    let mut msh= City::new(1000,1000,42);
+    msh.build();
+    let mut should_draw = false;
+    let mut timer = std::time::SystemTime::now();
+    let mut prev = timer.duration_since(timer).unwrap();
+    while window_should_continue(&window, true){
+        window.update();
+        if window.is_key_pressed(Key::Space, minifb::KeyRepeat::No){
+            should_draw = !should_draw;
+        }
+        let text = format!("fps:{:#?}",prev);
+        img.clear(WHITE);
+        msh.draw(&mut img,BLACK,should_draw);
+        img.draw_text_scaled(0, 0, 14,&text, RED);
+        img.draw(&mut window);
+        let next =std::time::SystemTime::now(); 
+        prev = next.duration_since(timer).unwrap();   
+        timer = next;
+    }
+}
 fn main() {
-    spinny();
+    map_draw();
 }

@@ -1,4 +1,4 @@
-use std::ops::Mul;
+use std::{f64::consts::PI, ops::Mul, sync::Mutex};
 
 #[derive(Copy, Clone, PartialEq,Debug)]
 pub struct Vec2r {
@@ -28,6 +28,17 @@ impl Vec2r{
     }
     pub fn to_int(&self)->Vec2{
         Vec2{x:self.x as i32, y:self.y as i32}
+    }
+    pub fn angle(&self)->f32{
+        f32::atan2(self.y, self.x)
+    }
+    pub fn from_angle(theta:f32)->Self{
+        Self { x: theta.cos(), y: theta.sin() }
+    }
+    pub fn rotate(&self, dtheta:f32)->Self{
+        let a = self.angle()+dtheta;
+        let l = self.len();
+        Self::from_angle(a)*l
     }
 
 }
@@ -120,7 +131,7 @@ impl Vec2 {
         *self/self.len()
     }
     pub fn to_real(&self)->Vec2r{
-        Vec2r{x:self.x as f32, y:self.x as f32}
+        Vec2r{x:self.x as f32, y:self.y as f32}
     }
 }
 impl std::ops::Add for Vec2 {
@@ -225,6 +236,12 @@ impl BB {
             if i.y < min.y {
                 min.y = i.y;
             }
+        }
+        if max.y == min.y {
+            max.y+=1;
+        }
+        if max.x == min.x{
+            max.x+=1;
         }
         Self {
             x: min.x,
@@ -380,5 +397,77 @@ impl Mul<Vec2r> for Mat2{
         let x =values[0][0] as f32*rhs.x+values[0][1]as f32*rhs.y;
         let y = values[1][0] as f32*rhs.x+values[1][1] as f32*rhs.y;
         Vec2r::new(x,y)
+    }
+}
+static RAND_GEN:Mutex<u64> = Mutex::new(0);
+pub fn srand_time(){
+    let mut h = RAND_GEN.lock().unwrap();
+    *h = (std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_nanos() %u64::MAX as u128)as u64;
+    if *h == 0{
+        *h += 13;
+    }
+}
+pub fn srand(v:u64){
+   let mut h = RAND_GEN.lock().unwrap();
+   *h = v;
+}
+pub fn rand()->u64{
+    let mut h = RAND_GEN.lock().unwrap();
+    *h ^= h.wrapping_shl(13);
+    *h ^= h.wrapping_shr(7);
+    *h ^= h.wrapping_shl(17);
+    *h
+}
+pub fn rand_int()->i64{
+    unsafe{std::mem::transmute(rand())}
+}
+pub fn rand_float()->f64{
+    const RES:u64 = 1_000_000;
+    let base = ((rand()%RES)as f64)/(RES as f64);
+    base
+}
+pub fn rand_angle()->f64{
+    rand_float()*2.*PI
+}
+pub fn rand_vec2r()->Vec2r{
+    let theta = rand_angle();
+    Vec2r::new(theta.cos() as f32, theta.sin() as f32)
+}
+pub fn dist_to_line(start:Vec2r, end:Vec2r, p:Vec2r)->f32{
+   /*let num = ((end.y-start.y)*p.x-(end.x-start.x)*p.y+end.x*start.y-end.y*start.x).abs();
+    let denum = ((end.y-start.y)*(end.y-start.y)+(end.x-start.x)*(end.x-start.x)).sqrt();
+    let out1 = num/denum;
+    let out2 = end.dist(p);
+    let out3 = start.dist(p);
+    min(out1,min(out2, out3))*/
+    let d = end-start;
+    let dl = d.len();
+    let dn = d/dl;
+    let b = p-start;
+    let dot = b.dot(dn);
+    let proj = dn*b.dot(dn);
+    let fproj = proj+start;
+    if dot>dl{
+        p.dist(end)
+    }else if dot<0.0{
+        p.dist(start)
+    }
+    else{
+        fproj.dist(p)
+    }
+
+}
+pub fn min<T:PartialOrd>(a:T, b:T)->T{
+    if a<b{
+        a
+    }else{
+        b
+    }
+}
+pub fn max<T:PartialOrd>(a:T, b:T)->T{
+    if a>b{
+        a
+    }else{
+        b
     }
 }

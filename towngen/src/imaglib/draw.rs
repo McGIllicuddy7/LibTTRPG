@@ -1,4 +1,6 @@
-use std::error::Error;
+use std::{error::Error, f32::consts::PI};
+use crate::imaglib::draw::colors::RED;
+
 pub use super::letters::*;
 use minifb::{Key, Window, WindowOptions};
 pub use super::math::*;
@@ -10,8 +12,25 @@ pub struct Color {
     pub r: u8,
     pub a: u8,
 }
-pub const BLACK:Color = Color{r:0, g:0, b:0, a:255};
-pub const WHITE:Color = Color{r:220, g:220, b:220, a:255};
+pub mod colors{
+    use super::Color;
+    pub const BLACK:Color = Color{r:0, g:0, b:0, a:255};
+    pub const WHITE:Color = Color{r:220, g:220, b:220, a:255};
+    pub const BLUE:Color = Color{r:0, g:0, b:220, a:255};
+    pub const TEAL:Color = Color{r:0, g:220, b:220, a:255};
+    pub const RED:Color = Color{r:220, g:0, b:0, a:255};
+    pub const GREEN:Color = Color{r:0, g:220, b:0, a:255};
+    pub const PURPLE:Color = Color{r:220, g:0, b:220, a:255};
+    pub const PINK:Color = Color{r:255, g:150, b:210, a:255};
+    pub const GREY:Color = Color{r:110, g:110, b:110, a:255};
+    pub const DARK_BLUE:Color = Color{r:0, g:0, b:110, a:255};
+    pub const DARK_TEAL:Color = Color{r:0, g:110, b:110, a:255};
+    pub const DARK_RED:Color = Color{r:110, g:0, b:0, a:255};
+    pub const DARK_GREEN:Color = Color{r:0, g:110, b:0, a:255};
+    pub const DARK_PURPLE:Color = Color{r:110, g:0, b:110, a:255};
+    pub const DARK_PINK:Color = Color{r:125, g:75, b:105, a:255};
+    pub const DARK_GREY:Color = Color{r:55, g:55, b:55, a:255};
+}
 #[derive(Clone)]
 pub struct Image {
     pub height: usize,
@@ -101,6 +120,7 @@ impl Image {
             std::slice::from_raw_parts_mut(buffptr, self.height*self.width)
         };
         while window.is_open() && !window.is_key_down(Key::Escape) {
+            window.update();
             window
                 .update_with_buffer(buffer, self.width, self.height)
                 .unwrap();
@@ -329,6 +349,52 @@ impl Image {
             }
           //  println!("{hp}");
             self.draw_text_width(x, y, w ,hp, text, color);
+    }
+    pub fn draw_line(&mut self, start:Vec2, end:Vec2, w:f32, color:Color){
+        let b = BB::from_points(&[start, end]);
+        /*b.x =0;
+        b.y =0;
+        b.w = self.width as i32;
+        b.h = self.height as i32;*/
+        let s = start.to_real();
+        let e = end.to_real();
+        for y in b.y..b.y+b.h+1 as i32{
+            for x in b.x..b.x+b.w+1 as i32{
+                if x<0 || y<0{
+                    continue;
+                }
+                let p = Vec2r::new(x as f32, y as f32);
+                let d = dist_to_line(s, e, p);
+                if d<=w{
+                    self.draw_pixel(x as usize, y as usize, color);
+                }
+            }
+        }
+    }
+    pub fn draw_vec2r(&mut self,location:Vec2, v:Vec2r, w:f32,s:f32,color: Color){
+        let e= location.to_real()+v*s;
+        let ei = e.to_int();
+        println!("{:#?},{:#?}, {:#?}", location,ei,v);
+        self.draw_line(location, ei, w, color);
+        let delt = (v.norm()*s).rotate(-PI/4.0);
+        let delt2 = (v.norm()*s).rotate(PI/4.0); 
+        self.draw_line(ei, (e-delt).to_int(),w ,color);
+        self.draw_line(ei, (e-delt2).to_int(),w ,color);
+    }
+    pub fn draw_circ(&mut self, pos:Vec2, rad:i32, color: Color){
+            for y in -rad..rad+1{
+                for x in -rad..rad+1{
+                    let xp = pos.x+x;
+                    let yp = pos.y+y;
+                    if xp<0 || yp<0 || yp as usize>=self.height || xp as usize>=self.width{
+                        continue;
+                    }
+                    let p = Vec2::new(xp, yp);
+                    if p.dist(pos)<rad{
+                        self.draw_pixel(xp as usize, yp as usize, color);
+                    }
+                }
+            }
     }
 }
 pub trait Shader{
