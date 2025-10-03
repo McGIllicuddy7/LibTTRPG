@@ -90,9 +90,11 @@ pub fn map(){
 }
 pub fn map_draw(){
     srand_time();
-    let (mut img, mut window) = begin_rendering(1000, 1000);
+    let w = 1250;
+    let h = 1250;
+    let (mut img, mut window) = begin_rendering(w,h);
     img.clear(WHITE);
-    let mut msh= City::new(1000,1000,42);
+    let mut msh= City::new(w,h,42);
     msh.build();
     let mut should_draw = false;
     let mut timer = std::time::SystemTime::now();
