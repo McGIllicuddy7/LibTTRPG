@@ -90,11 +90,11 @@ pub fn map(){
 }
 pub fn map_draw(){
     srand_time();
-    let w = 1250;
-    let h = 1250;
+    let w = 1000;
+    let h = 1000;
     let (mut img, mut window) = begin_rendering(w,h);
     img.clear(WHITE);
-    let mut msh= City::new(w,h,42);
+    let mut msh= City::new(w as i32,h as i32,30);
     msh.build();
     let mut should_draw = false;
     let mut timer = std::time::SystemTime::now();
@@ -113,6 +113,7 @@ pub fn map_draw(){
         prev = next.duration_since(timer).unwrap();   
         timer = next;
     }
+    img.export("test.ppm");
 }
 fn main() {
     map_draw();

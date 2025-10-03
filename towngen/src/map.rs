@@ -152,16 +152,16 @@ impl City{
         false
     }
     pub fn place_buildings(&mut self,start:Vec2r, direction:Vec2r, len:f32){
-        let mut count =0.0;
+        let mut count =4.0;
         let theta = direction.angle();
-        while count<len{
+        while count<len-4.0{
             let mut rcount =0;
             let mut dt:i32;
             let mut delt:f32;
             loop{
                 dt = if rand()%3 <=2 {
                     if rcount<8{
-                        (rand_int()%4+8)as i32
+                        (rand_int()%4+7)as i32
                     } 
                     else if rcount<8{
                         (5)as i32
@@ -170,11 +170,11 @@ impl City{
                         1
                     }
                 }else {
-                    2
+                    1
                 };
-                delt = 11.+dt as f32;
-                let dx = 10+dt;
-                let dy = 10+dt+(rand()%2) as i32;
+                delt = 10.+dt as f32;
+                let dx = 9+dt;
+                let dy = 9+dt+(rand()%5) as i32;
                 let dims = Vec2{x:dx, y:dy};
                 let b = Building{loc:start+direction*count, theta:theta,dims:dims};
                 if !self.building_intersects_line(&b){
@@ -199,10 +199,10 @@ impl City{
         let p0 = self.nodes[i].pos;
         for j in i+1..self.nodes.len(){
             let p1 = self.nodes[j].pos;
-            if self.nodes[j].connections.len()>5{
+            /*if self.nodes[j].connections.len()>5{
                 continue;
-            }
-            if p1.dist(p0).sqrt()>count as f32*25.0{
+            }*/
+            if p1.dist(p0).sqrt()>count as f32*2.0{
                 continue;
             }
             if self.nodes[i].connections.contains(&j){
@@ -237,7 +237,7 @@ impl City{
             if rand()%2 == 0{break;}
         }
 
-        self.nodes[i].connections.len()>(rand()%4) as usize
+        self.nodes[i].connections.len()>(rand()%5+rand()%3) as usize
     }
     pub fn purge(&mut self){
         let mut outv = Vec::new();
@@ -289,7 +289,7 @@ impl City{
                 }
                 count+=1;
                // println!("count:{count}, {i}");
-                if count>20{
+                if count>30{
                     break;
                 }
             }
