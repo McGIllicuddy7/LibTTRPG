@@ -52,7 +52,7 @@ pub fn old(){
     img.draw_forever();
 }
 pub fn printr(){
-        let (mut img, mut window) = begin_rendering(1000, 1000);
+        let (mut img, mut window) = begin_rendering(1100, 1100);
         let mut timer = std::time::SystemTime::now();
         let mut prev = timer.duration_since(timer).unwrap();
         let txt = std::fs::read_to_string("src/main.rs").unwrap();
@@ -81,9 +81,11 @@ pub fn rands(){
 }
 pub fn map(){
     srand_time();
-    let mut img = Image::new(1000, 1000);
+    let w = 1000;
+    let h = 1000;
+    let mut img = Image::new(w, h);
     img.clear(WHITE);
-    let mut msh= City::new(1000,1000,40);
+    let mut msh= City::new(w as i32,h as i32,30);
     msh.build();
    // msh.draw(&mut img,BLACK, false);
     //img.draw_forever();
@@ -94,7 +96,7 @@ pub fn map_draw(){
     let h = 1000;
     let (mut img, mut window) = begin_rendering(w,h);
     img.clear(WHITE);
-    let mut msh= City::new(w as i32,h as i32,30);
+    let mut msh= City::new(w as i32,h as i32,45);
     msh.build();
     let mut should_draw = false;
     let mut timer = std::time::SystemTime::now();

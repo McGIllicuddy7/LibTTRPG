@@ -72,12 +72,7 @@ impl Building{
         }
     }
     pub fn min_dim(&self)->f32{
-        let dims = self.dims;
-        if dims.x>dims.y{
-            dims.y as f32
-        } else{
-            dims.x as f32
-        }
+        self.dims.x as f32
     }
 }
 pub struct City{
@@ -97,6 +92,9 @@ impl City{
         let dy = height/count;
         for x in 0..dx{
             for y in 0..dy{
+                if rand_float()<0.05{
+                    continue;
+                }
                 let px = (x*count) as f32;
                 let py = (y*count) as f32;
                 let rv = rand_vec2r()*0.4*dx as f32;
@@ -118,7 +116,7 @@ impl City{
             let i = &self.buildings[j];
             let d = i.max_dim();
             let p = i.loc;
-            if math::dist_to_line(start, end, p)<d{
+            if math::dist_to_line(start, end, p)<20.0{
                 return Some(j);
             }
         }
@@ -132,7 +130,7 @@ impl City{
                 let j = unsafe{self.nodes.get_unchecked(*ip)};
                 let start =i.pos;
                 let end = j.pos;
-                if math::dist_to_line(start, end, p)<d{
+                if math::dist_to_line(start, end, p)<20.0{
                     return true;
                 }
             }
@@ -144,55 +142,57 @@ impl City{
         let bloc = b.loc;
         for i in& self.buildings{
             let md2 = i.min_dim();
+            let m = min(md1, md2);
             let del = i.loc.dist(bloc).sqrt();
-            if del<(md1+md2)/2.0-0.25{
+            if del<m*1.0005{
                 return true;
             }
         } 
         false
     }
     pub fn place_buildings(&mut self,start:Vec2r, direction:Vec2r, len:f32){
-        let mut count =4.0;
+        let mut count =0.0;
         let theta = direction.angle();
-        while count<len-4.0{
+        let mut stack = Vec::new();
+        while count<len{
             let mut rcount =0;
             let mut dt:i32;
             let mut delt:f32;
             loop{
-                dt = if rand()%3 <=2 {
+                dt = if rand()%10 <=2 {
                     if rcount<8{
-                        (rand_int()%4+7)as i32
+                        (rand_int()%3+4)as i32
                     } 
-                    else if rcount<8{
-                        (5)as i32
-                    }
                     else{
-                        1
+                        3
                     }
                 }else {
-                    1
+                    8
                 };
-                delt = 10.+dt as f32;
-                let dx = 9+dt;
-                let dy = 9+dt+(rand()%5) as i32;
+                delt = 7.+dt as f32;
+                let dx = 7+dt;
+                let dy = 7+dt as i32+1;
                 let dims = Vec2{x:dx, y:dy};
-                let b = Building{loc:start+direction*count, theta:theta,dims:dims};
-                if !self.building_intersects_line(&b){
-                    if !self.building_intersects_building(&b){
+                let b = Building{loc:start+direction*(count), theta:theta,dims:dims};
+                if self.building_intersects_line(&b){
+                    break;
+                }
+                if !self.building_intersects_building(&b){
                         self.buildings.push(b);
                         break;
-                    } else if rcount<10{
+                    } else if rcount<12{
                         rcount+=1;
                         continue;
                     }
-                }else if rcount<10{
-                    rcount+=1;
-                    continue;
-                }
                 break;
             }
             count+= delt;
         }
+        if stack.len()>1{
+            for i in stack{
+                self.buildings.push(i);
+            }
+         }
     }
     pub fn update_build(&mut self, i:usize, count:usize)->bool{
         let mut candidates = Vec::new();
@@ -202,7 +202,7 @@ impl City{
             /*if self.nodes[j].connections.len()>5{
                 continue;
             }*/
-            if p1.dist(p0).sqrt()>count as f32*2.0{
+            if p1.dist(p0).sqrt()>count as f32*0.8{
                 continue;
             }
             if self.nodes[i].connections.contains(&j){
@@ -229,15 +229,15 @@ impl City{
             let del = p1-p0;
             let dl = del.len();
             let dln = del/dl;
-            let dt = 12.0;
-            self.place_buildings(p0+dln.rotate(PI/2.0)*(dt) as f32,dln, dl);
-            self.place_buildings(p0+dln.rotate(-PI/2.0)*(dt) as f32,dln, dl);
+            let dt = 15.5;
+            self.place_buildings(p0+dln.rotate(PI/2.0)*(dt as f32) as f32,dln, dl);
+            self.place_buildings(p0+dln.rotate(-PI/2.0)*(dt as f32) as f32,dln, dl);
             self.nodes[i].connections.push(n);
             self.nodes[n].connections.push(i);
             if rand()%2 == 0{break;}
         }
 
-        self.nodes[i].connections.len()>(rand()%5+rand()%3) as usize
+        self.nodes[i].connections.len()>(rand()%5+rand()%3+1) as usize
     }
     pub fn purge(&mut self){
         let mut outv = Vec::new();
@@ -246,7 +246,7 @@ impl City{
         for i in &self.buildings{
             let d = i.loc.dist(c).sqrt() as f64;
             if d>w+(rand_float()-0.5)*w { 
-                if rand_float()*rand_float()*rand_float()*rand_float()*(w+100.)< d{
+                if rand_float()*rand_float()*rand_float()*rand_float()*(w+10.)< d{
                     continue;
                 }
             }
@@ -259,26 +259,24 @@ impl City{
                     let p0 = j.pos;
                     let p1 = self.nodes[*k].pos;
                     let p2 = i.loc;
-                    if dist_to_line(p0, p1, p2)<2.{
+                    if dist_to_line(p0, p1, p2)<0.0{
                         hit = true;
                         break;
                     }
                 }
             }
             if !hit{
-                let mut k = i.clone();
-                if k.dims.x<18{
-                    k.dims.x+=1;
-                }
-                if k.dims.y<18{
-                    k.dims.y+=1;
-                }
+                let k = i.clone();
                 outv.push(k);
             }
-
-
         }
         self.buildings = outv;
+    }
+    pub fn update_building_rots(&mut self){
+        let mut vf = VecField::new(100, 100);
+        for i in &self.buildings{
+            vf.get_mut(i.loc.x as usize/10, i.loc.y as usize/10);
+        }
     }
     pub fn build(&mut self){
         for i in 0..self.nodes.len(){
@@ -289,7 +287,7 @@ impl City{
                 }
                 count+=1;
                // println!("count:{count}, {i}");
-                if count>30{
+                if count>100{
                     break;
                 }
             }
